@@ -1,0 +1,29 @@
+@import '../../../Scss/var';
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+
+  &__input {
+    width: 100%;
+    min-width: 110px;
+    border: 2px solid $gold;
+    background-color: $gold;
+    border-radius: 10px;
+    font-size: 18px;
+    padding: 5px 8px;
+  }
+
+  &__search-btn {
+    position: absolute;
+    z-index: 1000;
+    right: 10px;
+
+    &-icon {
+      width: 25px;
+      height: 25px;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+@import '../../../Scss/var';
+
+.nav {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  gap: 25px;
+  flex: 1;
+  margin-right: 40px;
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+
+    &-item {
+      a,
+      a:visited {
+        color: $white;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: $gold;
+          text-shadow: 0 0 10px $gold;
+        }
+      }
+    }
+  }
+}
