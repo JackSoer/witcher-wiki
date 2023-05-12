@@ -1,0 +1,21 @@
+@import '../../../Scss/var';
+
+.home {
+  width: 100%;
+  color: $white;
+
+  &__title {
+    color: $gold;
+    font-size: 32px;
+    text-align: center;
+    padding: 0 25px 30px 25px;
+    font-weight: 700;
+    line-height: 42px;
+    border-bottom: 2px solid $black;
+  }
+
+  &__subtitle {
+    display: block;
+    font-size: 35px;
+  }
+}

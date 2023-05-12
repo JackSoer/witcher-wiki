@@ -1,0 +1,43 @@
+@import '../../../Scss/var';
+
+.cat-section {
+  padding: 40px 25px;
+  text-align: center;
+  border-bottom: 3px solid $black;
+
+  &__title {
+    font-weight: 700;
+    font-size: 40px;
+    color: $gold;
+    margin-bottom: 15px;
+    display: inline-block;
+    transition: all 0.3s ease;
+
+    &:hover {
+      text-shadow: 0 0 10px $gold;
+    }
+  }
+
+  &__read-more-btn {
+    font-size: 25px;
+    margin-top: 55px;
+    border: 2px solid $gold;
+    padding: 5px 10px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-weight: 700;
+
+    &:hover {
+      a,
+      a:visited {
+        color: $white;
+      }
+      background-color: $gold;
+    }
+
+    a,
+    a:visited {
+      color: $gold;
+    }
+  }
+}

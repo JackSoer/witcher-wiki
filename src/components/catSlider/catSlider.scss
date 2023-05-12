@@ -1,0 +1,24 @@
+@import '../../../Scss/var';
+
+.slider {
+  padding: 0 20px;
+}
+
+.slick-dots {
+  margin-bottom: -10px;
+}
+
+.slick-dots li button:before {
+  font-size: 13px;
+  color: $lightGreen;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: $lightGreen;
+  font-size: 50px;
+}
+
+.slick-prev {
+  left: -53px;
+}
