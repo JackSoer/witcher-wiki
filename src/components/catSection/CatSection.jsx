@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import getArticlesByCat from '../../utils/getArticlesByCat.js';
 import './catSection.scss';
+import useFetchArticlesByCat from '../../hooks/useFetchArticlesByCat.js';
 
 import CatSlider from '../catSlider/CatSlider';
+import Loading from '../loading/Loading';
+import Error from '../error/Error';
 
 const CatSection = ({ title }) => {
-  const [catSliderArticles, setCatSliderArticles] = useState([]);
-
-  useEffect(() => {
-    const getSliderArticles = async () => {
-      const articles = await getArticlesByCat(title);
-      const sliderArticles = articles.slice(0, 6);
-
-      setCatSliderArticles(sliderArticles);
-    };
-
-    getSliderArticles();
-  }, []);
+  const { articles, isLoading, fetchError } = useFetchArticlesByCat(title);
 
   return (
     <section className="home__cat-section cat-section">
@@ -25,9 +16,11 @@ const CatSection = ({ title }) => {
         <Link to="/">
           <h2 className="cat-section__title">{title}</h2>
         </Link>
-        <CatSlider catItems={catSliderArticles} />
+        {!isLoading && !fetchError && <CatSlider catItems={articles} />}
+        {isLoading && !fetchError && <Loading />}
+        {fetchError && !isLoading && <Error errorText={fetchError} />}
         <button className="cat-section__read-more-btn">
-          <Link to="">{'Read More ->'}</Link>
+          <Link to="/">{'Read More ->'}</Link>
         </button>
       </div>
     </section>

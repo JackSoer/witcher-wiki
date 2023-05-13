@@ -1,0 +1,27 @@
+@import '../../../Scss/var';
+
+.footer {
+  padding: 40px 25px;
+  border-top: 5px solid $gold;
+
+  &__copyright-section {
+    display: flex;
+    align-items: center;
+    gap: 150px;
+  }
+
+  &__logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  &__witcher-wiki-def {
+    color: $lightGreen;
+    margin-bottom: 10px;
+  }
+
+  &__copyright-text {
+    color: $white;
+    font-size: 15px;
+  }
+}
