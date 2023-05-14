@@ -10,13 +10,13 @@ const Nav = () => {
       <Search />
       <ul className="nav__list">
         <li className="nav__list-item">
-          <Link to="/">Characters</Link>
+          <Link to="/characters">Characters</Link>
         </li>
         <li className="nav__list-item">
-          <Link to="/">Locations</Link>
+          <Link to="/locations">Locations</Link>
         </li>
         <li className="nav__list-item">
-          <Link to="/">Bestiary</Link>
+          <Link to="/bestiary">Bestiary</Link>
         </li>
       </ul>
     </nav>

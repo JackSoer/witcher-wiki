@@ -8,12 +8,13 @@ const useFetchArticlesByCat = (cat) => {
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
+  const catsRef = collection(db, 'Categories');
+
   useEffect(() => {
     const getArticlesByCat = async (categories) => {
       try {
         setIsLoading(true);
 
-        const catsRef = collection(db, 'Categories');
         const data = await getDocs(catsRef);
         const cats = data.docs.map((doc) => ({
           ...doc.data(),
