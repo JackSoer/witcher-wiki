@@ -16,6 +16,10 @@
     background-color: $black;
     padding: 5px;
     border: 0.5px solid $gold;
+
+    &--active {
+      background-color: $gold;
+    }
   }
 
   &__tooltip {

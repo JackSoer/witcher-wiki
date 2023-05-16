@@ -1,17 +1,41 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import FilterContext from '../../context/FilterContext';
 import './faction.scss';
 
-const Faction = ({ faction }) => {
+const Faction = ({ factionTitle }) => {
+  const { faction, setFaction } = useContext(FilterContext);
+
+  const isCurrentFaction = faction === factionTitle;
+
+  const handleChangeFaction = () => {
+    if (isCurrentFaction) {
+      setFaction('');
+    } else {
+      setFaction(factionTitle);
+    }
+  };
+
   return (
     <div className="faction">
-      <button className="faction__btn">
+      <button
+        className={
+          isCurrentFaction
+            ? 'faction__btn faction__btn--active'
+            : 'faction__btn'
+        }
+        onClick={handleChangeFaction}
+      >
         <img
-          src={`./assets/icons/${faction}.png`}
+          src={
+            isCurrentFaction
+              ? `./assets/icons/${factionTitle}-active.png`
+              : `./assets/icons/${factionTitle}.png`
+          }
           alt="Something went wrong"
           className="faction__icon"
         />
       </button>
-      <div className="faction__tooltip">{faction}</div>
+      <div className="faction__tooltip">{factionTitle}</div>
     </div>
   );
 };

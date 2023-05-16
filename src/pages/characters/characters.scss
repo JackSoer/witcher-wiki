@@ -5,6 +5,11 @@
   background-color: $darkGray;
   position: relative;
   padding: 35px 20px;
+  flex: 1;
+
+  &--padding-top {
+    padding-top: 40px;
+  }
 
   &__articles {
     padding: 40px 0 10px 0;
@@ -17,6 +22,10 @@
     border: 3px solid $gold;
     padding: 15px;
     position: relative;
+
+    &--loading {
+      height: 250px;
+    }
 
     &:after {
       content: '';
