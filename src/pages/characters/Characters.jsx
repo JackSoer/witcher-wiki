@@ -4,10 +4,8 @@ import useFetchArticlesByCat from '../../hooks/useFetchArticlesByCat';
 import getArticlesByFaction from '../../utils/getArticlesByFaction';
 import './characters.scss';
 
+import Articles from '../../components/articles/Articles';
 import FactionsFilter from '../../components/factionsFilter/FactionsFilter';
-import ArticleCard from '../../components/articleCard/ArticleCard';
-import Loading from '../../components/loading/Loading';
-import Error from '../../components/error/Error';
 
 const Characters = () => {
   const { articles, isLoading, fetchError } =
@@ -37,25 +35,11 @@ const Characters = () => {
           }
         >
           <FactionsFilter />
-          <div
-            className={
-              !isLoading && !fetchError
-                ? `characters__articles`
-                : 'characters__articles--padding-top'
-            }
-          >
-            {!isLoading &&
-              !fetchError &&
-              filteredArticles.map((article) => (
-                <ArticleCard
-                  title={article.title}
-                  image={article.mainImage}
-                  key={article.id}
-                />
-              ))}
-            {isLoading && !fetchError && <Loading />}
-            {fetchError && !isLoading && <Error errorText={fetchError} />}
-          </div>
+          <Articles
+            filteredArticles={filteredArticles}
+            isLoading={isLoading}
+            fetchError={fetchError}
+          />
         </div>
       </div>
     </div>

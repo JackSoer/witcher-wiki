@@ -5,6 +5,7 @@ import Home from './home/Home';
 import Characters from './characters/Characters';
 import Locations from './locations/Locations';
 import Bestiary from './bestiary/Bestiary';
+import Article from './article/Article';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: '/bestiary',
         element: <Bestiary />,
+      },
+      {
+        path: '/:id',
+        element: <Article />,
       },
     ],
   },
