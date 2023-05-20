@@ -5,7 +5,7 @@ import './catItem.scss';
 
 const CatItem = ({ img, title }) => {
   return (
-    <Link to="/">
+    <Link to={`/${title}`}>
       <div className="cat-item">
         <img src={img} alt="Something went wrong" className="cat-item__img" />
         <h3 className="cat-item__title">{title}</h3>

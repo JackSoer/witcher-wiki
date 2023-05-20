@@ -19,7 +19,6 @@ const useFetchArticlesByCat = () => {
           ...doc.data(),
           id: doc.id,
         }));
-
         setArticles(filteredArticles);
         setFetchError(null);
       } catch (err) {

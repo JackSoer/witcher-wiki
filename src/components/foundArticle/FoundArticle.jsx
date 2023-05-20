@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const FoundArticle = ({ title, img }) => {
   return (
     <div className="found-article">
-      <Link to="/">
+      <Link to={`/${title}`}>
         <img
           src={img}
           alt="Something went wrong"
