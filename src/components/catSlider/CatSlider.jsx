@@ -9,7 +9,7 @@ import CatItem from '../catItem/CatItem';
 const CatSlider = ({ catItems }) => {
   return (
     <div className="slider">
-      <Slider slidesToShow={3} dots={true}>
+      <Slider slidesToShow={4} dots={true}>
         {catItems.map((item) => (
           <CatItem img={item.mainImage} title={item.title} key={item.id} />
         ))}
