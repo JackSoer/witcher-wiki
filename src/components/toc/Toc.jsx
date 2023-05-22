@@ -48,7 +48,7 @@ const Toc = ({ content }) => {
         />
         <span className="toc__btn-text">Contents</span>
       </button>
-      <ul className={isOpen ? 'toc__list toc__list--active' : 'toc__list'}>
+      <ol className={isOpen ? 'toc__list toc__list--active' : 'toc__list'}>
         {headings.map((heading, index) => (
           <li key={heading.anchorId} className="toc__list-item">
             <a href={`#${heading.anchorId}`}>{`${index + 1}. ${
@@ -56,7 +56,7 @@ const Toc = ({ content }) => {
             }`}</a>
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   );
 };

@@ -1,0 +1,75 @@
+@import '../../../Scss/var';
+
+.cats {
+  width: 100%;
+  background-color: $lightGreen;
+  border: 2px solid $gold;
+  margin-top: 45px;
+  position: relative;
+  z-index: 500;
+
+  &__menu {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 100px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $gold;
+    }
+  }
+
+  &__btn {
+    color: $black;
+    font-weight: 500;
+    font-size: 23px;
+    margin-left: 20px;
+
+    &-img {
+      width: 30px !important;
+      transform: rotate(90deg);
+      transition: all 0.3s ease;
+
+      &--active {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    background-image: url('../../../public/assets/images/section-line.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    left: -25px;
+    right: -25px;
+    z-index: 500;
+    top: -40px;
+    height: 22px;
+  }
+
+  &-content {
+    background-color: $lightGreen;
+    border: 2px solid $gold;
+    border-top: none;
+    width: 100%;
+    transform: translateY(-100%);
+    transition: height, transform 0.3s ease;
+    height: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    &--active {
+      padding: 20px;
+      height: 100%;
+      transform: translateY(0);
+    }
+  }
+}

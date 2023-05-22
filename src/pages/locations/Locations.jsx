@@ -11,7 +11,11 @@ const Locations = () => {
   const { articles, isLoading, fetchError } =
     useFetchArticlesByCat('Locations');
   const [filteredArticles, setFilteredArticles] = useState([]);
-  const { faction } = useContext(FilterContext);
+  const { faction, setFaction } = useContext(FilterContext);
+
+  useEffect(() => {
+    setFaction('');
+  }, []);
 
   useEffect(() => {
     if (!faction) {

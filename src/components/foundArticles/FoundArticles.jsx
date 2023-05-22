@@ -13,9 +13,6 @@ const FoundArticles = ({ foundArticles }) => {
           key={foundArticle.id}
         />
       ))}
-      {!foundArticles.length && (
-        <FoundArticle title="This article isn't founded" />
-      )}
     </div>
   );
 };

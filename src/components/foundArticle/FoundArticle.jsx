@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './foundArticle.scss';
 import { Link } from 'react-router-dom';
+import SearchContext from '../../context/SearchContext';
 
 const FoundArticle = ({ title, img }) => {
+  const { setSearch } = useContext(SearchContext);
+
+  const handleClick = () => {
+    setSearch('');
+  };
+
   return (
     <div className="found-article">
-      <Link to={`/${title}`}>
+      <Link to={`/${title}`} onClick={handleClick}>
         <img
           src={img}
           alt="Something went wrong"

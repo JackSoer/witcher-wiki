@@ -1,16 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
+import SearchContext from '../../context/SearchContext';
 import './search.scss';
 import '../foundArticle/foundArticle.scss';
-import useFetchArticles from '../../hooks/useFetchArticles';
 import getArticlesByTitle from '../../utils/getArticlesByTitle';
 
 import FoundArticles from '../foundArticles/FoundArticles';
-import Error from '../error/Error';
+import ArticlesContext from '../../context/ArticlesContext';
 
 const Search = () => {
-  const { articles } = useFetchArticles();
-  const [search, setSearch] = useState('');
+  const { articles } = useContext(ArticlesContext);
+  const { search, setSearch } = useContext(SearchContext);
+
   const [foundArticles, setFoundArticles] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const searchRef = useRef();
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!searchRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
 
   useEffect(() => {
     const filteredArticles = getArticlesByTitle(articles, search);
@@ -18,12 +36,12 @@ const Search = () => {
     setFoundArticles(filteredArticles);
   }, [search]);
 
-  const getInputClases = () => {
-    if (foundArticles.length && search) {
+  const getInputClasses = () => {
+    if (foundArticles.length && search && isOpen) {
       return 'search-bar__input search-bar__input--found search-bar__input--search';
-    } else if (foundArticles.length) {
+    } else if (foundArticles.length && isOpen) {
       return 'search-bar__input search-bar__input--found';
-    } else if (search) {
+    } else if (search && isOpen) {
       return 'search-bar__input search-bar__input--search';
     } else {
       return 'search-bar__input';
@@ -31,7 +49,7 @@ const Search = () => {
   };
 
   return (
-    <div className="nav__search-bar search-bar">
+    <div className="nav__search-bar search-bar" ref={searchRef}>
       <button className="search-bar__search-btn">
         <img
           src="./assets/icons/search.svg"
@@ -41,11 +59,13 @@ const Search = () => {
       </button>
       <input
         type="text"
-        className={getInputClases()}
+        className={getInputClasses()}
         placeholder="Geralt"
         onChange={(e) => setSearch(e.target.value)}
+        onFocus={() => setIsOpen(true)}
+        value={search}
       />
-      {foundArticles.length > 0 && search && (
+      {foundArticles.length > 0 && search && isOpen && (
         <FoundArticles foundArticles={foundArticles} />
       )}
     </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { db } from '../config/firebase.js';
 import { getDocs, collection } from 'firebase/firestore';
 
-const useFetchArticlesByCat = () => {
+const useFetchArticles = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
@@ -34,4 +34,4 @@ const useFetchArticlesByCat = () => {
   return { articles, fetchError, isLoading };
 };
 
-export default useFetchArticlesByCat;
+export default useFetchArticles;

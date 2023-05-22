@@ -6,7 +6,12 @@ export const FilterContextProvider = ({ children }) => {
   const [faction, setFaction] = useState('');
 
   return (
-    <FilterContext.Provider value={{ faction, setFaction }}>
+    <FilterContext.Provider
+      value={{
+        faction,
+        setFaction,
+      }}
+    >
       {children}
     </FilterContext.Provider>
   );

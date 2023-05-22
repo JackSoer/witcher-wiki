@@ -1,0 +1,21 @@
+@import '../../../Scss/var';
+
+.cat {
+  display: none;
+
+  &--active {
+    display: inline-block;
+  }
+
+  a {
+    color: $white !important;
+    transition: all 0.3s ease;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+      color: $gold !important;
+      text-shadow: 0 0 10px $gold;
+    }
+  }
+}
