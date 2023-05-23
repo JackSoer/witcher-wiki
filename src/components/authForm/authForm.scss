@@ -1,0 +1,116 @@
+@import '../../../Scss/var';
+
+.auth-form {
+  width: 390px;
+  height: 492px;
+  background-color: $formBackground;
+  position: relative;
+
+  &__file {
+    display: none;
+  }
+
+  label {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  &__item {
+    padding: 0 30px 60px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    input {
+      box-shadow: inset 0 1px 3px rgb(0 0 0 / 10%);
+      background: #ededed;
+      color: #4c4c4c;
+      border: #b1b1b1 solid 1px;
+      width: 100%;
+      min-height: 42px;
+      padding: 10px;
+      font-size: 1em;
+      line-height: 20px;
+
+      &:focus {
+        border: $black solid 1px;
+      }
+    }
+  }
+
+  &__title {
+    padding: 25px 0;
+    font-size: 35px;
+    display: flex;
+    align-items: center;
+    color: #595959;
+  }
+
+  &__logo {
+    width: 55px;
+    height: 55px;
+    margin-right: 18px;
+  }
+
+  &__submit {
+    background: linear-gradient(#9fbf00, #80ab00);
+    background-color: #9fbf00;
+    border-color: #7ca600;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
+    color: $white;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    padding: 13px 10px;
+    width: 100%;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(#abce00, #95c700);
+      background-color: #b7db00;
+    }
+  }
+
+  a {
+    width: 100%;
+  }
+
+  &__extra-info {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 17px 0;
+    background-color: #d2d2d2;
+
+    p {
+      color: #4f4f4f;
+      font-size: 12px;
+
+      a {
+        color: #4f4f4f;
+        text-decoration: underline;
+        font-size: 12px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          text-decoration: none;
+          color: $black;
+        }
+      }
+    }
+  }
+}

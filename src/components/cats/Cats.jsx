@@ -30,7 +30,7 @@ const Cats = ({ cats }) => {
         }
       >
         {cats.map((cat) => (
-          <Cat title={cat.title} isOpen={isOpen} />
+          <Cat title={cat.title} isOpen={isOpen} key={cat.id} />
         ))}
       </div>
     </>

@@ -2,25 +2,25 @@ import { useEffect, useState } from 'react';
 import { db } from '../config/firebase.js';
 import { getDocs, collection } from 'firebase/firestore';
 
-const useFetchFactions = () => {
-  const [factions, setFactions] = useState([]);
+const useFetchDocsFromColl = (collectionName) => {
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
-  const factionsRef = collection(db, 'Fractions');
+  const collRef = collection(db, collectionName);
 
   useEffect(() => {
-    const getFactions = async () => {
+    const getData = async () => {
       try {
         setIsLoading(true);
 
-        const data = await getDocs(factionsRef);
-        const factions = data.docs.map((doc) => ({
+        const data = await getDocs(collRef);
+        const filteredData = data.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
         }));
 
-        setFactions(factions);
+        setData(filteredData);
         setFetchError(null);
       } catch (err) {
         setFetchError(err.message);
@@ -29,10 +29,10 @@ const useFetchFactions = () => {
       }
     };
 
-    getFactions();
+    getData();
   }, []);
 
-  return { factions, fetchError, isLoading };
+  return { data, fetchError, isLoading };
 };
 
-export default useFetchFactions;
+export default useFetchDocsFromColl;

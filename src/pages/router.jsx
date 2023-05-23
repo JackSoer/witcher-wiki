@@ -6,6 +6,8 @@ import Characters from './characters/Characters';
 import Locations from './locations/Locations';
 import Bestiary from './bestiary/Bestiary';
 import Article from './article/Article';
+import Login from './login/Login';
+import Register from './register/Register';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
         element: <Article />,
       },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
   },
 ]);
 

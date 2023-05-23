@@ -8,7 +8,7 @@ import FoundArticles from '../foundArticles/FoundArticles';
 import ArticlesContext from '../../context/ArticlesContext';
 
 const Search = () => {
-  const { articles } = useContext(ArticlesContext);
+  const { data } = useContext(ArticlesContext);
   const { search, setSearch } = useContext(SearchContext);
 
   const [foundArticles, setFoundArticles] = useState([]);
@@ -31,7 +31,7 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
-    const filteredArticles = getArticlesByTitle(articles, search);
+    const filteredArticles = getArticlesByTitle(data, search);
 
     setFoundArticles(filteredArticles);
   }, [search]);

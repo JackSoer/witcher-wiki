@@ -16,8 +16,12 @@ const Header = () => {
       </Link>
       <Nav />
       <div className="header__acc-btns acc-btns">
-        <button className="acc-btns__sign-in">Sign In</button>
-        <button className="acc-btns__sign-up">Sign Up</button>
+        <Link to="/login">
+          <button className="acc-btns__sign-in">Sign In</button>
+        </Link>
+        <Link to="/register">
+          <button className="acc-btns__sign-up">Sign Up</button>
+        </Link>
       </div>
     </header>
   );

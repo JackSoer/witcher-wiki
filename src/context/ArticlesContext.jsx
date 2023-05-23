@@ -1,15 +1,16 @@
 import React, { createContext } from 'react';
-import useFetchArticles from '../hooks/useFetchArticles';
+// import useFetchArticles from '../hooks/useFetchArticles';
+import useFetchDocsFromColl from '../hooks/useFetchDocsFromColl';
 
 const ArticlesContext = createContext();
 
 export const ArticlesContextProvider = ({ children }) => {
-  const { articles, isLoading, fetchError } = useFetchArticles();
+  const { data, isLoading, fetchError } = useFetchDocsFromColl('Articles');
 
   return (
     <ArticlesContext.Provider
       value={{
-        articles,
+        data,
         isLoading,
         fetchError,
       }}
