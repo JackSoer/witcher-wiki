@@ -1,0 +1,16 @@
+.add-file {
+  align-self: flex-start;
+
+  &__add-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  label {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,16 @@
+@import '../../../Scss/var';
+
+.form {
+  width: 390px;
+  height: 492px;
+  background-color: $formBackground;
+  position: relative;
+
+  &__item {
+    padding: 0 30px 60px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+}

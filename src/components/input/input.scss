@@ -1,0 +1,17 @@
+@import '../../../Scss/var';
+
+input {
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 10%);
+  background: #ededed;
+  color: #4c4c4c;
+  border: #b1b1b1 solid 1px;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px;
+  font-size: 1em;
+  line-height: 20px;
+
+  &:focus {
+    border: $black solid 1px;
+  }
+}
