@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './register.scss';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -6,6 +6,8 @@ import { auth } from '../../config/firebase';
 import AuthContext from '../../context/AuthContext';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
+import useUploadFile from '../../hooks/useUploadFile';
+import registerInputs from '../../data/formSources/register';
 
 import Form from '../../components/form/Form';
 import Input from '../../components/input/Input';
@@ -15,10 +17,20 @@ import Error from '../../components/error/Error';
 const Register = () => {
   const [error, setError] = useState('');
   const [data, setData] = useState({});
+  const [file, setFile] = useState('');
 
   const navigate = useNavigate();
 
   const { dispatch } = useContext(AuthContext);
+
+  const { uploadError, downloadUrl, isLoading } = useUploadFile(
+    file,
+    'images/avatars/'
+  );
+
+  useEffect(() => {
+    setData((prev) => ({ ...prev, img: downloadUrl }));
+  }, [downloadUrl]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -30,11 +42,13 @@ const Register = () => {
         data.password
       );
       const user = userCredential.user;
-      await setDoc(doc(db, 'Users', user.uid), {
+      const userData = {
         ...data,
         timeStamp: serverTimestamp(),
-      });
-      dispatch({ type: 'LOGIN', payload: user });
+      };
+
+      await setDoc(doc(db, 'Users', user.uid), userData);
+      dispatch({ type: 'LOGIN', payload: userData });
 
       navigate('/');
     } catch (err) {
@@ -74,29 +88,35 @@ const Register = () => {
           />
           SIGN UP
         </h1>
-        <Input
-          required
-          id="username"
-          type="text"
-          placeholder="Username"
-          onChange={handleInput}
-        />
-        <Input
-          required
-          id="email"
-          type="email"
-          placeholder="Email"
-          onChange={handleInput}
-        />
-        <Input
-          required
-          id="password"
-          type="password"
-          placeholder="Password"
-          onChange={handleInput}
-        />
-        {/* <AddFile title="Add an avatar" handleInput={handleInput} /> */}
-        <button className="auth-form__submit" type="submit">
+        {registerInputs.map((registerInput) => (
+          <Input
+            required={registerInput.required}
+            id={registerInput.id}
+            key={registerInput.id}
+            type={registerInput.type}
+            placeholder={registerInput.placeholder}
+            onChange={handleInput}
+          />
+        ))}
+        <AddFile
+          title="Add an avatar"
+          file={file}
+          isLoading={isLoading}
+          uploadError={uploadError}
+        >
+          <Input
+            type="file"
+            id="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        </AddFile>
+        <button
+          className="auth-form__submit"
+          type="submit"
+          disabled={isLoading}
+        >
           SIGN UP NOW
         </button>
         {error && <Error errorText={handleError(error)} />}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './articleContent.scss';
-import getCatById from '../../utils/getCatById';
+import getDocById from '../../utils/getDocById';
 
 import Toc from '../toc/Toc';
 import Cats from '../cats/Cats';
@@ -17,7 +17,7 @@ const ArticleContent = ({ article }) => {
     const fetchCats = async () => {
       const articleCats = await Promise.all(
         article.cats.map((catId) => {
-          return getCatById(catId);
+          return getDocById('Categories', catId);
         })
       );
 

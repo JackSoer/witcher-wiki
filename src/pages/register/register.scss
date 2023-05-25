@@ -35,6 +35,12 @@
     margin-top: 10px;
     transition: all 0.3s ease;
 
+    &:disabled {
+      background: linear-gradient(#acce0060, #95c7005b);
+      background-color: #b7db0041;
+      cursor: none;
+    }
+
     &:hover {
       background: linear-gradient(#abce00, #95c700);
       background-color: #b7db00;

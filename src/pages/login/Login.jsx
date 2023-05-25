@@ -4,6 +4,7 @@ import './login.scss';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import AuthContext from '../../context/AuthContext';
+import getDocById from '../../utils/getDocById';
 
 import Form from '../../components/form/Form';
 import Input from '../../components/input/Input';
@@ -27,7 +28,8 @@ const Login = () => {
         email,
         password
       );
-      const user = userCredential.user;
+      const userId = userCredential.user.uid;
+      const user = await getDocById('Users', userId);
       dispatch({ type: 'LOGIN', payload: user });
 
       navigate('/');

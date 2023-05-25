@@ -1,25 +1,24 @@
 import React from 'react';
 import './addFile.scss';
 
-import Input from '../input/Input';
+import Error from '../error/Error';
 
-const AddFile = ({ title, handleInput }) => {
+const AddFile = (props) => {
+  const { title, children, file, isLoading, uploadError } = props;
   return (
     <div className="add-file">
-      <Input
-        type="file"
-        id="file"
-        accept="image/*"
-        style={{ display: 'none' }}
-        onChange={handleInput}
-      />
+      {children}
       <label htmlFor="file">
         <img
           src="./assets/icons/plus.png"
           alt="Something went wrong"
           className="add-file__add-icon"
         />
-        <span>{title}</span>
+        {!uploadError ? (
+          <span>{file && !isLoading ? file.name : title}</span>
+        ) : (
+          <Error errorText={uploadError} />
+        )}
       </label>
     </div>
   );

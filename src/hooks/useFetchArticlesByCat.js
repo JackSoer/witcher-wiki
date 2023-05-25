@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import getArticleById from '../utils/getArticleById';
 import { db } from '../config/firebase.js';
 import { getDocs, collection } from 'firebase/firestore';
+import getDocById from '../utils/getDocById';
 
 const useFetchArticlesByCat = (cat) => {
   const [articles, setArticles] = useState([]);
@@ -33,7 +33,7 @@ const useFetchArticlesByCat = (cat) => {
         }));
         const catArticles = await Promise.all(
           articlesRefs.map((articlesRef) =>
-            getArticleById(articlesRef.articleRef)
+            getDocById('Articles', articlesRef.articleRef)
           )
         );
 
