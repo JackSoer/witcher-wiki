@@ -34,7 +34,7 @@ const Search = () => {
     const filteredArticles = getArticlesByTitle(data, search);
 
     setFoundArticles(filteredArticles);
-  }, [search]);
+  }, [data, search]);
 
   const getInputClasses = () => {
     if (foundArticles.length && search && isOpen) {

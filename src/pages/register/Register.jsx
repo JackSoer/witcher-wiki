@@ -4,7 +4,7 @@ import './register.scss';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import AuthContext from '../../context/AuthContext';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, FieldValue, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import useUploadFile from '../../hooks/useUploadFile';
 import registerInputs from '../../data/formSources/register';
@@ -16,7 +16,11 @@ import Error from '../../components/error/Error';
 
 const Register = () => {
   const [error, setError] = useState('');
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    password: '',
+    username: '',
+    email: '',
+  });
   const [file, setFile] = useState('');
 
   const navigate = useNavigate();
@@ -71,8 +75,12 @@ const Register = () => {
   };
 
   const handleInput = (e) => {
-    const id = e.target.id;
     const value = e.target.value;
+    const id = e.target.id;
+
+    if (id === 'username' && value.length > 20) {
+      return;
+    }
 
     setData({ ...data, [id]: value });
   };
@@ -96,6 +104,7 @@ const Register = () => {
             type={registerInput.type}
             placeholder={registerInput.placeholder}
             onChange={handleInput}
+            value={data[registerInput.id]}
           />
         ))}
         <AddFile
