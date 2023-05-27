@@ -8,6 +8,7 @@ import { doc, FieldValue, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import useUploadFile from '../../hooks/useUploadFile';
 import registerInputs from '../../data/formSources/register';
+import handleInput from '../../utils/handleInput';
 
 import Form from '../../components/form/Form';
 import Input from '../../components/input/Input';
@@ -74,17 +75,6 @@ const Register = () => {
     return errorMsg;
   };
 
-  const handleInput = (e) => {
-    const value = e.target.value;
-    const id = e.target.id;
-
-    if (id === 'username' && value.length > 20) {
-      return;
-    }
-
-    setData({ ...data, [id]: value });
-  };
-
   return (
     <div className="register">
       <Form handleSubmit={handleRegister}>
@@ -103,7 +93,7 @@ const Register = () => {
             key={registerInput.id}
             type={registerInput.type}
             placeholder={registerInput.placeholder}
-            onChange={handleInput}
+            onChange={(e) => handleInput(e, setData)}
             value={data[registerInput.id]}
           />
         ))}

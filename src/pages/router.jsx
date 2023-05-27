@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from './Layout';
+import Main from './layouts/Main';
 
 import Home from './home/Home';
 import Characters from './characters/Characters';
@@ -8,11 +8,12 @@ import Bestiary from './bestiary/Bestiary';
 import Article from './article/Article';
 import Login from './login/Login';
 import Register from './register/Register';
+import AddArticle from './addArticle/AddArticle';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <Main />,
     children: [
       {
         path: '/',
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: '/:id',
         element: <Article />,
+      },
+      {
+        path: '/add-article',
+        element: <AddArticle />,
       },
     ],
   },

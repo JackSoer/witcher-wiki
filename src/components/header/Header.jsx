@@ -55,6 +55,9 @@ const Header = () => {
               <li className="user__menu-list-item">
                 <Link to="/">My Articles</Link>
               </li>
+               <li className="user__menu-list-item">
+                <Link to="/add-article">Add Article</Link>
+              </li>
               <li className="user__menu-list-item">
                 <button className="user__logout" onClick={handleLogout}>
                   Logout
