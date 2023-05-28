@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './toc.scss';
 
 const Toc = ({ content }) => {
+  console.log(content);
   const [headings, setHeadings] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
 
@@ -9,25 +10,30 @@ const Toc = ({ content }) => {
     const headingElements = Array.from(
       document.querySelectorAll('h2, h3, h4, h5, h6')
     );
-    const regex = /#{1,6}\s(.+)/gm;
-    const matches = content.match(regex);
 
-    if (matches) {
-      const parsedHeadings = matches.map((match, index) => {
-        const level = match.indexOf(' ');
-        const title = match.substring(level + 1);
-        const anchorId = `heading-${index}`;
-        headingElements[index].setAttribute('id', anchorId);
+    const regex = /^(#{1,6})\s(.+)|^(.+)\n([=-]+)$/gm;
+    const matches = content.matchAll(regex);
 
-        return {
-          level,
-          title,
-          anchorId,
-        };
+    const parsedHeadings = [];
+
+    for (const match of matches) {
+      const level = match[1]
+        ? match[1].length
+        : match[4].startsWith('=')
+        ? 1
+        : 2;
+      const title = match[2] || match[3].trim();
+      const anchorId = `heading-${parsedHeadings.length}`;
+      headingElements[parsedHeadings.length].setAttribute('id', anchorId);
+
+      parsedHeadings.push({
+        level: level,
+        title: title,
+        anchorId: anchorId,
       });
-
-      setHeadings(parsedHeadings);
     }
+
+    setHeadings(parsedHeadings);
   };
 
   const handleClick = () => {

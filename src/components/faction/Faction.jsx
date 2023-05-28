@@ -24,6 +24,7 @@ const Faction = ({ factionTitle }) => {
             : 'faction__btn'
         }
         onClick={handleChangeFaction}
+        type="button"
       >
         <img
           src={

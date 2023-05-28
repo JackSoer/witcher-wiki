@@ -1,16 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './addArticle.scss';
 import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 import handleOptions from '../../utils/handleOptions';
 import handleInput from '../../utils/handleInput';
 import FilterContext from '../../context/FilterContext';
+import { setDoc, doc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+import ArticlesContext from '../../context/ArticlesContext';
 
 import Input from '../../components/input/Input';
 import FactionsFilter from '../../components/factionsFilter/FactionsFilter';
+import Error from '../../components/error/Error';
 
 const AddArticle = () => {
   const { isLoading, fetchError, data } = useFetchDocsFromColl('Categories');
-  const { setFaction } = useContext(FilterContext);
+  const articlesData = useFetchDocsFromColl('Articles');
+  const { faction, setFaction } = useContext(FilterContext);
+  const { setArticles } = useContext(ArticlesContext);
+  const navigate = useNavigate();
 
   const [article, setArticle] = useState({
     title: '',
@@ -19,28 +27,67 @@ const AddArticle = () => {
     cats: [],
   });
   const [factionEnable, setFactionEnable] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    let isFactionEnable = false;
-    const characterCat = '73Yemo45eAM4ZwQfJ4V7';
-    const locationCat = 'P4od8t84gJQwhF9RyPzk';
+    const checkIsFactionEnable = () => {
+      let isFactionEnable;
+      const characterCat = '73Yemo45eAM4ZwQfJ4V7';
+      const locationCat = 'P4od8t84gJQwhF9RyPzk';
 
-    article.cats.forEach((cat, index) => {
-      if (cat === characterCat || cat === locationCat) {
-        isFactionEnable = true;
-        return;
+      article.cats.forEach((cat) => {
+        if (cat === characterCat || cat === locationCat) {
+          isFactionEnable = true;
+
+          return;
+        }
+      });
+
+      if (isFactionEnable) {
+        return isFactionEnable;
       }
-    });
 
-    setFactionEnable(isFactionEnable);
+      setFaction('');
+      isFactionEnable = false;
+
+      return isFactionEnable;
+    };
+
+    setFactionEnable(checkIsFactionEnable());
   }, [article.cats]);
 
   useEffect(() => {
-    setFaction('');
-  }, []);
+    setArticle((prev) => ({ ...prev, faction }));
+  }, [faction]);
 
-  const handleAdd = (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
+
+    const isExistingArticle = articlesData.data.find(
+      (articleData) =>
+        articleData.title.toLowerCase() === article.title.toLowerCase()
+    );
+
+    if (isExistingArticle) {
+      setError('An article with this title already exists');
+      return;
+    }
+
+    try {
+      await setDoc(doc(db, 'Articles', article.title), article);
+
+      article.cats.forEach(async (cat) => {
+        await setDoc(doc(db, 'Categories', cat, 'Articles', article.title), {
+          articleRef: article.title,
+        });
+      });
+
+      setArticles([{ ...article, id: article.title }, ...articlesData.data]);
+      setError('');
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -52,6 +99,7 @@ const AddArticle = () => {
           onChange={(e) => handleInput(e, setArticle)}
           placeholder="title"
           type="text"
+          required
         />
         <Input
           id="mainImage"
@@ -59,6 +107,7 @@ const AddArticle = () => {
           onChange={(e) => handleInput(e, setArticle)}
           placeholder="Main Image URL"
           type="text"
+          required
         />
         {!isLoading && !fetchError && (
           <select
@@ -67,12 +116,13 @@ const AddArticle = () => {
             multiple
             id="cats"
             onChange={(e) => handleOptions(e, setArticle)}
+            required
           >
             {data.map((cat) => (
               <option
                 key={cat.id}
-                className="add-article__cats-item"
                 id={cat.id}
+                className="add-article__cats-item"
               >
                 {cat.title}
               </option>
@@ -86,8 +136,10 @@ const AddArticle = () => {
           className="add-article__content"
           onChange={(e) => handleInput(e, setArticle)}
           placeholder="Content"
+          required
         ></textarea>
         <button type="submit">Send</button>
+        {error && <Error errorText={error} />}
       </form>
     </div>
   );

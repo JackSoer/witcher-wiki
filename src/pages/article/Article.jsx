@@ -10,14 +10,14 @@ import Error from '../../components/error/Error';
 
 const Article = () => {
   const { id } = useParams();
-  const { data, isLoading, fetchError } = useContext(ArticlesContext);
+  const { articles, isLoading, fetchError } = useContext(ArticlesContext);
   const [article, setArticle] = useState({});
 
   useEffect(() => {
-    const filteredArticle = getArticlesByTitle(data, id)[0];
+    const filteredArticle = getArticlesByTitle(articles, id)[0];
 
     setArticle(filteredArticle);
-  }, [data, id]);
+  }, [articles, id]);
 
   return (
     <div className="article">

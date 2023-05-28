@@ -8,6 +8,7 @@ import { auth } from '../../config/firebase';
 
 const Header = () => {
   const { currentUser, dispatch } = useContext(AuthContext);
+  console.log(currentUser);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -55,9 +56,11 @@ const Header = () => {
               <li className="user__menu-list-item">
                 <Link to="/">My Articles</Link>
               </li>
-               <li className="user__menu-list-item">
-                <Link to="/add-article">Add Article</Link>
-              </li>
+              {currentUser.isAdmin && (
+                <li className="user__menu-list-item">
+                  <Link to="/add-article">Add Article</Link>
+                </li>
+              )}
               <li className="user__menu-list-item">
                 <button className="user__logout" onClick={handleLogout}>
                   Logout

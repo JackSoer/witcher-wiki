@@ -8,7 +8,7 @@ import FoundArticles from '../foundArticles/FoundArticles';
 import ArticlesContext from '../../context/ArticlesContext';
 
 const Search = () => {
-  const { data } = useContext(ArticlesContext);
+  const { articles } = useContext(ArticlesContext);
   const { search, setSearch } = useContext(SearchContext);
 
   const [foundArticles, setFoundArticles] = useState([]);
@@ -31,10 +31,10 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
-    const filteredArticles = getArticlesByTitle(data, search);
+    const filteredArticles = getArticlesByTitle(articles, search);
 
     setFoundArticles(filteredArticles);
-  }, [data, search]);
+  }, [articles, search]);
 
   const getInputClasses = () => {
     if (foundArticles.length && search && isOpen) {
