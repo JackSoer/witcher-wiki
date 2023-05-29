@@ -1,0 +1,21 @@
+@import '../../../Scss/var';
+
+.select-item {
+  color: $gold;
+  border: $gold solid 2px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gold;
+    color: $white;
+  }
+
+  &--active {
+    background-color: $gold;
+    color: $black;
+  }
+}

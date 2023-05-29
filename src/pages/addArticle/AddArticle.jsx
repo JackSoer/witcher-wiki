@@ -12,12 +12,15 @@ import ArticlesContext from '../../context/ArticlesContext';
 import Input from '../../components/input/Input';
 import FactionsFilter from '../../components/factionsFilter/FactionsFilter';
 import Error from '../../components/error/Error';
+import MultSelect from '../../components/multSelect/multSelect';
 
 const AddArticle = () => {
   const { isLoading, fetchError, data } = useFetchDocsFromColl('Categories');
   const articlesData = useFetchDocsFromColl('Articles');
+
   const { faction, setFaction } = useContext(FilterContext);
   const { setArticles } = useContext(ArticlesContext);
+
   const navigate = useNavigate();
 
   const [article, setArticle] = useState({
@@ -71,6 +74,12 @@ const AddArticle = () => {
     if (isExistingArticle) {
       setError('An article with this title already exists');
       return;
+    } else if (factionEnable && !article.faction) {
+      setError('Choose a faction');
+      return;
+    } else if (article.cats.length < 1) {
+      setError('Choose a category');
+      return;
     }
 
     try {
@@ -92,55 +101,54 @@ const AddArticle = () => {
 
   return (
     <div className="add-article">
-      <form className="add-article__form" onSubmit={handleAdd}>
-        <Input
-          id="title"
-          value={data.title}
-          onChange={(e) => handleInput(e, setArticle)}
-          placeholder="title"
-          type="text"
-          required
-        />
-        <Input
-          id="mainImage"
-          value={data.mainImage}
-          onChange={(e) => handleInput(e, setArticle)}
-          placeholder="Main Image URL"
-          type="text"
-          required
-        />
-        {!isLoading && !fetchError && (
-          <select
-            name="cats"
-            className="add-article__cats"
-            multiple
-            id="cats"
-            onChange={(e) => handleOptions(e, setArticle)}
+      <div className="container">
+        <h1 className="add-article__title">Add article</h1>
+        <form className="add-article__form" onSubmit={handleAdd}>
+          <Input
+            id="title"
+            value={data.title}
+            onChange={(e) => handleInput(e, setArticle)}
+            placeholder="Title"
+            type="text"
             required
-          >
-            {data.map((cat) => (
-              <option
-                key={cat.id}
-                id={cat.id}
-                className="add-article__cats-item"
-              >
-                {cat.title}
-              </option>
-            ))}
-          </select>
-        )}
-        {factionEnable && <FactionsFilter />}
-        <textarea
-          name="content"
-          id="content"
-          className="add-article__content"
-          onChange={(e) => handleInput(e, setArticle)}
-          placeholder="Content"
-          required
-        ></textarea>
-        <button type="submit">Send</button>
-        {error && <Error errorText={error} />}
-      </form>
+          />
+          <Input
+            id="mainImage"
+            value={data.mainImage}
+            onChange={(e) => handleInput(e, setArticle)}
+            placeholder="Main Image URL"
+            type="text"
+            required
+          />
+          <label htmlFor="cats" className="add-article__label">
+            Categories (choose one or more):
+          </label>
+          {!isLoading && !fetchError && (
+            <MultSelect items={data} setFunc={setArticle} id="cats" />
+          )}
+          {factionEnable && (
+            <div className="add-article__factions">
+              <p className="add-article__factions-title">Factions: </p>
+              <FactionsFilter />
+            </div>
+          )}
+          <textarea
+            name="content"
+            id="content"
+            className="add-article__content"
+            onChange={(e) => handleInput(e, setArticle)}
+            placeholder="Content"
+            required
+          ></textarea>
+          <p className="add-article__content-tip">
+            Only markdown, HTML will be ignored
+          </p>
+          {error && <Error errorText={error} />}
+          <button type="submit" className="add-article__btn">
+            Send
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

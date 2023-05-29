@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './header.scss';
 import { signOut } from 'firebase/auth';
 import Nav from '../nav/Nav';
@@ -8,11 +8,14 @@ import { auth } from '../../config/firebase';
 
 const Header = () => {
   const { currentUser, dispatch } = useContext(AuthContext);
-  console.log(currentUser);
+
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await signOut(auth);
     dispatch({ type: 'LOGOUT' });
+
+    navigate('/');
   };
 
   return (
@@ -53,13 +56,15 @@ const Header = () => {
           </div>
           <div className="user__menu">
             <ul className="user__menu-list">
-              <li className="user__menu-list-item">
-                <Link to="/">My Articles</Link>
-              </li>
               {currentUser.isAdmin && (
-                <li className="user__menu-list-item">
-                  <Link to="/add-article">Add Article</Link>
-                </li>
+                <>
+                  <li className="user__menu-list-item">
+                    <Link to="/">My Articles</Link>
+                  </li>
+                  <li className="user__menu-list-item">
+                    <Link to="/add-article">Add Article</Link>
+                  </li>
+                </>
               )}
               <li className="user__menu-list-item">
                 <button className="user__logout" onClick={handleLogout}>

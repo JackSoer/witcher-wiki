@@ -11,7 +11,7 @@ const Toc = ({ content }) => {
       document.querySelectorAll('h2, h3, h4, h5, h6')
     );
 
-    const regex = /^(#{1,6})\s(.+)|^(.+)\n([=-]+)$/gm;
+    const regex = /(#{1,6})\s(.+)|^(.+)\n([=-]+)$/gm;
     const matches = content.matchAll(regex);
 
     const parsedHeadings = [];
