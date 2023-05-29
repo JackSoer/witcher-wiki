@@ -12,7 +12,7 @@ import ArticlesContext from '../../context/ArticlesContext';
 import Input from '../../components/input/Input';
 import FactionsFilter from '../../components/factionsFilter/FactionsFilter';
 import Error from '../../components/error/Error';
-import MultSelect from '../../components/multSelect/multSelect';
+import MultSelect from '../../components/multSelect/MultSelect';
 
 const AddArticle = () => {
   const { isLoading, fetchError, data } = useFetchDocsFromColl('Categories');
