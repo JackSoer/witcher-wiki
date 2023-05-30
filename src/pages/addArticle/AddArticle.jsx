@@ -2,11 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './addArticle.scss';
 import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
-import handleOptions from '../../utils/handleOptions';
 import handleInput from '../../utils/handleInput';
 import FilterContext from '../../context/FilterContext';
 import { setDoc, doc } from 'firebase/firestore';
-import { db } from '../../config/firebase';
+import { db, auth } from '../../config/firebase';
 import ArticlesContext from '../../context/ArticlesContext';
 
 import Input from '../../components/input/Input';
@@ -28,6 +27,8 @@ const AddArticle = () => {
     mainImage: '',
     content: '',
     cats: [],
+    faction: '',
+    contributors: [auth.currentUser.uid],
   });
   const [factionEnable, setFactionEnable] = useState(false);
   const [error, setError] = useState('');

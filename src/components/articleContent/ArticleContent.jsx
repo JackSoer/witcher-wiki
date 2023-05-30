@@ -4,10 +4,13 @@ import './articleContent.scss';
 import getDocById from '../../utils/getDocById';
 
 import Toc from '../toc/Toc';
-import Cats from '../cats/Cats';
+import Cat from '../cat/Cat';
+import Dropdown from '../dropdown/Dropdown';
+import Contributor from '../Contributor/Contributor';
 
 const ArticleContent = ({ article }) => {
   const [cats, setCats] = useState([]);
+  const [contributors, setContributors] = useState([]);
 
   function addLineBreaks(text) {
     return text.replace(/ {2}/g, '\n');
@@ -24,8 +27,19 @@ const ArticleContent = ({ article }) => {
       setCats(articleCats);
     };
 
+    const fetchContributors = async () => {
+      const articleContributors = await Promise.all(
+        article.contributors.map((contributorsId) => {
+          return getDocById('Users', contributorsId);
+        })
+      );
+
+      setContributors(articleContributors);
+    };
+
     fetchCats();
-  }, []);
+    fetchContributors();
+  }, [article]);
 
   return (
     <div className="article-content">
@@ -44,7 +58,20 @@ const ArticleContent = ({ article }) => {
         <ReactMarkdown skipHtml={true}>
           {addLineBreaks(article.content)}
         </ReactMarkdown>
-        <Cats cats={cats} />
+        <Dropdown title="Categories">
+          {cats.map((cat) => (
+            <Cat title={cat.title} key={cat.id} />
+          ))}
+        </Dropdown>
+        <Dropdown title="Contributors">
+          {contributors.map((contributor) => (
+            <Contributor
+              img={contributor.img}
+              username={contributor.username}
+              key={contributor.id}
+            />
+          ))}
+        </Dropdown>
       </div>
     </div>
   );

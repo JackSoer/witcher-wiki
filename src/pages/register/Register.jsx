@@ -4,11 +4,12 @@ import './register.scss';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import AuthContext from '../../context/AuthContext';
-import { doc, FieldValue, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import useUploadFile from '../../hooks/useUploadFile';
 import registerInputs from '../../data/formSources/register';
 import handleInput from '../../utils/handleInput';
+import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 
 import Form from '../../components/form/Form';
 import Input from '../../components/input/Input';
@@ -16,6 +17,8 @@ import AddFile from '../../components/addFile/AddFile';
 import Error from '../../components/error/Error';
 
 const Register = () => {
+  const { data: users } = useFetchDocsFromColl('Users');
+
   const [error, setError] = useState('');
   const [data, setData] = useState({
     password: '',
@@ -39,6 +42,15 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    const isExistingUsername = users.find(
+      (user) => user.username === data.username
+    );
+
+    if (isExistingUsername) {
+      setError('A user with this username already exists');
+      return;
+    }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -67,7 +79,9 @@ const Register = () => {
     if (error.includes('auth/weak-password')) {
       errorMsg = 'Password should be at least 6 characters';
     } else if (error.includes('auth/email-already-in-use')) {
-      errorMsg = 'An account with this email already exist';
+      errorMsg = 'An account with this email already exists';
+    } else if (error.includes('auth/invalid-email')) {
+      errorMsg = 'Incorrect email';
     } else {
       errorMsg = error;
     }
@@ -111,6 +125,7 @@ const Register = () => {
             onChange={(e) => setFile(e.target.files[0])}
           />
         </AddFile>
+        {error && <Error errorText={handleError(error)} />}
         <button
           className="auth-form__submit"
           type="submit"
@@ -118,7 +133,7 @@ const Register = () => {
         >
           SIGN UP NOW
         </button>
-        {error && <Error errorText={handleError(error)} />}
+
         <footer className="auth-form__extra-info">
           <p>
             You already have an account? <Link to="/login">Sign in now</Link>

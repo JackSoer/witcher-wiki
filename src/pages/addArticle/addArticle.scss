@@ -35,7 +35,7 @@
     background: #ededed;
     color: #4c4c4c;
     border: #b1b1b1 solid 1px;
-    min-height: 500px;
+    min-height: 300px;
     padding: 10px;
     font-size: 1em;
     line-height: 20px;
@@ -95,6 +95,7 @@
     font-weight: 700;
     color: $gold;
     transition: all 0.3s ease;
+    width: 200px;
 
     &:hover {
       color: $black;

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './toc.scss';
 
 const Toc = ({ content }) => {
-  console.log(content);
   const [headings, setHeadings] = useState([]);
   const [isOpen, setIsOpen] = useState(true);
 

@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 import './cat.scss';
 
-const Cat = ({ title, isOpen }) => {
+const Cat = ({ title }) => {
   return (
-    <div className={isOpen ? 'cat cat--active' : 'cat'}>
+    <div className="cat">
       <Link to={`/${title}`}>{title}</Link>
     </div>
   );
