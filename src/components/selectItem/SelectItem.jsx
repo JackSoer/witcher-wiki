@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react';
 import './selectItem.scss';
 
 const SelectItem = (props) => {
-  const { setFunc, title, name, value } = props;
+  const { setFunc, title, name, value, defValues } = props;
   const [active, setActive] = useState(false);
-  console.log(active);
 
   const handleClick = () => {
     setActive((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (defValues?.includes(title)) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  }, [defValues]);
 
   useEffect(() => {
     if (active) {

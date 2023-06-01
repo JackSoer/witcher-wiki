@@ -6,6 +6,10 @@ const handleInput = (e, setFunc) => {
     return;
   }
 
+  if (id === 'title' && value.length > 20) {
+    return;
+  }
+
   setFunc((prev) => ({ ...prev, [id]: value }));
 };
 

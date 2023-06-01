@@ -24,6 +24,7 @@ const Register = () => {
     password: '',
     username: '',
     email: '',
+    articles: [],
   });
   const [file, setFile] = useState('');
 
@@ -94,7 +95,7 @@ const Register = () => {
       <Form handleSubmit={handleRegister}>
         <h1 className="auth-form__title">
           <img
-            src="./assets/icons/witcher-medalion.png"
+            src="../public/assets/icons/witcher-medalion.png"
             alt="Something went wrong"
             className="auth-form__logo"
           />

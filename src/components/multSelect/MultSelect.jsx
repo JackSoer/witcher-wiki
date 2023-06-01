@@ -3,7 +3,9 @@ import './multSelect.scss';
 
 import SelectItem from '../selectItem/SelectItem';
 
-const MultSelect = ({ items, id, setFunc }) => {
+const MultSelect = (props) => {
+  const { items, id, setFunc, defValues } = props;
+
   return (
     <div className="multi-select">
       {items.map((item) => (
@@ -13,6 +15,7 @@ const MultSelect = ({ items, id, setFunc }) => {
           name={id}
           title={item.title}
           setFunc={setFunc}
+          defValues={defValues}
         />
       ))}
     </div>

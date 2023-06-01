@@ -1,0 +1,33 @@
+@import '../../../Scss/var';
+
+.my-articles {
+  flex: 1;
+  width: 100%;
+  padding: 40px 0;
+  position: relative;
+  background-color: $darkGray;
+
+  &:before {
+    content: '';
+    display: block;
+    background-image: url(/public/assets/images/section-line.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    top: -12px;
+    height: 22px;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 50px;
+    color: $gold;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px $gold;
+  }
+}

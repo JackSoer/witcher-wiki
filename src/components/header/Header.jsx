@@ -22,7 +22,7 @@ const Header = () => {
     <header className="header">
       <Link to="/">
         <img
-          src="./assets/icons/witcher-medalion.png"
+          src="../public/assets/icons/witcher-medalion.png"
           alt="Something went wrong"
           className="header__logo"
         />
@@ -42,12 +42,15 @@ const Header = () => {
           <div className="user__info">
             <div className="user__avatar">
               <img
-                src={currentUser.img || './assets/images/default-avatar.webp'}
+                src={
+                  currentUser.img ||
+                  '../public/assets/images/default-avatar.webp'
+                }
                 alt="Error..."
                 className="user__avatar-item"
               />
               <img
-                src="./assets/icons/avatar-border.png"
+                src="../public/assets/icons/avatar-border.png"
                 alt="Error..."
                 className="user__avatar-border"
               />
@@ -59,7 +62,7 @@ const Header = () => {
               {currentUser.isAdmin && (
                 <>
                   <li className="user__menu-list-item">
-                    <Link to="/">My Articles</Link>
+                    <Link to="/my-articles">My Articles</Link>
                   </li>
                   <li className="user__menu-list-item">
                     <Link to="/add-article">Add Article</Link>

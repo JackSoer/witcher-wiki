@@ -9,6 +9,8 @@ import Article from './article/Article';
 import Login from './login/Login';
 import Register from './register/Register';
 import AddArticle from './addArticle/AddArticle';
+import MyArticles from './myArticles/MyArticles';
+import EditArticle from './edit-article/EditArticle';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
       {
         path: '/add-article',
         element: <AddArticle />,
+      },
+      {
+        path: '/my-articles',
+        element: <MyArticles />,
+      },
+      {
+        path: '/edit-article/:id',
+        element: <EditArticle />,
       },
     ],
   },

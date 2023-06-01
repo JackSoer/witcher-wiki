@@ -5,8 +5,9 @@ import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 import handleInput from '../../utils/handleInput';
 import FilterContext from '../../context/FilterContext';
 import { setDoc, doc } from 'firebase/firestore';
-import { db, auth } from '../../config/firebase';
+import { db } from '../../config/firebase';
 import ArticlesContext from '../../context/ArticlesContext';
+import AuthContext from '../../context/AuthContext';
 
 import Input from '../../components/input/Input';
 import FactionsFilter from '../../components/factionsFilter/FactionsFilter';
@@ -19,6 +20,7 @@ const AddArticle = () => {
 
   const { faction, setFaction } = useContext(FilterContext);
   const { setArticles } = useContext(ArticlesContext);
+  const { currentUser, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -28,7 +30,7 @@ const AddArticle = () => {
     content: '',
     cats: [],
     faction: '',
-    contributors: [auth.currentUser.uid],
+    contributors: [currentUser.id],
   });
   const [factionEnable, setFactionEnable] = useState(false);
   const [error, setError] = useState('');
@@ -85,7 +87,17 @@ const AddArticle = () => {
 
     try {
       await setDoc(doc(db, 'Articles', article.title), article);
-
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          ...currentUser,
+          articles: [article.title, ...currentUser.articles],
+        },
+      });
+      await setDoc(doc(db, 'Users', currentUser.id), {
+        ...currentUser,
+        articles: [article.title, ...currentUser.articles],
+      });
       article.cats.forEach(async (cat) => {
         await setDoc(doc(db, 'Categories', cat, 'Articles', article.title), {
           articleRef: article.title,
@@ -107,7 +119,7 @@ const AddArticle = () => {
         <form className="add-article__form" onSubmit={handleAdd}>
           <Input
             id="title"
-            value={data.title}
+            value={article.title}
             onChange={(e) => handleInput(e, setArticle)}
             placeholder="Title"
             type="text"
@@ -115,7 +127,7 @@ const AddArticle = () => {
           />
           <Input
             id="mainImage"
-            value={data.mainImage}
+            value={article.mainImage}
             onChange={(e) => handleInput(e, setArticle)}
             placeholder="Main Image URL"
             type="text"

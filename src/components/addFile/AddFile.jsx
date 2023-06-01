@@ -10,7 +10,7 @@ const AddFile = (props) => {
       {children}
       <label htmlFor="file">
         <img
-          src="./assets/icons/plus.png"
+          src="../public/assets/icons/plus.png"
           alt="Something went wrong"
           className="add-file__add-icon"
         />
