@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="footer__copyright-section">
         <Link to="/">
           <img
-            src="../public/assets/icons/witcher-medalion.png"
+            src="./assets/icons/witcher-medalion.png"
             alt="Something went wrong"
             className="footer__logo"
           />

@@ -29,8 +29,8 @@ const Faction = ({ factionTitle }) => {
         <img
           src={
             isCurrentFaction
-              ? `../public/assets/icons/${factionTitle}-active.png`
-              : `../public/assets/icons/${factionTitle}.png`
+              ? `../assets/icons/${factionTitle}-active.png`
+              : `../assets/icons/${factionTitle}.png`
           }
           alt="Something went wrong"
           className="faction__icon"

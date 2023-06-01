@@ -52,7 +52,7 @@ const Search = () => {
     <div className="nav__search-bar search-bar" ref={searchRef}>
       <button className="search-bar__search-btn">
         <img
-          src="../public/assets/icons/search.svg"
+          src="./assets/icons/search.svg"
           alt="Something went wrong"
           className="search-bar__search-btn-icon"
         />

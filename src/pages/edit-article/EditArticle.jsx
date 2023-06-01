@@ -132,7 +132,7 @@ const EditArticle = () => {
     <div className="edit-article">
       <div className="container">
         <h1 className="edit-article__title">Edit article</h1>
-        <form className="article-form" onSubmit={handleEdit}>
+        <form className="edit-article__form" onSubmit={handleEdit}>
           <Input
             id="title"
             value={article.title}
@@ -161,25 +161,25 @@ const EditArticle = () => {
             />
           )}
           {factionEnable && (
-            <div className="article-form__factions">
-              <p className="article-form__factions-title">Factions: </p>
+            <div className="edit-article__factions">
+              <p className="edit-article__factions-title">Factions: </p>
               <FactionsFilter />
             </div>
           )}
           <textarea
             name="content"
             id="content"
-            className="article-form__content"
+            className="edit-article__content"
             onChange={(e) => handleInput(e, setArticle)}
             placeholder="Content"
             required
             value={article.content}
           ></textarea>
-          <p className="article-form__content-tip">
+          <p className="edit-article__content-tip">
             Only markdown, HTML will be ignored
           </p>
           {error && <Error errorText={error} />}
-          <button type="submit" className="article-form__btn">
+          <button type="submit" className="edit-article__btn">
             Send
           </button>
         </form>

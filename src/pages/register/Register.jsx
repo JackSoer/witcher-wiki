@@ -95,7 +95,7 @@ const Register = () => {
       <Form handleSubmit={handleRegister}>
         <h1 className="auth-form__title">
           <img
-            src="../public/assets/icons/witcher-medalion.png"
+            src="./assets/icons/witcher-medalion.png"
             alt="Something went wrong"
             className="auth-form__logo"
           />

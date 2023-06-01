@@ -14,7 +14,7 @@ const Dropdown = ({ title, children }) => {
         <button className="dropdown__menu" onClick={handleClick}>
           <span className="dropdown__btn">{title}</span>
           <img
-            src="../public/assets/icons/arrow.svg"
+            src="./assets/icons/arrow.svg"
             alt="Something went wrong"
             className={
               isOpen

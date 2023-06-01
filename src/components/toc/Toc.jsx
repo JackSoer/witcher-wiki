@@ -47,7 +47,7 @@ const Toc = ({ content }) => {
     <div className="toc">
       <button className="toc__btn" onClick={handleClick}>
         <img
-          src={`../public/assets/icons/${isOpen ? 'minus' : 'plus'}.png`}
+          src={`./assets/icons/${isOpen ? 'minus' : 'plus'}.png`}
           alt="Something went wrong"
           className="toc__btn-icon"
         />
