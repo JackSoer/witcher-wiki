@@ -22,6 +22,14 @@
     height: 22px;
   }
 
+  &__warning {
+    font-size: 25px;
+    font-weight: 500;
+    text-align: center;
+    padding: 50px 0;
+    color: $gold;
+  }
+
   &__title {
     text-align: center;
     font-size: 50px;

@@ -34,7 +34,7 @@ const EditArticle = () => {
   const [defCats, setDefCats] = useState([]);
 
   const navigate = useNavigate();
- 
+
   useEffect(() => {
     const fetchDefCats = async () => {
       const editedArticlesCats = await Promise.all(
@@ -102,14 +102,11 @@ const EditArticle = () => {
 
     try {
       const isContributor = article.contributors.includes(currentUser.id);
-
+      console.log(editedArticle.current);
       if (isContributor) {
-        await updateDoc(
-          doc(db, 'Articles', editedArticle.current.title),
-          article
-        );
+        await updateDoc(doc(db, 'Articles', editedArticle.current.id), article);
       } else {
-        await updateDoc(doc(db, 'Articles', editedArticle.current.title), {
+        await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
           ...article,
           contributors: [currentUser.id, ...article.contributors],
         });

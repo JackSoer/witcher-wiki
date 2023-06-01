@@ -4,7 +4,7 @@ import './addArticle.scss';
 import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 import handleInput from '../../utils/handleInput';
 import FilterContext from '../../context/FilterContext';
-import { setDoc, doc } from 'firebase/firestore';
+import { addDoc, updateDoc, collection, doc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import ArticlesContext from '../../context/ArticlesContext';
 import AuthContext from '../../context/AuthContext';
@@ -86,25 +86,25 @@ const AddArticle = () => {
     }
 
     try {
-      await setDoc(doc(db, 'Articles', article.title), article);
+      const newArticle = await addDoc(collection(db, 'Articles'), article);
+      await updateDoc(doc(db, 'Users', currentUser.id), {
+        articles: [newArticle.id, ...currentUser.articles],
+      });
+      article.cats.forEach(async (cat) => {
+        await addDoc(collection(db, 'Categories', cat, 'Articles'), {
+          articleRef: newArticle.id,
+        });
+      });
+
       dispatch({
         type: 'LOGIN',
         payload: {
           ...currentUser,
-          articles: [article.title, ...currentUser.articles],
+          articles: [newArticle.id, ...currentUser.articles],
         },
       });
-      await setDoc(doc(db, 'Users', currentUser.id), {
-        ...currentUser,
-        articles: [article.title, ...currentUser.articles],
-      });
-      article.cats.forEach(async (cat) => {
-        await setDoc(doc(db, 'Categories', cat, 'Articles', article.title), {
-          articleRef: article.title,
-        });
-      });
 
-      setArticles([{ ...article, id: article.title }, ...articlesData.data]);
+      setArticles([{ ...article, id: newArticle.id }, ...articlesData.data]);
       setError('');
       navigate('/');
     } catch (err) {
