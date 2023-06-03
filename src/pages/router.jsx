@@ -10,7 +10,7 @@ import Login from './login/Login';
 import Register from './register/Register';
 import AddArticle from './addArticle/AddArticle';
 import MyArticles from './myArticles/MyArticles';
-import EditArticle from './edit-article/EditArticle';
+import EditArticle from './editArticle/EditArticle';
 
 const router = createBrowserRouter([
   {

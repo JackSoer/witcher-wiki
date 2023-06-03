@@ -13,6 +13,8 @@ import Input from '../../components/input/Input';
 import FactionsFilter from '../../components/factionsFilter/FactionsFilter';
 import Error from '../../components/error/Error';
 import MultSelect from '../../components/multSelect/MultSelect';
+import Textarea from '../../components/textarea/Textarea';
+import isValidateTextarea from '../../utils/isValidateTextarea';
 
 const AddArticle = () => {
   const { isLoading, fetchError, data } = useFetchDocsFromColl('Categories');
@@ -34,6 +36,7 @@ const AddArticle = () => {
   });
   const [factionEnable, setFactionEnable] = useState(false);
   const [error, setError] = useState('');
+  const [isValidateContent, setIsValidateContent] = useState(false);
 
   useEffect(() => {
     const checkIsFactionEnable = () => {
@@ -83,6 +86,8 @@ const AddArticle = () => {
     } else if (article.cats.length < 1) {
       setError('Choose a category');
       return;
+    } else if (!isValidateContent) {
+      return;
     }
 
     try {
@@ -106,6 +111,7 @@ const AddArticle = () => {
 
       setArticles([{ ...article, id: newArticle.id }, ...articlesData.data]);
       setError('');
+
       navigate('/');
     } catch (err) {
       setError(err.message);
@@ -124,6 +130,8 @@ const AddArticle = () => {
             placeholder="Title"
             type="text"
             required
+            pattern="^(?=.*[a-zA-Z].*[a-zA-Z]).+$"
+            errorMsg="Title must contain at least 2 letters"
           />
           <Input
             id="mainImage"
@@ -132,6 +140,8 @@ const AddArticle = () => {
             placeholder="Main Image URL"
             type="text"
             required
+            pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\?.*)?$"
+            errorMsg="Invalid image URL. Please provide a valid URL ending with one of the supported image file extensions: .png, .jpg, .jpeg, .gif, .bmp."
           />
           <label htmlFor="cats" className="add-article__label">
             Categories (choose one or more):
@@ -145,14 +155,20 @@ const AddArticle = () => {
               <FactionsFilter />
             </div>
           )}
-          <textarea
+          <Textarea
             name="content"
             id="content"
             className="add-article__content"
-            onChange={(e) => handleInput(e, setArticle)}
+            onChange={(e) => {
+              setIsValidateContent(isValidateTextarea(e.target.value));
+              handleInput(e, setArticle);
+            }}
             placeholder="Content"
             required
-          ></textarea>
+            errorMsg="The article content must be between 10 and 5000 characters long."
+            isValidate={isValidateContent}
+            value={article.content}
+          />
           <p className="add-article__content-tip">
             Only markdown, HTML will be ignored
           </p>

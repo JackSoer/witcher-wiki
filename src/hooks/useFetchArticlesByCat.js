@@ -20,6 +20,7 @@ const useFetchArticlesByCat = (cat) => {
           ...doc.data(),
           id: doc.id,
         }));
+
         const chosenCat = cats.find((cat) => cat.title === categories);
         const catArticlesRef = collection(
           db,
@@ -27,6 +28,7 @@ const useFetchArticlesByCat = (cat) => {
           chosenCat.id,
           'Articles'
         );
+
         const articlesDocs = await getDocs(catArticlesRef);
         const articlesRefs = articlesDocs.docs.map((doc) => ({
           ...doc.data(),

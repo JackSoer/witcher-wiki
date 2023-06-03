@@ -65,7 +65,6 @@ const ArticleContent = ({ article }) => {
                 id="Layer_1"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 502.001 502.001"
-                xml:space="preserve"
               >
                 <g>
                   <g>
@@ -114,20 +113,24 @@ const ArticleContent = ({ article }) => {
         <ReactMarkdown skipHtml={true}>
           {article.content && addLineBreaks(article.content)}
         </ReactMarkdown>
-        <Dropdown title="Categories">
-          {cats.map((cat) => (
-            <Cat title={cat.title} key={cat.id} />
-          ))}
-        </Dropdown>
-        <Dropdown title="Contributors">
-          {contributors.map((contributor) => (
-            <Contributor
-              img={contributor.img}
-              username={contributor.username}
-              key={contributor.id}
-            />
-          ))}
-        </Dropdown>
+        {cats.length > 0 && (
+          <Dropdown title="Categories">
+            {cats.map((cat) => (
+              <Cat title={cat.title} key={cat.id} />
+            ))}
+          </Dropdown>
+        )}
+        {contributors.length > 0 && (
+          <Dropdown title="Contributors">
+            {contributors.map((contributor) => (
+              <Contributor
+                img={contributor.img}
+                username={contributor.username}
+                key={contributor.id}
+              />
+            ))}
+          </Dropdown>
+        )}
       </div>
     </div>
   );

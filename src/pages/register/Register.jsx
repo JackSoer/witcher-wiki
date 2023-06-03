@@ -41,6 +41,22 @@ const Register = () => {
     setData((prev) => ({ ...prev, img: downloadUrl }));
   }, [downloadUrl]);
 
+  const handleError = () => {
+    let errorMsg;
+
+    if (error.includes('auth/weak-password')) {
+      errorMsg = 'Password should be at least 6 characters';
+    } else if (error.includes('auth/email-already-in-use')) {
+      errorMsg = 'An account with this email already exists';
+    } else if (error.includes('auth/invalid-email')) {
+      errorMsg = 'Incorrect email';
+    } else {
+      errorMsg = error;
+    }
+
+    return errorMsg;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -62,6 +78,7 @@ const Register = () => {
       const user = userCredential.user;
       const userData = {
         ...data,
+        id: user.uid,
         timeStamp: serverTimestamp(),
       };
 
@@ -72,22 +89,6 @@ const Register = () => {
     } catch (err) {
       setError(err.message);
     }
-  };
-
-  const handleError = () => {
-    let errorMsg;
-
-    if (error.includes('auth/weak-password')) {
-      errorMsg = 'Password should be at least 6 characters';
-    } else if (error.includes('auth/email-already-in-use')) {
-      errorMsg = 'An account with this email already exists';
-    } else if (error.includes('auth/invalid-email')) {
-      errorMsg = 'Incorrect email';
-    } else {
-      errorMsg = error;
-    }
-
-    return errorMsg;
   };
 
   return (
@@ -110,6 +111,8 @@ const Register = () => {
             placeholder={registerInput.placeholder}
             onChange={(e) => handleInput(e, setData)}
             value={data[registerInput.id]}
+            errorMsg={registerInput.errorMsg || ''}
+            pattern={registerInput.pattern || ''}
           />
         ))}
         <AddFile
@@ -126,7 +129,7 @@ const Register = () => {
             onChange={(e) => setFile(e.target.files[0])}
           />
         </AddFile>
-        {error && <Error errorText={handleError(error)} />}
+        {error && <Error errorText={handleError()} />}
         <button
           className="auth-form__submit"
           type="submit"

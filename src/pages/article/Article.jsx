@@ -7,7 +7,6 @@ import ArticlesContext from '../../context/ArticlesContext';
 
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
-import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 
 const Article = () => {
   const { id } = useParams();

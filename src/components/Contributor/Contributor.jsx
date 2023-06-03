@@ -7,7 +7,7 @@ const Contributor = ({ img, username }) => {
   return (
     <div className="contributor">
       <img
-        src={img}
+        src={img || './assets/images/default-avatar.webp'}
         alt="Something went wrong..."
         className="contributor__img"
       />

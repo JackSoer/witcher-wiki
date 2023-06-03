@@ -14,4 +14,19 @@
   &:focus {
     border: $black solid 1px;
   }
+
+  &:invalid[focused='true'] ~ p {
+    display: block;
+  }
+}
+
+.input-box {
+  width: 100%;
+}
+
+.validation-error {
+  display: none;
+  font-size: 14px;
+  color: red;
+  margin-top: 5px;
 }
