@@ -8,7 +8,7 @@ import AuthContext from '../../context/AuthContext';
 import Toc from '../toc/Toc';
 import Cat from '../cat/Cat';
 import Dropdown from '../dropdown/Dropdown';
-import Contributor from '../../components/contributor/Contributor';
+import Contributor from '../Contributor/Contributor';
 
 const ArticleContent = ({ article }) => {
   const { currentUser } = useContext(AuthContext);

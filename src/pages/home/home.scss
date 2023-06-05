@@ -5,13 +5,37 @@
   color: $white;
   flex: 1;
 
-  &__title {
-    color: $lightGreen;
-    text-align: center;
-    padding: 0 25px 30px 25px;
-    font-weight: 700;
-    line-height: 42px;
+  &__stat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
+    margin-bottom: 30px;
+    background-color: $darkGray;
+    border-top: 2px solid $gold;
+    border-bottom: 2px solid $gold;
+
+    &-item {
+      padding: 20px;
+      text-align: center;
+      border-right: 1px solid rgba(245, 211, 109, 0.514);
+      border-left: 1px solid rgba(245, 211, 109, 0.514);
+
+      &:nth-child(odd) {
+        border-right: none;
+      }
+
+      &-num {
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      &-title {
+        font-size: 20px;
+        font-weight: 500;
+      }
+    }
 
     &:after {
       content: '';
@@ -23,10 +47,18 @@
       position: absolute;
       left: 0;
       right: 0;
-      bottom: -12px;
+      bottom: -42px;
       z-index: 500;
       height: 22px;
     }
+  }
+
+  &__title {
+    color: $lightGreen;
+    text-align: center;
+    padding: 0 25px 20px 25px;
+    font-weight: 700;
+    line-height: 42px;
   }
 
   &__subtitle,
