@@ -31,13 +31,7 @@ const Locations = () => {
     <div className="locations">
       <div className="container">
         <h1 className="locations__title">Locations</h1>
-        <div
-          className={
-            !isLoading
-              ? 'locations__content'
-              : 'locations__content locations__content--loading'
-          }
-        >
+        <div className="locations__content">
           <FactionsFilter />
           <Articles
             filteredArticles={filteredArticles}

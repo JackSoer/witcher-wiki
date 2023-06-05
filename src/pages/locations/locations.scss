@@ -12,10 +12,6 @@
     padding: 15px;
     position: relative;
 
-    &--loading {
-      height: 500px;
-    }
-
     &:after {
       content: '';
       display: block;

@@ -1,6 +1,13 @@
+@import '../../../Scss/var';
+
 .faction-filter {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 40px;
+
+  &__title {
+    color: $lightGreen;
+    font-size: 20px;
+  }
 }

@@ -42,14 +42,14 @@ const MyArticles = () => {
     <div className="my-articles">
       <div className="container">
         <h1 className="my-articles__title">My Articles</h1>
-        {userArticles.length > 0 && !isLoading && !fetchError && (
-          <Articles filteredArticles={userArticles} />
-        )}
+        <Articles
+          filteredArticles={userArticles}
+          isLoading={isLoading}
+          fetchError={fetchError}
+        />
         {userArticles.length <= 0 && !isLoading && !fetchError && (
           <p className="my-articles__warning">You don't have articles...</p>
         )}
-        {isLoading && !fetchError && <Loading />}
-        {fetchError && !isLoading && <Error errorText={fetchError} />}
       </div>
     </div>
   );

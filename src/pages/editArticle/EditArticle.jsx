@@ -16,7 +16,6 @@ import FactionsFilter from '../../components/factionsFilter/FactionsFilter';
 import Error from '../../components/error/Error';
 import MultSelect from '../../components/multSelect/MultSelect';
 import Textarea from '../../components/textarea/Textarea';
-import Loading from '../../components/loading/Loading';
 import getDocById from '../../utils/getDocById';
 
 const EditArticle = () => {
@@ -193,12 +192,7 @@ const EditArticle = () => {
                 defValues={defCats}
               />
             )}
-            {factionEnable && (
-              <div className="add-article__factions">
-                <p className="add-article__factions-title">Factions: </p>
-                <FactionsFilter />
-              </div>
-            )}
+            {factionEnable && <FactionsFilter />}
             <Textarea
               name="content"
               id="content"
@@ -222,7 +216,6 @@ const EditArticle = () => {
             </button>
           </form>
         )}
-        {!article?.title && <Loading />}
       </div>
     </div>
   );

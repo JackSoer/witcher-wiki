@@ -1,3 +1,5 @@
+@import '../../../Scss/var';
+
 .articles {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -5,5 +7,53 @@
 
   &--padding-top {
     padding-top: 60px;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+
+  &__link,
+  &__prev,
+  &__next {
+    font-size: 20px;
+    font-weight: 500;
+    background-color: $lightGreen;
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $white;
+    transition: all 0.3s ease;
+    border: 2px solid $gold;
+
+    a {
+      color: $white;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: $black;
+      }
+    }
+
+    &:hover {
+      background-color: $gold;
+      color: $black;
+    }
+  }
+
+  &__active {
+    a {
+      background-color: $gold;
+      color: $black;
+    }
   }
 }

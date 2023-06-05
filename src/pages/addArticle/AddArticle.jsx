@@ -8,13 +8,14 @@ import { addDoc, updateDoc, collection, doc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import ArticlesContext from '../../context/ArticlesContext';
 import AuthContext from '../../context/AuthContext';
+import isValidateTextarea from '../../utils/isValidateTextarea';
 
 import Input from '../../components/input/Input';
 import FactionsFilter from '../../components/factionsFilter/FactionsFilter';
 import Error from '../../components/error/Error';
 import MultSelect from '../../components/multSelect/MultSelect';
 import Textarea from '../../components/textarea/Textarea';
-import isValidateTextarea from '../../utils/isValidateTextarea';
+import Loading from '../../components/loading/Loading';
 
 const AddArticle = () => {
   const { isLoading, fetchError, data } = useFetchDocsFromColl('Categories');
@@ -149,12 +150,8 @@ const AddArticle = () => {
           {!isLoading && !fetchError && (
             <MultSelect items={data} setFunc={setArticle} id="cats" />
           )}
-          {factionEnable && (
-            <div className="add-article__factions">
-              <p className="add-article__factions-title">Factions: </p>
-              <FactionsFilter />
-            </div>
-          )}
+          {isLoading && !fetchError && <Loading />}
+          {factionEnable && <FactionsFilter />}
           <Textarea
             name="content"
             id="content"

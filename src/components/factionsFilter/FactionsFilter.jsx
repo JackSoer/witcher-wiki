@@ -9,6 +9,7 @@ const FactionsFilter = () => {
 
   return (
     <div className="faction-filter">
+      <div className="faction-filter__title">Factions: </div>
       {!isLoading &&
         !fetchError &&
         data.map((faction) => (

@@ -90,17 +90,6 @@
     }
   }
 
-  &__factions {
-    position: relative;
-
-    &-title {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: -95px;
-    }
-  }
-
   &__content {
     resize: none;
     width: 100%;

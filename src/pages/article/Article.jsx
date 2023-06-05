@@ -14,35 +14,28 @@ const Article = () => {
   const { articles } = useContext(ArticlesContext);
 
   const [article, setArticle] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
-    const fetchArticle = () => {
+    const getArticle = () => {
       try {
-        setIsLoading(true);
-
         const filteredArticle = getArticlesByTitle(articles, id)[0];
 
         setArticle(filteredArticle);
         setFetchError(null);
       } catch (err) {
         setFetchError(err.message);
-      } finally {
-        setIsLoading(false);
       }
     };
 
-    fetchArticle();
+    getArticle();
   }, [articles, id]);
 
   return (
     <div className="article">
-      {article && !isLoading && !fetchError && (
-        <ArticleContent article={article} />
-      )}
-      {isLoading && !fetchError && <Loading />}
-      {!isLoading && fetchError && <Error errorText={fetchError} />}
+      {article && !fetchError && <ArticleContent article={article} />}
+      {!fetchError && !article?.title && <Loading />}
+      {fetchError && <Error errorText={fetchError} />}
     </div>
   );
 };
