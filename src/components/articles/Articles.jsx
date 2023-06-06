@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import './articles.scss';
 import ReactPaginate from 'react-paginate';
+import FilterContext from '../../context/FilterContext';
 
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
 
 const Articles = ({ filteredArticles, isLoading, fetchError }) => {
+  const { faction } = useContext(FilterContext);
+
   const [itemOffset, setItemOffset] = useState(0);
 
   const itemsPerPage = 10;
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredArticles.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(filteredArticles.length / itemsPerPage);
+
+  useEffect(() => {
+    setItemOffset(0);
+  }, [faction]);
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % filteredArticles.length;

@@ -25,6 +25,7 @@ const Register = () => {
     username: '',
     email: '',
     articles: [],
+    isAdmin: false,
   });
   const [file, setFile] = useState('');
 
@@ -102,19 +103,31 @@ const Register = () => {
           />
           SIGN UP
         </h1>
-        {registerInputs.map((registerInput) => (
-          <Input
-            required={registerInput.required}
-            id={registerInput.id}
-            key={registerInput.id}
-            type={registerInput.type}
-            placeholder={registerInput.placeholder}
-            onChange={(e) => handleInput(e, setData)}
-            value={data[registerInput.id]}
-            errorMsg={registerInput.errorMsg || ''}
-            pattern={registerInput.pattern || ''}
-          />
-        ))}
+        {registerInputs.map((registerInput) =>
+          registerInput.placeholder === 'Username' ? (
+            <Input
+              required={registerInput.required}
+              id={registerInput.id}
+              key={registerInput.id}
+              type={registerInput.type}
+              placeholder={registerInput.placeholder}
+              onChange={(e) => handleInput(e, setData)}
+              value={data[registerInput.id]}
+              errorMsg={registerInput.errorMsg || ''}
+              pattern={registerInput.pattern || ''}
+            />
+          ) : (
+            <Input
+              required={registerInput.required}
+              id={registerInput.id}
+              key={registerInput.id}
+              type={registerInput.type}
+              placeholder={registerInput.placeholder}
+              onChange={(e) => handleInput(e, setData)}
+              value={data[registerInput.id]}
+            />
+          )
+        )}
         <AddFile
           title="Add an avatar"
           file={file}

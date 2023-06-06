@@ -6,7 +6,7 @@ import handleInput from '../../utils/handleInput';
 import FilterContext from '../../context/FilterContext';
 import AuthContext from '../../context/AuthContext';
 import ArticlesContext from '../../context/ArticlesContext';
-import { updateDoc, doc } from 'firebase/firestore';
+import { updateDoc, addDoc, doc, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import getArticlesByTitle from '../../utils/getArticlesByTitle';
 import isValidateTextarea from '../../utils/isValidateTextarea';
@@ -106,46 +106,69 @@ const EditArticle = () => {
     } else if (article.cats.length < 1) {
       setError('Choose a category');
       return;
+    } else if (!isValidateContent) {
+      return;
     }
 
     try {
       const isContributor = article.contributors.includes(currentUser.id);
-      let editedArticles;
 
-      if (isContributor) {
-        await updateDoc(doc(db, 'Articles', editedArticle.current.id), article);
+      if (currentUser.isAdmin) {
+        let editedArticles;
 
-        editedArticles = articlesData.data.map((articleData) =>
-          articleData.id === editedArticle.current.id ? article : articleData
-        );
-      } else {
-        await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
-          ...article,
-          contributors: [...article.contributors, currentUser.id],
-        });
-        await updateDoc(doc(db, 'Users', currentUser.id), {
-          articles: [editedArticle.current.id, ...currentUser.articles],
-        });
+        if (isContributor) {
+          await updateDoc(
+            doc(db, 'Articles', editedArticle.current.id),
+            article
+          );
 
-        editedArticles = articlesData.data.map((articleData) =>
-          articleData.id === editedArticle.current.id
-            ? {
-                ...article,
-                contributors: [...article.contributors, currentUser.id],
-              }
-            : articleData
-        );
-
-        dispatch({
-          type: 'LOGIN',
-          payload: {
-            ...currentUser,
+          editedArticles = articlesData.data.map((articleData) =>
+            articleData.id === editedArticle.current.id ? article : articleData
+          );
+        } else {
+          await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
+            ...article,
+            contributors: [...article.contributors, currentUser.id],
+          });
+          await updateDoc(doc(db, 'Users', currentUser.id), {
             articles: [editedArticle.current.id, ...currentUser.articles],
-          },
-        });
-      }
+          });
 
-      setArticles(editedArticles);
+          editedArticles = articlesData.data.map((articleData) =>
+            articleData.id === editedArticle.current.id
+              ? {
+                  ...article,
+                  contributors: [...article.contributors, currentUser.id],
+                }
+              : articleData
+          );
+
+          dispatch({
+            type: 'LOGIN',
+            payload: {
+              ...currentUser,
+              articles: [editedArticle.current.id, ...currentUser.articles],
+            },
+          });
+        }
+
+        setArticles(editedArticles);
+      } else {
+        if (isContributor) {
+          await addDoc(collection(db, 'Suggested Articles'), {
+            action: 'edit',
+            editedArticleId: editedArticle.current.id,
+            ...article,
+          });
+        } else {
+          await addDoc(collection(db, 'Suggested Articles'), {
+            action: 'edit',
+            editedArticleId: editedArticle.current.id,
+            ...article,
+            contributors: [...article.contributors, currentUser.id],
+          });
+        }
+      }
 
       setError('');
 
@@ -178,7 +201,7 @@ const EditArticle = () => {
               placeholder="Main Image URL"
               type="text"
               required
-              pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\?.*)?$"
+              pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\/\S+)?(\?.*)?$"
               errorMsg="Invalid image URL. Please provide a valid URL ending with one of the supported image file extensions: .png, .jpg, .jpeg, .gif, .bmp."
             />
             <label htmlFor="cats" className="add-article__label">

@@ -92,25 +92,35 @@ const AddArticle = () => {
     }
 
     try {
-      const newArticle = await addDoc(collection(db, 'Articles'), article);
-      await updateDoc(doc(db, 'Users', currentUser.id), {
-        articles: [newArticle.id, ...currentUser.articles],
-      });
-      article.cats.forEach(async (cat) => {
-        await addDoc(collection(db, 'Categories', cat, 'Articles'), {
-          articleRef: newArticle.id,
-        });
-      });
+      if (currentUser.isAdmin) {
+        const newArticle = await addDoc(collection(db, 'Articles'), article);
 
-      dispatch({
-        type: 'LOGIN',
-        payload: {
-          ...currentUser,
+        await updateDoc(doc(db, 'Users', currentUser.id), {
           articles: [newArticle.id, ...currentUser.articles],
-        },
-      });
+        });
 
-      setArticles([{ ...article, id: newArticle.id }, ...articlesData.data]);
+        article.cats.forEach(async (cat) => {
+          await addDoc(collection(db, 'Categories', cat, 'Articles'), {
+            articleRef: newArticle.id,
+          });
+        });
+
+        dispatch({
+          type: 'LOGIN',
+          payload: {
+            ...currentUser,
+            articles: [newArticle.id, ...currentUser.articles],
+          },
+        });
+
+        setArticles([{ ...article, id: newArticle.id }, ...articlesData.data]);
+      } else {
+        await addDoc(collection(db, 'Suggested Articles'), {
+          action: 'add',
+          ...article,
+        });
+      }
+
       setError('');
 
       navigate('/');
@@ -131,7 +141,7 @@ const AddArticle = () => {
             placeholder="Title"
             type="text"
             required
-            pattern="^(?=.*[a-zA-Z].*[a-zA-Z]).+$"
+            pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\/\S+)?(\?.*)?$"
             errorMsg="Title must contain at least 2 letters"
           />
           <Input
@@ -141,7 +151,7 @@ const AddArticle = () => {
             placeholder="Main Image URL"
             type="text"
             required
-            pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\?.*)?$"
+            pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\/\S+)?(\?.*)?$"
             errorMsg="Invalid image URL. Please provide a valid URL ending with one of the supported image file extensions: .png, .jpg, .jpeg, .gif, .bmp."
           />
           <label htmlFor="cats" className="add-article__label">
