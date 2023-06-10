@@ -56,16 +56,17 @@ const Header = () => {
           </div>
           <div className="user__menu">
             <ul className="user__menu-list">
-              {currentUser.isAdmin && (
-                <>
-                  <li className="user__menu-list-item">
-                    <Link to="/my-articles">My Articles</Link>
-                  </li>
-                  <li className="user__menu-list-item">
-                    <Link to="/add-article">Add Article</Link>
-                  </li>
-                </>
+              {currentUser?.isAdmin && (
+                <li className="user__menu-list-item">
+                  <Link to="/suggested-articles">Suggesed Articles</Link>
+                </li>
               )}
+              <li className="user__menu-list-item">
+                <Link to="/my-articles">My Articles</Link>
+              </li>
+              <li className="user__menu-list-item">
+                <Link to="/add-article">Add Article</Link>
+              </li>
               <li className="user__menu-list-item">
                 <button className="user__logout" onClick={handleLogout}>
                   Logout

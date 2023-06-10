@@ -11,6 +11,7 @@ import Register from './register/Register';
 import AddArticle from './addArticle/AddArticle';
 import MyArticles from './myArticles/MyArticles';
 import EditArticle from './editArticle/EditArticle';
+import SuggestedArticles from './suggestedArticles/SuggestedArticles';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,14 @@ const router = createBrowserRouter([
       {
         path: '/edit-article/:id',
         element: <EditArticle />,
+      },
+      {
+        path: '/suggested-articles',
+        element: <SuggestedArticles />,
+      },
+      {
+        path: '/suggested-articles/:id',
+        element: <Article />,
       },
     ],
   },

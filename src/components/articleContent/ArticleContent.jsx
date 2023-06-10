@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import './articleContent.scss';
 import getDocById from '../../utils/getDocById';
@@ -11,6 +11,7 @@ import Dropdown from '../dropdown/Dropdown';
 import Contributor from '../Contributor/Contributor';
 
 const ArticleContent = ({ article }) => {
+  const { pathname } = useLocation();
   const { currentUser } = useContext(AuthContext);
 
   const [cats, setCats] = useState([]);
@@ -52,7 +53,7 @@ const ArticleContent = ({ article }) => {
       <div className="container">
         <div className="article-content__top">
           <h1 className="article-content__title">{article.title}</h1>
-          {currentUser?.isAdmin && (
+          {currentUser && !pathname.includes('/suggested-articles') && (
             <Link
               to={`/edit-article/${article.title}`}
               className="article-content__edit"

@@ -22,7 +22,8 @@ const AddArticle = () => {
   const articlesData = useFetchDocsFromColl('Articles');
 
   const { faction, setFaction } = useContext(FilterContext);
-  const { setArticles } = useContext(ArticlesContext);
+  const { setArticles, suggestedArticles, setSuggestedArticles } =
+    useContext(ArticlesContext);
   const { currentUser, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -119,6 +120,14 @@ const AddArticle = () => {
           action: 'add',
           ...article,
         });
+
+        setSuggestedArticles([
+          {
+            action: 'add',
+            ...article,
+          },
+          ...suggestedArticles,
+        ]);
       }
 
       setError('');
@@ -141,7 +150,7 @@ const AddArticle = () => {
             placeholder="Title"
             type="text"
             required
-            pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\/\S+)?(\?.*)?$"
+            pattern="[A-Za-z]{2,}.*$"
             errorMsg="Title must contain at least 2 letters"
           />
           <Input
@@ -151,8 +160,8 @@ const AddArticle = () => {
             placeholder="Main Image URL"
             type="text"
             required
-            pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\/\S+)?(\?.*)?$"
-            errorMsg="Invalid image URL. Please provide a valid URL ending with one of the supported image file extensions: .png, .jpg, .jpeg, .gif, .bmp."
+            pattern="^https?:\/\/\S+$"
+            errorMsg="Invalid image URL. Please provide a valid URL."
           />
           <label htmlFor="cats" className="add-article__label">
             Categories (choose one or more):

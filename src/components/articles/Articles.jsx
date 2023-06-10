@@ -7,7 +7,12 @@ import ArticleCard from '../../components/articleCard/ArticleCard';
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
 
-const Articles = ({ filteredArticles, isLoading, fetchError }) => {
+const Articles = ({
+  filteredArticles,
+  isLoading,
+  fetchError,
+  suggestedArticles,
+}) => {
   const { faction } = useContext(FilterContext);
 
   const [itemOffset, setItemOffset] = useState(0);
@@ -38,6 +43,8 @@ const Articles = ({ filteredArticles, isLoading, fetchError }) => {
               title={article.title}
               image={article.mainImage}
               key={article.id}
+              suggestedArticle={suggestedArticles}
+              article={article}
             />
           ))}
       </div>

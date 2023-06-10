@@ -8,6 +8,29 @@
   cursor: pointer;
   transition: all 0.3s ease;
 
+  &__btns {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 5px;
+  }
+
+  &__btn {
+    padding: 8px 18px;
+    font-size: 24px;
+    font-weight: 500;
+    color: $white;
+    background-color: $lightGreen;
+    border: $gold 2px solid;
+    transition: 0.3s all ease;
+
+    &:hover {
+      color: $black;
+      background-color: $gold;
+    }
+  }
+
   a {
     display: inline-block;
     width: 100%;

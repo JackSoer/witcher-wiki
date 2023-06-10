@@ -24,7 +24,8 @@ const EditArticle = () => {
   const { isLoading, fetchError, data } = useFetchDocsFromColl('Categories');
   const articlesData = useFetchDocsFromColl('Articles');
 
-  const { articles, setArticles } = useContext(ArticlesContext);
+  const { articles, setArticles, setSuggestedArticles, suggestedArticles } =
+    useContext(ArticlesContext);
   const { faction, setFaction } = useContext(FilterContext);
   const { currentUser, dispatch } = useContext(AuthContext);
 
@@ -34,7 +35,7 @@ const EditArticle = () => {
   const [factionEnable, setFactionEnable] = useState(false);
   const [error, setError] = useState('');
   const [defCats, setDefCats] = useState([]);
-  const [isValidateContent, setIsValidateContent] = useState(false);
+  const [isValidateContent, setIsValidateContent] = useState(true);
 
   const navigate = useNavigate();
 
@@ -156,17 +157,36 @@ const EditArticle = () => {
       } else {
         if (isContributor) {
           await addDoc(collection(db, 'Suggested Articles'), {
-            action: 'edit',
             editedArticleId: editedArticle.current.id,
             ...article,
+            action: 'edit',
           });
+
+          setSuggestedArticles([
+            {
+              editedArticleId: editedArticle.current.id,
+              ...article,
+              action: 'edit',
+            },
+            ...suggestedArticles,
+          ]);
         } else {
           await addDoc(collection(db, 'Suggested Articles'), {
-            action: 'edit',
             editedArticleId: editedArticle.current.id,
             ...article,
+            action: 'edit',
             contributors: [...article.contributors, currentUser.id],
           });
+
+          setSuggestedArticles([
+            {
+              editedArticleId: editedArticle.current.id,
+              ...article,
+              action: 'edit',
+              contributors: [...article.contributors, currentUser.id],
+            },
+            ...suggestedArticles,
+          ]);
         }
       }
 
@@ -201,8 +221,8 @@ const EditArticle = () => {
               placeholder="Main Image URL"
               type="text"
               required
-              pattern="^(https?:\/\/)?\S+\.(png|jpe?g|gif|bmp)(\/\S+)?(\?.*)?$"
-              errorMsg="Invalid image URL. Please provide a valid URL ending with one of the supported image file extensions: .png, .jpg, .jpeg, .gif, .bmp."
+              pattern="^https?:\/\/\S+$"
+              errorMsg="Invalid image URL. Please provide a valid URL."
             />
             <label htmlFor="cats" className="add-article__label">
               Categories (choose one or more):
