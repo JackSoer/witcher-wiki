@@ -4,7 +4,13 @@ import './addArticle.scss';
 import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 import handleInput from '../../utils/handleInput';
 import FilterContext from '../../context/FilterContext';
-import { addDoc, updateDoc, collection, doc } from 'firebase/firestore';
+import {
+  addDoc,
+  updateDoc,
+  collection,
+  doc,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import ArticlesContext from '../../context/ArticlesContext';
 import AuthContext from '../../context/AuthContext';
@@ -94,7 +100,10 @@ const AddArticle = () => {
 
     try {
       if (currentUser.isAdmin) {
-        const newArticle = await addDoc(collection(db, 'Articles'), article);
+        const newArticle = await addDoc(collection(db, 'Articles'), {
+          ...article,
+          timestamp: serverTimestamp(),
+        });
 
         await updateDoc(doc(db, 'Users', currentUser.id), {
           articles: [newArticle.id, ...currentUser.articles],
@@ -114,17 +123,22 @@ const AddArticle = () => {
           },
         });
 
-        setArticles([{ ...article, id: newArticle.id }, ...articlesData.data]);
+        setArticles([
+          { ...article, timestamp: serverTimestamp(), id: newArticle.id },
+          ...articlesData.data,
+        ]);
       } else {
         await addDoc(collection(db, 'Suggested Articles'), {
           action: 'add',
           ...article,
+          timestamp: serverTimestamp(),
         });
 
         setSuggestedArticles([
           {
             action: 'add',
             ...article,
+            timestamp: serverTimestamp(),
           },
           ...suggestedArticles,
         ]);

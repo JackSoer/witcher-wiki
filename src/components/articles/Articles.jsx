@@ -6,6 +6,7 @@ import FilterContext from '../../context/FilterContext';
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
+import ArticlesContext from '../../context/ArticlesContext';
 
 const Articles = ({
   filteredArticles,
@@ -14,6 +15,7 @@ const Articles = ({
   suggestedArticles,
 }) => {
   const { faction } = useContext(FilterContext);
+  const { action } = useContext(ArticlesContext);
 
   const [itemOffset, setItemOffset] = useState(0);
 
@@ -31,11 +33,21 @@ const Articles = ({
     setItemOffset(newOffset);
   };
 
+  const getClass = () => {
+    if (suggestedArticles && action === 'edit') {
+      return 'articles articles--suggested';
+    } else if (suggestedArticles && action === 'add') {
+      return 'articles articles--suggested-add';
+    } else {
+      return 'articles';
+    }
+  };
+
   return (
     <>
       {isLoading && !fetchError && <Loading />}
       {fetchError && !isLoading && <Error errorText={fetchError} />}
-      <div className="articles">
+      <div className={getClass()}>
         {!isLoading &&
           !fetchError &&
           currentItems.map((article) => (

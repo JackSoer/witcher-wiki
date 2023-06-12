@@ -8,16 +8,83 @@
   cursor: pointer;
   transition: all 0.3s ease;
 
+  &__arrow {
+    width: 50px;
+    height: 50px;
+    align-self: center;
+    transform: translateY(-50%);
+  }
+
+  &-box {
+    display: flex;
+    align-items: flex-start;
+
+    &--suggested {
+      width: 100%;
+    }
+  }
+
+  &__article-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &--suggested {
+      width: 100%;
+
+      a {
+        width: 100%;
+      }
+    }
+  }
+
+  &__extra-info {
+    background-color: $lightGray;
+    height: 290px;
+    padding: 15px;
+    margin-bottom: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-direction: column;
+    color: $white;
+    font-size: 15px;
+    text-align: center;
+    white-space: nowrap;
+
+    &-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: $lightGreen;
+    }
+
+    &-img {
+      width: 55px;
+      height: 55px;
+      object-fit: cover;
+    }
+  }
+
+  &-info-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
   &__btns {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 15px;
-    margin-top: 5px;
+    margin-top: 8px;
+    width: 100%;
   }
 
   &__btn {
     padding: 8px 18px;
+    width: 100%;
     font-size: 24px;
     font-weight: 500;
     color: $white;
@@ -25,9 +92,47 @@
     border: $gold 2px solid;
     transition: 0.3s all ease;
 
+    &-box {
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover &-tooltip {
+        opacity: 1;
+      }
+
+      &-tooltip {
+        position: absolute;
+        bottom: -29px;
+        color: $white;
+        text-align: center;
+        background-color: $lightGreen;
+        border-radius: 5px;
+        padding: 4px;
+        font-size: 16px;
+        font-weight: 700;
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $white;
+      transition: all 0.3s ease;
+    }
+
     &:hover {
       color: $black;
       background-color: $gold;
+
+      svg {
+        fill: $black;
+      }
     }
   }
 

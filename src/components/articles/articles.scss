@@ -5,6 +5,14 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 25px;
 
+  &--suggested {
+    grid-template-columns: 1fr 1fr;
+
+    &-add {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
   &--padding-top {
     padding-top: 60px;
   }

@@ -18,6 +18,8 @@ const SuggestedArticles = () => {
     useFetchDocsFromColl('Suggested Articles');
 
   const [articles, setArticles] = useState([]);
+  const [addedArticlesCount, setAddedArticlesCount] = useState(0);
+  const [editedArticlesCount, setEditedArticlesCount] = useState(0);
 
   useEffect(() => {
     setSuggestedArticles(suggestedArticlesData);
@@ -31,7 +33,16 @@ const SuggestedArticles = () => {
     const filteredArticles = suggestedArticles.filter(
       (article) => article.action === action
     );
+    const editedArticlesCount = suggestedArticles.filter(
+      (article) => article.action === 'edit'
+    ).length;
+    const addedArticlesCount = suggestedArticles.filter(
+      (article) => article.action === 'add'
+    ).length;
+
     setArticles(filteredArticles);
+    setAddedArticlesCount(addedArticlesCount);
+    setEditedArticlesCount(editedArticlesCount);
   }, [suggestedArticles, action]);
 
   return (
@@ -42,24 +53,30 @@ const SuggestedArticles = () => {
           <button
             className={
               action === 'add'
-                ? `suggested-articles__action-btns-item--active`
+                ? `suggested-articles__action-btns-item  suggested-articles__action-btns-item--active`
                 : 'suggested-articles__action-btns-item'
             }
             id="add"
             onClick={handleAction}
           >
             Added
+            <div className="suggested-articles__action-btns-count">
+              {addedArticlesCount}
+            </div>
           </button>
           <button
             className={
               action === 'edit'
-                ? `suggested-articles__action-btns-item--active`
+                ? `suggested-articles__action-btns-item suggested-articles__action-btns-item--active`
                 : 'suggested-articles__action-btns-item'
             }
             id="edit"
             onClick={handleAction}
           >
             Edited
+            <div className="suggested-articles__action-btns-count">
+              {editedArticlesCount}
+            </div>
           </button>
         </div>
         {articles.length > 0 ? (

@@ -6,7 +6,13 @@ import handleInput from '../../utils/handleInput';
 import FilterContext from '../../context/FilterContext';
 import AuthContext from '../../context/AuthContext';
 import ArticlesContext from '../../context/ArticlesContext';
-import { updateDoc, addDoc, doc, collection } from 'firebase/firestore';
+import {
+  updateDoc,
+  addDoc,
+  doc,
+  collection,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import getArticlesByTitle from '../../utils/getArticlesByTitle';
 import isValidateTextarea from '../../utils/isValidateTextarea';
@@ -118,10 +124,10 @@ const EditArticle = () => {
         let editedArticles;
 
         if (isContributor) {
-          await updateDoc(
-            doc(db, 'Articles', editedArticle.current.id),
-            article
-          );
+          await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
+            ...article,
+            timestamp: serverTimestamp(),
+          });
 
           editedArticles = articlesData.data.map((articleData) =>
             articleData.id === editedArticle.current.id ? article : articleData
@@ -129,6 +135,7 @@ const EditArticle = () => {
         } else {
           await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
             ...article,
+            timestamp: serverTimestamp(),
             contributors: [...article.contributors, currentUser.id],
           });
           await updateDoc(doc(db, 'Users', currentUser.id), {
@@ -139,6 +146,7 @@ const EditArticle = () => {
             articleData.id === editedArticle.current.id
               ? {
                   ...article,
+                  timestamp: serverTimestamp(),
                   contributors: [...article.contributors, currentUser.id],
                 }
               : articleData
@@ -159,6 +167,7 @@ const EditArticle = () => {
           await addDoc(collection(db, 'Suggested Articles'), {
             editedArticleId: editedArticle.current.id,
             ...article,
+            timestamp: serverTimestamp(),
             action: 'edit',
           });
 
@@ -166,6 +175,7 @@ const EditArticle = () => {
             {
               editedArticleId: editedArticle.current.id,
               ...article,
+              timestamp: serverTimestamp(),
               action: 'edit',
             },
             ...suggestedArticles,
@@ -175,6 +185,7 @@ const EditArticle = () => {
             editedArticleId: editedArticle.current.id,
             ...article,
             action: 'edit',
+            timestamp: serverTimestamp(),
             contributors: [...article.contributors, currentUser.id],
           });
 
@@ -183,6 +194,7 @@ const EditArticle = () => {
               editedArticleId: editedArticle.current.id,
               ...article,
               action: 'edit',
+              timestamp: serverTimestamp(),
               contributors: [...article.contributors, currentUser.id],
             },
             ...suggestedArticles,
