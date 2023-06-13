@@ -23,7 +23,7 @@ const Toc = ({ content }) => {
         : 2;
       const title = match[2] || match[3].trim();
       const anchorId = `heading-${parsedHeadings.length}`;
-      headingElements[parsedHeadings.length].setAttribute('id', anchorId);
+      headingElements[parsedHeadings.length]?.setAttribute('id', anchorId);
 
       parsedHeadings.push({
         level: level,
