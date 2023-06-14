@@ -6,12 +6,6 @@
   align-items: center;
   justify-content: center;
 
-  &:nth-child(3) {
-    .faction__tooltip {
-      bottom: -39px;
-    }
-  }
-
   &__btn {
     background-color: $black;
     padding: 5px;
@@ -35,6 +29,7 @@
     opacity: 0;
     transition: all 0.3s ease;
     z-index: 1000;
+    white-space: nowrap;
   }
 
   &:hover {
