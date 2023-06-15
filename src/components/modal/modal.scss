@@ -1,0 +1,58 @@
+@import '../../../Scss/var';
+
+.overlay {
+  background-color: rgba(19, 20, 22, 0.541);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3000;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .modal {
+    position: absolute;
+    text-align: center;
+    z-index: 4000;
+    background-color: $lightGray;
+    border: 2px solid $gold;
+    color: $white;
+    font-size: 18px;
+    padding: 15px;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+
+    button {
+      border: 2px solid $gold;
+      color: $gold;
+      padding: 5px 10px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+
+      &:hover {
+        background-color: $gold;
+        color: $black;
+      }
+    }
+
+    a {
+      color: $lightGreen;
+      margin-left: 5px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: $gold;
+      }
+    }
+  }
+}

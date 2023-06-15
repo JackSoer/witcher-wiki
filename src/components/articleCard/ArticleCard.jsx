@@ -80,7 +80,10 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
   const handleEdit = async () => {
     try {
-      await updateDoc(doc(db, 'Articles', article.editedArticleId), article);
+      await updateDoc(doc(db, 'Articles', article.editedArticleId), {
+        ...article,
+        id: article.editedArticleId,
+      });
 
       const contributorId =
         article.contributors[article.contributors.length - 1];
@@ -95,7 +98,9 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
       }
 
       const editedArticles = articlesData.data.map((articleData) =>
-        articleData.id === article.editedArticleId ? article : articleData
+        articleData.id === article.editedArticleId
+          ? { ...article, id: article.editedArticleId }
+          : articleData
       );
 
       setArticles(editedArticles);

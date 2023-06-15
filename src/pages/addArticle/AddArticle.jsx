@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './addArticle.scss';
 import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 import handleInput from '../../utils/handleInput';
@@ -22,6 +22,7 @@ import Error from '../../components/error/Error';
 import MultSelect from '../../components/multSelect/MultSelect';
 import Textarea from '../../components/textarea/Textarea';
 import Loading from '../../components/loading/Loading';
+import Modal from '../../components/modal/Modal';
 
 const AddArticle = () => {
   const { isLoading, fetchError, data } = useFetchDocsFromColl('Categories');
@@ -45,6 +46,8 @@ const AddArticle = () => {
   const [factionEnable, setFactionEnable] = useState(false);
   const [error, setError] = useState('');
   const [isValidateContent, setIsValidateContent] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [articleTitle, setArticleTitle] = useState('');
 
   useEffect(() => {
     const checkIsFactionEnable = () => {
@@ -77,7 +80,66 @@ const AddArticle = () => {
     setArticle((prev) => ({ ...prev, faction }));
   }, [faction]);
 
-  const handleAdd = async (e) => {
+  const handleAddForUser = async () => {
+    try {
+      await addDoc(collection(db, 'Suggested Articles'), {
+        action: 'add',
+        ...article,
+        timestamp: serverTimestamp(),
+      });
+
+      setSuggestedArticles([
+        {
+          action: 'add',
+          ...article,
+          timestamp: serverTimestamp(),
+        },
+        ...suggestedArticles,
+      ]);
+
+      setError('');
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleAddForAdmin = async () => {
+    try {
+      const newArticle = await addDoc(collection(db, 'Articles'), {
+        ...article,
+        timestamp: serverTimestamp(),
+      });
+
+      await updateDoc(doc(db, 'Users', currentUser.id), {
+        articles: [newArticle.id, ...currentUser.articles],
+      });
+
+      article.cats.forEach(async (cat) => {
+        await addDoc(collection(db, 'Categories', cat, 'Articles'), {
+          articleRef: newArticle.id,
+        });
+      });
+
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          ...currentUser,
+          articles: [newArticle.id, ...currentUser.articles],
+        },
+      });
+
+      setArticles([
+        { ...article, timestamp: serverTimestamp(), id: newArticle.id },
+        ...articlesData.data,
+      ]);
+
+      setError('');
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleAdd = async (isAdmin, e) => {
     e.preventDefault();
 
     const isExistingArticle = articlesData.data.find(
@@ -98,115 +160,93 @@ const AddArticle = () => {
       return;
     }
 
-    try {
-      if (currentUser.isAdmin) {
-        const newArticle = await addDoc(collection(db, 'Articles'), {
-          ...article,
-          timestamp: serverTimestamp(),
-        });
+    setArticleTitle(article.title);
 
-        await updateDoc(doc(db, 'Users', currentUser.id), {
-          articles: [newArticle.id, ...currentUser.articles],
-        });
-
-        article.cats.forEach(async (cat) => {
-          await addDoc(collection(db, 'Categories', cat, 'Articles'), {
-            articleRef: newArticle.id,
-          });
-        });
-
-        dispatch({
-          type: 'LOGIN',
-          payload: {
-            ...currentUser,
-            articles: [newArticle.id, ...currentUser.articles],
-          },
-        });
-
-        setArticles([
-          { ...article, timestamp: serverTimestamp(), id: newArticle.id },
-          ...articlesData.data,
-        ]);
-      } else {
-        await addDoc(collection(db, 'Suggested Articles'), {
-          action: 'add',
-          ...article,
-          timestamp: serverTimestamp(),
-        });
-
-        setSuggestedArticles([
-          {
-            action: 'add',
-            ...article,
-            timestamp: serverTimestamp(),
-          },
-          ...suggestedArticles,
-        ]);
-      }
-
-      setError('');
-
-      navigate('/');
-    } catch (err) {
-      setError(err.message);
+    if (isAdmin) {
+      handleAddForAdmin();
+    } else {
+      handleAddForUser();
     }
+
+    currentUser.isAdmin ? setModalIsOpen(true) : navigate('/');
+  };
+
+  const toHomePage = () => {
+    navigate('/');
   };
 
   return (
     <div className="add-article">
       <div className="container">
         <h1 className="add-article__title">Add article</h1>
-        <form className="add-article__form" onSubmit={handleAdd}>
-          <Input
-            id="title"
-            value={article.title}
-            onChange={(e) => handleInput(e, setArticle)}
-            placeholder="Title"
-            type="text"
-            required
-            pattern="[A-Za-z]{2,}.*$"
-            errorMsg="Title must contain at least 2 letters"
-          />
-          <Input
-            id="mainImage"
-            value={article.mainImage}
-            onChange={(e) => handleInput(e, setArticle)}
-            placeholder="Main Image URL"
-            type="text"
-            required
-            pattern="^https?:\/\/\S+$"
-            errorMsg="Invalid image URL. Please provide a valid URL."
-          />
-          <label htmlFor="cats" className="add-article__label">
-            Categories (choose one or more):
-          </label>
-          {!isLoading && !fetchError && (
-            <MultSelect items={data} setFunc={setArticle} id="cats" />
-          )}
-          {isLoading && !fetchError && <Loading />}
-          {factionEnable && <FactionsFilter />}
-          <Textarea
-            name="content"
-            id="content"
-            className="add-article__content"
-            onChange={(e) => {
-              setIsValidateContent(isValidateTextarea(e.target.value));
-              handleInput(e, setArticle);
-            }}
-            placeholder="Content"
-            required
-            errorMsg="The article content must be between 10 and 5000 characters long."
-            isValidate={isValidateContent}
-            value={article.content}
-          />
-          <p className="add-article__content-tip">
-            Only markdown, HTML will be ignored
-          </p>
-          {error && <Error errorText={error} />}
-          <button type="submit" className="add-article__btn">
-            Send
-          </button>
-        </form>
+        {articlesData.data.length > 0 ? (
+          <form
+            className="add-article__form"
+            onSubmit={(e) => handleAdd(currentUser.isAdmin, e)}
+          >
+            <Input
+              id="title"
+              value={article.title}
+              onChange={(e) => handleInput(e, setArticle)}
+              placeholder="Title"
+              type="text"
+              required
+              pattern="[A-Za-z]{2,}.*$"
+              errorMsg="Title must contain at least 2 letters"
+            />
+            <Input
+              id="mainImage"
+              value={article.mainImage}
+              onChange={(e) => handleInput(e, setArticle)}
+              placeholder="Main Image URL"
+              type="text"
+              required
+              pattern="^https?:\/\/\S+$"
+              errorMsg="Invalid image URL. Please provide a valid URL."
+            />
+            <label htmlFor="cats" className="add-article__label">
+              Categories (choose one or more):
+            </label>
+            {!isLoading && !fetchError && (
+              <MultSelect items={data} setFunc={setArticle} id="cats" />
+            )}
+            {isLoading && !fetchError && <Loading />}
+            {factionEnable && <FactionsFilter />}
+            <Textarea
+              name="content"
+              id="content"
+              className="add-article__content"
+              onChange={(e) => {
+                setIsValidateContent(isValidateTextarea(e.target.value));
+                handleInput(e, setArticle);
+              }}
+              placeholder="Content"
+              required
+              errorMsg="The article content must be between 10 and 5000 characters long."
+              isValidate={isValidateContent}
+              value={article.content}
+            />
+            <p className="add-article__content-tip">
+              Only markdown, HTML will be ignored
+            </p>
+            {error && <Error errorText={error} />}
+            <button type="submit" className="add-article__btn">
+              Send
+            </button>
+          </form>
+        ) : (
+          <Loading />
+        )}
+        {modalIsOpen && currentUser.isAdmin && (
+          <Modal>
+            <p>
+              Thank you very much for your contribution! This has already been
+              accepted and added. You can check it in the "My Articles" tab or
+              <Link to={`/${articleTitle}`}>here</Link>.
+            </p>
+            <button onClick={toHomePage}>Home Page</button>
+          </Modal>
+        )}
       </div>
     </div>
   );

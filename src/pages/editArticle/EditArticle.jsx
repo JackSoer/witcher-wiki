@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import './editArticle.scss';
 import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 import handleInput from '../../utils/handleInput';
@@ -23,6 +23,8 @@ import Error from '../../components/error/Error';
 import MultSelect from '../../components/multSelect/MultSelect';
 import Textarea from '../../components/textarea/Textarea';
 import getDocById from '../../utils/getDocById';
+import Modal from '../../components/modal/Modal';
+import Loading from '../../components/loading/Loading';
 
 const EditArticle = () => {
   const { id } = useParams();
@@ -42,6 +44,8 @@ const EditArticle = () => {
   const [error, setError] = useState('');
   const [defCats, setDefCats] = useState([]);
   const [isValidateContent, setIsValidateContent] = useState(true);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [articleTitle, setArticleTitle] = useState('');
 
   const navigate = useNavigate();
 
@@ -97,7 +101,105 @@ const EditArticle = () => {
     setArticle((prev) => ({ ...prev, faction }));
   }, [faction]);
 
-  const handleEdit = async (e) => {
+  const handleEditForUser = async () => {
+    try {
+      const isContributor = article.contributors.includes(currentUser.id);
+
+      if (isContributor) {
+        await addDoc(collection(db, 'Suggested Articles'), {
+          editedArticleId: editedArticle.current.id,
+          ...article,
+          timestamp: serverTimestamp(),
+          action: 'edit',
+        });
+
+        setSuggestedArticles([
+          {
+            editedArticleId: editedArticle.current.id,
+            ...article,
+            timestamp: serverTimestamp(),
+            action: 'edit',
+          },
+          ...suggestedArticles,
+        ]);
+      } else {
+        await addDoc(collection(db, 'Suggested Articles'), {
+          editedArticleId: editedArticle.current.id,
+          ...article,
+          action: 'edit',
+          timestamp: serverTimestamp(),
+          contributors: [...article.contributors, currentUser.id],
+        });
+
+        setSuggestedArticles([
+          {
+            editedArticleId: editedArticle.current.id,
+            ...article,
+            action: 'edit',
+            timestamp: serverTimestamp(),
+            contributors: [...article.contributors, currentUser.id],
+          },
+          ...suggestedArticles,
+        ]);
+      }
+
+      setError('');
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleEditForAdmin = async () => {
+    try {
+      const isContributor = article.contributors.includes(currentUser.id);
+      let editedArticles;
+
+      if (isContributor) {
+        await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
+          ...article,
+          timestamp: serverTimestamp(),
+        });
+
+        editedArticles = articlesData.data.map((articleData) =>
+          articleData.id === editedArticle.current.id ? article : articleData
+        );
+      } else {
+        await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
+          ...article,
+          timestamp: serverTimestamp(),
+          contributors: [...article.contributors, currentUser.id],
+        });
+        await updateDoc(doc(db, 'Users', currentUser.id), {
+          articles: [editedArticle.current.id, ...currentUser.articles],
+        });
+
+        editedArticles = articlesData.data.map((articleData) =>
+          articleData.id === editedArticle.current.id
+            ? {
+                ...article,
+                timestamp: serverTimestamp(),
+                contributors: [...article.contributors, currentUser.id],
+              }
+            : articleData
+        );
+
+        dispatch({
+          type: 'LOGIN',
+          payload: {
+            ...currentUser,
+            articles: [editedArticle.current.id, ...currentUser.articles],
+          },
+        });
+      }
+
+      setArticles(editedArticles);
+      setError('');
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleEdit = async (isAdmin, e) => {
     e.preventDefault();
 
     const isEqual =
@@ -117,105 +219,30 @@ const EditArticle = () => {
       return;
     }
 
-    try {
-      const isContributor = article.contributors.includes(currentUser.id);
+    setArticleTitle(article.title);
 
-      if (currentUser.isAdmin) {
-        let editedArticles;
-
-        if (isContributor) {
-          await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
-            ...article,
-            timestamp: serverTimestamp(),
-          });
-
-          editedArticles = articlesData.data.map((articleData) =>
-            articleData.id === editedArticle.current.id ? article : articleData
-          );
-        } else {
-          await updateDoc(doc(db, 'Articles', editedArticle.current.id), {
-            ...article,
-            timestamp: serverTimestamp(),
-            contributors: [...article.contributors, currentUser.id],
-          });
-          await updateDoc(doc(db, 'Users', currentUser.id), {
-            articles: [editedArticle.current.id, ...currentUser.articles],
-          });
-
-          editedArticles = articlesData.data.map((articleData) =>
-            articleData.id === editedArticle.current.id
-              ? {
-                  ...article,
-                  timestamp: serverTimestamp(),
-                  contributors: [...article.contributors, currentUser.id],
-                }
-              : articleData
-          );
-
-          dispatch({
-            type: 'LOGIN',
-            payload: {
-              ...currentUser,
-              articles: [editedArticle.current.id, ...currentUser.articles],
-            },
-          });
-        }
-
-        setArticles(editedArticles);
-      } else {
-        if (isContributor) {
-          await addDoc(collection(db, 'Suggested Articles'), {
-            editedArticleId: editedArticle.current.id,
-            ...article,
-            timestamp: serverTimestamp(),
-            action: 'edit',
-          });
-
-          setSuggestedArticles([
-            {
-              editedArticleId: editedArticle.current.id,
-              ...article,
-              timestamp: serverTimestamp(),
-              action: 'edit',
-            },
-            ...suggestedArticles,
-          ]);
-        } else {
-          await addDoc(collection(db, 'Suggested Articles'), {
-            editedArticleId: editedArticle.current.id,
-            ...article,
-            action: 'edit',
-            timestamp: serverTimestamp(),
-            contributors: [...article.contributors, currentUser.id],
-          });
-
-          setSuggestedArticles([
-            {
-              editedArticleId: editedArticle.current.id,
-              ...article,
-              action: 'edit',
-              timestamp: serverTimestamp(),
-              contributors: [...article.contributors, currentUser.id],
-            },
-            ...suggestedArticles,
-          ]);
-        }
-      }
-
-      setError('');
-
-      navigate('/');
-    } catch (err) {
-      setError(err.message);
+    if (isAdmin) {
+      handleEditForAdmin();
+    } else {
+      handleEditForUser();
     }
+
+    currentUser.isAdmin ? setModalIsOpen(true) : navigate('/');
+  };
+
+  const toHomePage = () => {
+    navigate('/');
   };
 
   return (
     <div className="edit-article">
       <div className="container">
         <h1 className="edit-article__title">Edit article</h1>
-        {article && article.title && (
-          <form className="edit-article__form" onSubmit={handleEdit}>
+        {article && article.title && articlesData.data.length > 0 ? (
+          <form
+            className="edit-article__form"
+            onSubmit={(e) => handleEdit(currentUser.isAdmin, e)}
+          >
             <Input
               id="title"
               value={article.title}
@@ -270,8 +297,20 @@ const EditArticle = () => {
               Send
             </button>
           </form>
+        ) : (
+          <Loading />
         )}
       </div>
+      {modalIsOpen && currentUser.isAdmin && (
+        <Modal>
+          <p>
+            Thank you very much for your contribution! This has already been
+            accepted and edited. You can check it in the "My Articles" tab or
+            <Link to={`/${articleTitle}`}>here</Link>.
+          </p>
+          <button onClick={toHomePage}>Home Page</button>
+        </Modal>
+      )}
     </div>
   );
 };

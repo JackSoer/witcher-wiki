@@ -4,14 +4,11 @@ import Articles from '../../components/articles/Articles';
 import AuthContext from '../../context/AuthContext';
 import getDocById from '../../utils/getDocById';
 
-import Loading from '../../components/loading/Loading';
-import Error from '../../components/error/Error';
-
 const MyArticles = () => {
   const { currentUser } = useContext(AuthContext);
 
   const [userArticles, setUserArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {

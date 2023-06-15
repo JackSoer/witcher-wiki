@@ -10,6 +10,7 @@ export const ArticlesContextProvider = ({ children }) => {
     fetchError: suggestedArticlesFetchError,
     isLoading: suggestedArticlesIsLoading,
   } = useFetchDocsFromColl('Suggested Articles');
+
   const [articles, setArticles] = useState([]);
   const [suggestedArticles, setSuggestedArticles] = useState([]);
   const [action, setAction] = useState('add');
