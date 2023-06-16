@@ -10,6 +10,7 @@ import {
   collection,
   doc,
   serverTimestamp,
+  setDoc,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import ArticlesContext from '../../context/ArticlesContext';
@@ -115,7 +116,7 @@ const AddArticle = () => {
       });
 
       article.cats.forEach(async (cat) => {
-        await addDoc(collection(db, 'Categories', cat, 'Articles'), {
+        await setDoc(doc(db, 'Categories', cat, 'Articles', newArticle.id), {
           articleRef: newArticle.id,
         });
       });
@@ -204,9 +205,9 @@ const AddArticle = () => {
               pattern="^https?:\/\/\S+$"
               errorMsg="Invalid image URL. Please provide a valid URL."
             />
-            <label htmlFor="cats" className="add-article__label">
+            <p htmlFor="cats" className="add-article__label">
               Categories (choose one or more):
-            </label>
+            </p>
             {!isLoading && !fetchError && (
               <MultSelect items={data} setFunc={setArticle} id="cats" />
             )}

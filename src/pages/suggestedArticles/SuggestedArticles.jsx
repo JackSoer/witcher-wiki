@@ -6,16 +6,13 @@ import ArticlesContext from '../../context/ArticlesContext';
 import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
 
 const SuggestedArticles = () => {
+  const { suggestedArticles, setSuggestedArticles, action, setAction } =
+    useContext(ArticlesContext);
   const {
-    suggestedArticles,
-    setSuggestedArticles,
-    suggestedArticlesFetchError: fetchError,
-    suggestedArticlesIsLoading: isLoading,
-    action,
-    setAction,
-  } = useContext(ArticlesContext);
-  const { data: suggestedArticlesData } =
-    useFetchDocsFromColl('Suggested Articles');
+    data: suggestedArticlesData,
+    fetchError,
+    isLoading,
+  } = useFetchDocsFromColl('Suggested Articles');
 
   const [articles, setArticles] = useState([]);
   const [addedArticlesCount, setAddedArticlesCount] = useState(0);

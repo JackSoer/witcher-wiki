@@ -19,7 +19,7 @@ const Articles = ({
 
   const [itemOffset, setItemOffset] = useState(0);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredArticles.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(filteredArticles.length / itemsPerPage);

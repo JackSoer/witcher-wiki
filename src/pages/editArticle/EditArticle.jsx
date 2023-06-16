@@ -12,9 +12,10 @@ import {
   doc,
   collection,
   serverTimestamp,
+  setDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-import getArticlesByTitle from '../../utils/getArticlesByTitle';
 import isValidateTextarea from '../../utils/isValidateTextarea';
 
 import Input from '../../components/input/Input';
@@ -25,6 +26,7 @@ import Textarea from '../../components/textarea/Textarea';
 import getDocById from '../../utils/getDocById';
 import Modal from '../../components/modal/Modal';
 import Loading from '../../components/loading/Loading';
+import getArticleByTitle from '../../utils/getArticleByTitle';
 
 const EditArticle = () => {
   const { id } = useParams();
@@ -37,10 +39,11 @@ const EditArticle = () => {
   const { faction, setFaction } = useContext(FilterContext);
   const { currentUser, dispatch } = useContext(AuthContext);
 
-  const editedArticle = useRef(getArticlesByTitle(articles, id)[0]);
+  const editedArticle = useRef(getArticleByTitle(articles, id));
+  const loaded = useRef(false);
 
   const [article, setArticle] = useState(editedArticle.current);
-  const [factionEnable, setFactionEnable] = useState(false);
+  const [factionEnable, setFactionEnable] = useState(true);
   const [error, setError] = useState('');
   const [defCats, setDefCats] = useState([]);
   const [isValidateContent, setIsValidateContent] = useState(true);
@@ -50,11 +53,9 @@ const EditArticle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    editedArticle.current = getArticlesByTitle(articles, id)[0];
-    setArticle(getArticlesByTitle(articles, id)[0]);
-  }, [articles]);
+    editedArticle.current = getArticleByTitle(articles, id);
+    setArticle(getArticleByTitle(articles, id));
 
-  useEffect(() => {
     const fetchDefCats = async () => {
       const editedArticlesCats = await Promise.all(
         editedArticle.current.cats.map((cat) => getDocById('Categories', cat))
@@ -65,8 +66,7 @@ const EditArticle = () => {
     };
 
     editedArticle.current?.cats && fetchDefCats();
-    setFaction(editedArticle.current?.faction);
-  }, [editedArticle.current]);
+  }, [articles]);
 
   useEffect(() => {
     const checkIsFactionEnable = () => {
@@ -82,20 +82,21 @@ const EditArticle = () => {
         }
       });
 
-      if (isFactionEnable) {
-        setFaction(editedArticle.current.faction);
-
-        return isFactionEnable;
-      } else if (!isFactionEnable) {
+      if (!isFactionEnable) {
         isFactionEnable = false;
         setFaction('');
-
-        return isFactionEnable;
+        loaded.current = true;
       }
+
+      return isFactionEnable;
     };
 
     setFactionEnable(checkIsFactionEnable());
   }, [article?.cats]);
+
+  useEffect(() => {
+    setFaction(editedArticle.current?.faction);
+  }, [loaded.current]);
 
   useEffect(() => {
     setArticle((prev) => ({ ...prev, faction }));
@@ -191,6 +192,34 @@ const EditArticle = () => {
           },
         });
       }
+
+      article.cats.forEach(async (cat) => {
+        await setDoc(
+          doc(db, 'Categories', cat, 'Articles', editedArticle.current.id),
+          {
+            articleRef: editedArticle.current.id,
+          }
+        );
+      });
+
+      let deletedCats = [...editedArticle.current.cats];
+
+      for (let i = 0; i < editedArticle.current.cats.length; i++) {
+        for (let j = 0; j < article.cats.length; j++) {
+          if (editedArticle.current.cats[i] === article.cats[j]) {
+            deletedCats = deletedCats.filter(
+              (cat) => cat !== editedArticle.current.cats[i]
+            );
+          }
+        }
+      }
+
+      deletedCats.forEach(
+        async (cat) =>
+          await deleteDoc(
+            doc(db, 'Categories', cat, 'Articles', editedArticle.current.id)
+          )
+      );
 
       setArticles(editedArticles);
       setError('');

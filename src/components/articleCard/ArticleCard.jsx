@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import {
   addDoc,
   updateDoc,
@@ -7,7 +7,7 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Error from '../error/Error';
 import './articleCard.scss';
 import ArticlesContext from '../../context/ArticlesContext';
@@ -16,8 +16,7 @@ import getDocById from '../../utils/getDocById';
 
 const ArticleCard = ({ title, image, suggestedArticle, article }) => {
   const articlesData = useFetchDocsFromColl('Articles');
-  const { pathname } = useLocation();
-  const isSuggestedArticle = pathname.includes('/suggested-articles');
+
   const { setSuggestedArticles, suggestedArticles, action, setArticles } =
     useContext(ArticlesContext);
 
@@ -25,11 +24,13 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
   const [contributor, setContrubutor] = useState({});
   const [editedArticle, setEditedArticle] = useState({});
 
+  const contributorId = useRef(null);
+
   useEffect(() => {
     const fetchContributor = async () => {
-      const contributorId =
+      contributorId.current =
         article.contributors[article.contributors.length - 1];
-      const contributorData = await getDocById('Users', contributorId);
+      const contributorData = await getDocById('Users', contributorId.current);
       const articleData = await getDocById('Articles', article.editedArticleId);
 
       setEditedArticle(articleData);
@@ -42,6 +43,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
   const handleDelete = async () => {
     try {
       await deleteDoc(doc(db, 'Suggested Articles', article.id));
+
       const filteredArticles = suggestedArticles.filter(
         (suggestedArticle) => suggestedArticle.id !== article.id
       );
@@ -51,14 +53,27 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
     }
   };
 
+  const sendDeleteNotification = async () => {
+    const notification = {
+      title: `Sorry, but your contribution to "${article.title}" article was rejected...`,
+      checked: false,
+    };
+
+    await updateDoc(doc(db, 'Users', contributorId.current), {
+      notifications: [notification, ...contributor.notifications],
+    });
+  };
+
+  const handleReject = () => {
+    handleDelete();
+    sendDeleteNotification();
+  };
+
   const handleAdd = async () => {
     try {
       const newArticle = await addDoc(collection(db, 'Articles'), article);
 
-      const contributorId =
-        article.contributors[article.contributors.length - 1];
-
-      await updateDoc(doc(db, 'Users', contributorId), {
+      await updateDoc(doc(db, 'Users', contributorId.current), {
         articles: [newArticle.id, ...contributor.articles],
       });
 
@@ -71,6 +86,16 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
       setArticles([{ ...article, id: newArticle.id }, ...articlesData.data]);
 
       handleDelete();
+
+      const notification = {
+        title: `Thank you very much for your contribution! This has already been accepted and added. You can check it in the "My Articles" tab or `,
+        articleTitle: article.title,
+        checked: false,
+      };
+
+      await updateDoc(doc(db, 'Users', contributorId.current), {
+        notifications: [notification, ...contributor.notifications],
+      });
 
       setError(null);
     } catch (err) {
@@ -85,14 +110,12 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
         id: article.editedArticleId,
       });
 
-      const contributorId =
-        article.contributors[article.contributors.length - 1];
       const isContributor = contributor.articles.includes(
         article.editedArticleId
       );
 
       if (!isContributor) {
-        await updateDoc(doc(db, 'Users', contributorId), {
+        await updateDoc(doc(db, 'Users', contributorId.current), {
           articles: [article.editedArticleId, ...contributor.articles],
         });
       }
@@ -106,6 +129,16 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
       setArticles(editedArticles);
 
       handleDelete();
+
+      const notification = {
+        title: `Thank you very much for your contribution! This has already been accepted and edited. You can check it in the "My Articles" tab or `,
+        articleTitle: article.title,
+        checked: false,
+      };
+
+      await updateDoc(doc(db, 'Users', contributorId.current), {
+        notifications: [notification, ...contributor.notifications],
+      });
 
       setError('');
     } catch (err) {
@@ -121,7 +154,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
           : `article-card-box article-card-box--suggested `
       }
     >
-      {isSuggestedArticle && action === 'edit' && (
+      {suggestedArticle && action === 'edit' && (
         <>
           <Link to={`/${editedArticle.title}`}>
             <div className="article-card">
@@ -163,7 +196,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
             {error && <Error errorText={error} />}
           </div>
         </Link>
-        {isSuggestedArticle && (
+        {suggestedArticle && (
           <div className="article-card__btns">
             <div className="article-card__btn-box">
               <button
@@ -187,7 +220,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
               <div className="article-card__btn-box-tooltip">Approve</div>
             </div>
             <div className="article-card__btn-box">
-              <button className="article-card__btn" onClick={handleDelete}>
+              <button className="article-card__btn" onClick={handleReject}>
                 <svg
                   id="Layer_1"
                   data-name="Layer 1"
@@ -201,7 +234,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
           </div>
         )}
       </div>
-      {isSuggestedArticle && (
+      {suggestedArticle && (
         <div className="article-card__extra-info">
           <h3 className="article-card__extra-info-title">User</h3>
           <img

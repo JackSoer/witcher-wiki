@@ -26,6 +26,7 @@ const Register = () => {
     email: '',
     articles: [],
     isAdmin: false,
+    notifications: [],
   });
   const [file, setFile] = useState('');
 
