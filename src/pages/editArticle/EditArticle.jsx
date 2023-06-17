@@ -12,8 +12,8 @@ import {
   doc,
   collection,
   serverTimestamp,
-  setDoc,
   deleteDoc,
+  getDocs,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import isValidateTextarea from '../../utils/isValidateTextarea';
@@ -106,12 +106,25 @@ const EditArticle = () => {
     try {
       const isContributor = article.contributors.includes(currentUser.id);
 
+      let deletedCats = [...editedArticle.current.cats];
+
+      for (let i = 0; i < editedArticle.current.cats.length; i++) {
+        for (let j = 0; j < article.cats.length; j++) {
+          if (editedArticle.current.cats[i] === article.cats[j]) {
+            deletedCats = deletedCats.filter(
+              (cat) => cat !== editedArticle.current.cats[i]
+            );
+          }
+        }
+      }
+
       if (isContributor) {
         await addDoc(collection(db, 'Suggested Articles'), {
           editedArticleId: editedArticle.current.id,
           ...article,
           timestamp: serverTimestamp(),
           action: 'edit',
+          deletedCats: deletedCats,
         });
 
         setSuggestedArticles([
@@ -120,6 +133,7 @@ const EditArticle = () => {
             ...article,
             timestamp: serverTimestamp(),
             action: 'edit',
+            deletedCats: deletedCats,
           },
           ...suggestedArticles,
         ]);
@@ -130,6 +144,7 @@ const EditArticle = () => {
           action: 'edit',
           timestamp: serverTimestamp(),
           contributors: [...article.contributors, currentUser.id],
+          deletedCats: deletedCats,
         });
 
         setSuggestedArticles([
@@ -139,6 +154,7 @@ const EditArticle = () => {
             action: 'edit',
             timestamp: serverTimestamp(),
             contributors: [...article.contributors, currentUser.id],
+            deletedCats: deletedCats,
           },
           ...suggestedArticles,
         ]);
@@ -194,12 +210,27 @@ const EditArticle = () => {
       }
 
       article.cats.forEach(async (cat) => {
-        await setDoc(
-          doc(db, 'Categories', cat, 'Articles', editedArticle.current.id),
-          {
-            articleRef: editedArticle.current.id,
-          }
+        const data = await getDocs(
+          collection(db, 'Categories', cat, 'Articles')
         );
+        const articlesRef = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        let articleFinded = false;
+
+        articlesRef.forEach((articleRef) => {
+          if (articleRef.articleRef === editedArticle.current.id) {
+            articleFinded = true;
+          }
+        });
+
+        if (!articleFinded) {
+          await addDoc(collection(db, 'Categories', cat, 'Articles'), {
+            articleRef: editedArticle.current.id,
+          });
+        }
       });
 
       let deletedCats = [...editedArticle.current.cats];
@@ -214,12 +245,25 @@ const EditArticle = () => {
         }
       }
 
-      deletedCats.forEach(
-        async (cat) =>
+      deletedCats.forEach(async (cat) => {
+        const data = await getDocs(
+          collection(db, 'Categories', cat, 'Articles')
+        );
+        const articlesRef = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        const currentArticlesRef = articlesRef.filter(
+          (articleRef) => articleRef.articleRef === editedArticle.current.id
+        );
+
+        currentArticlesRef.forEach(async (currentArticleRef) => {
           await deleteDoc(
-            doc(db, 'Categories', cat, 'Articles', editedArticle.current.id)
-          )
-      );
+            doc(db, 'Categories', cat, 'Articles', currentArticleRef.id)
+          );
+        });
+      });
 
       setArticles(editedArticles);
       setError('');

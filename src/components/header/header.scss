@@ -124,6 +124,7 @@
 
         a,
         button {
+          transition: all 0.3s ease;
           color: $gold !important;
           font-size: 20px;
         }
