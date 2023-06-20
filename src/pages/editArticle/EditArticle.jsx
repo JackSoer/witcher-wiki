@@ -119,45 +119,32 @@ const EditArticle = () => {
       }
 
       if (isContributor) {
-        await addDoc(collection(db, 'Suggested Articles'), {
+        const articleData = {
           editedArticleId: editedArticle.current.id,
           ...article,
           timestamp: serverTimestamp(),
           action: 'edit',
           deletedCats: deletedCats,
-        });
+          currentContributor: currentUser.id,
+        };
 
-        setSuggestedArticles([
-          {
-            editedArticleId: editedArticle.current.id,
-            ...article,
-            timestamp: serverTimestamp(),
-            action: 'edit',
-            deletedCats: deletedCats,
-          },
-          ...suggestedArticles,
-        ]);
+        await addDoc(collection(db, 'Suggested Articles'), articleData);
+
+        setSuggestedArticles([articleData, ...suggestedArticles]);
       } else {
-        await addDoc(collection(db, 'Suggested Articles'), {
+        const articleData = {
           editedArticleId: editedArticle.current.id,
           ...article,
           action: 'edit',
           timestamp: serverTimestamp(),
           contributors: [...article.contributors, currentUser.id],
           deletedCats: deletedCats,
-        });
+          currentContributor: currentUser.id,
+        };
 
-        setSuggestedArticles([
-          {
-            editedArticleId: editedArticle.current.id,
-            ...article,
-            action: 'edit',
-            timestamp: serverTimestamp(),
-            contributors: [...article.contributors, currentUser.id],
-            deletedCats: deletedCats,
-          },
-          ...suggestedArticles,
-        ]);
+        await addDoc(collection(db, 'Suggested Articles'), articleData);
+
+        setSuggestedArticles([articleData, ...suggestedArticles]);
       }
 
       setError('');
@@ -282,15 +269,7 @@ const EditArticle = () => {
       return;
     }
 
-    const isExistingArticle = articlesData.data.find(
-      (articleData) =>
-        articleData.title.toLowerCase() === article.title.toLowerCase()
-    );
-
-    if (isExistingArticle) {
-      setError('An article with this title already exists');
-      return;
-    } else if (factionEnable && !article.faction) {
+    if (factionEnable && !article.faction) {
       setError('Choose a faction');
       return;
     } else if (article.cats.length < 1) {

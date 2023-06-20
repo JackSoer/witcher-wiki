@@ -4,7 +4,7 @@
   position: absolute;
   top: 100%;
   width: 350px;
-  padding: 15px 10px 10px 10px;
+  padding: 15px 10px 33px 10px;
   background-color: $darkGray;
   color: $white;
   border: 4px solid $gold;
@@ -14,9 +14,31 @@
   max-height: 250px;
   overflow: auto;
 
+  &--empty {
+    padding-bottom: 15px;
+  }
+
   &-warning {
     text-align: center;
     color: $lightGreen;
     font-size: 16px;
+  }
+
+  &-clear-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: $lightGray;
+    color: $lightGreen;
+    padding: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $white;
+      background-color: $lightGreen;
+    }
   }
 }

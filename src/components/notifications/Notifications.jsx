@@ -16,7 +16,6 @@ const Notifications = () => {
 
   const notificationsListRef = useRef(null);
   const opened = useRef(false);
-  // const checked = useRef(false);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -116,8 +115,13 @@ const Notifications = () => {
           {newNotifiacationsCount}
         </p>
       )}
-      {isOpen && <NotificationsList notifications={notifications} />}
-      {/* <div className="notifications__tooltip">Notifications</div> */}
+      {isOpen && (
+        <NotificationsList
+          notifications={notifications}
+          setNotifications={setNotifications}
+          currentUserId={currentUser.id}
+        />
+      )}
     </div>
   );
 };
