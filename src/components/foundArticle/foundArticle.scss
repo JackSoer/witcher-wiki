@@ -4,6 +4,7 @@
   height: 50px;
   background-color: $gold;
   border: 2px solid $black;
+  border-top: none;
   padding: 0 15px 0 0;
   transition: all 0.3s ease;
 
@@ -36,5 +37,6 @@
     font-size: 18px;
     font-weight: 700;
     transition: all 0.3s ease;
+    text-align: right;
   }
 }

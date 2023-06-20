@@ -3,9 +3,9 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
   flex: 1;
-  margin-right: 25px;
+  margin-right: 150px;
   height: 100%;
 
   &__categories {
@@ -59,7 +59,7 @@
 
   &__list {
     position: absolute;
-    z-index: -100;
+    z-index: 500;
     top: 100%;
     padding: 13px;
     background-color: $darkGray;

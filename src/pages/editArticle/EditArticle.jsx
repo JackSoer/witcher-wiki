@@ -282,7 +282,15 @@ const EditArticle = () => {
       return;
     }
 
-    if (factionEnable && !article.faction) {
+    const isExistingArticle = articlesData.data.find(
+      (articleData) =>
+        articleData.title.toLowerCase() === article.title.toLowerCase()
+    );
+
+    if (isExistingArticle) {
+      setError('An article with this title already exists');
+      return;
+    } else if (factionEnable && !article.faction) {
       setError('Choose a faction');
       return;
     } else if (article.cats.length < 1) {
@@ -300,7 +308,7 @@ const EditArticle = () => {
       handleEditForUser();
     }
 
-    currentUser.isAdmin ? setModalIsOpen(true) : navigate('/');
+    setModalIsOpen(true);
   };
 
   const toHomePage = () => {
@@ -374,13 +382,21 @@ const EditArticle = () => {
           <Loading />
         )}
       </div>
-      {modalIsOpen && currentUser.isAdmin && (
+      {modalIsOpen && (
         <Modal>
-          <p>
-            Thank you very much for your contribution! This has already been
-            accepted and edited. You can check it in the "My Articles" tab or
-            <Link to={`/${articleTitle}`}>here</Link>.
-          </p>
+          {currentUser.isAdmin ? (
+            <p>
+              Thank you very much for your contribution! This has already been
+              accepted and added. You can check it in the "My Articles" tab or
+              <Link to={`/${articleTitle}`}>here</Link>.
+            </p>
+          ) : (
+            <p>
+              Thank you very much for your contribution! When your contribution
+              will be approved or rejected you'll receive a notification about
+              this.
+            </p>
+          )}
           <button onClick={toHomePage}>Home Page</button>
         </Modal>
       )}

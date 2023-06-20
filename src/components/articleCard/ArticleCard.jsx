@@ -30,32 +30,26 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
   const contributorId = useRef(null);
 
+  const fetchContributor = async () => {
+    contributorId.current =
+      article.contributors[article.contributors.length - 1];
+
+    try {
+      setIsLoading(true);
+
+      const contributorData = await getDocById('Users', contributorId.current);
+      const articleData = await getDocById('Articles', article.editedArticleId);
+
+      setEditedArticle(articleData);
+      setContrubutor(contributorData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchContributor = async () => {
-      contributorId.current =
-        article.contributors[article.contributors.length - 1];
-
-      try {
-        setIsLoading(true);
-
-        const contributorData = await getDocById(
-          'Users',
-          contributorId.current
-        );
-        const articleData = await getDocById(
-          'Articles',
-          article.editedArticleId
-        );
-
-        setEditedArticle(articleData);
-        setContrubutor(contributorData);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchContributor();
   }, [article]);
 
@@ -73,13 +67,15 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
   };
 
   const sendDeleteNotification = async () => {
+    const contributorData = await getDocById('Users', contributorId.current);
+
     const notification = {
       title: `Sorry, but your contribution to "${article.title}" article was rejected...`,
       checked: false,
     };
 
     await updateDoc(doc(db, 'Users', contributorId.current), {
-      notifications: [notification, ...contributor.notifications],
+      notifications: [notification, ...contributorData.notifications],
     });
   };
 
@@ -90,10 +86,12 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
   const handleAdd = async () => {
     try {
+      const contributorData = await getDocById('Users', contributorId.current);
+
       const newArticle = await addDoc(collection(db, 'Articles'), article);
 
       await updateDoc(doc(db, 'Users', contributorId.current), {
-        articles: [newArticle.id, ...contributor.articles],
+        articles: [newArticle.id, ...contributorData.articles],
       });
 
       article.cats.forEach(async (cat) => {
@@ -107,13 +105,13 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
       handleDelete();
 
       const notification = {
-        title: `Thank you very much for your contribution (article ${article.title})! This has already been accepted and added. You can check it in the "My Articles" tab or `,
+        title: `Thank you very much for your contribution to "${article.title}" article! This has already been accepted and added. You can check it in the "My Articles" tab or `,
         articleTitle: article.title,
         checked: false,
       };
 
       await updateDoc(doc(db, 'Users', contributorId.current), {
-        notifications: [notification, ...contributor.notifications],
+        notifications: [notification, ...contributorData.notifications],
       });
 
       setError(null);
@@ -124,6 +122,8 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
   const handleEdit = async () => {
     try {
+      const contributorData = await getDocById('Users', contributorId.current);
+
       await updateDoc(doc(db, 'Articles', article.editedArticleId), {
         ...article,
         id: article.editedArticleId,
@@ -179,7 +179,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
       if (!isContributor) {
         await updateDoc(doc(db, 'Users', contributorId.current), {
-          articles: [article.editedArticleId, ...contributor.articles],
+          articles: [article.editedArticleId, ...contributorData.articles],
         });
       }
 
@@ -194,13 +194,13 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
       handleDelete();
 
       const notification = {
-        title: `Thank you very much for your contribution (article ${article.title})! This has already been accepted and edited. You can check it in the "My Articles" tab or `,
+        title: `Thank you very much for your contribution to "${article.title}" article! This has already been accepted and edited. You can check it in the "My Articles" tab or `,
         articleTitle: article.title,
         checked: false,
       };
 
       await updateDoc(doc(db, 'Users', contributorId.current), {
-        notifications: [notification, ...contributor.notifications],
+        notifications: [notification, ...contributorData.notifications],
       });
 
       setError('');

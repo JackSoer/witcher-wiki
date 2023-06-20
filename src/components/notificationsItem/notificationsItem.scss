@@ -1,0 +1,36 @@
+@import '../../../Scss/var';
+
+.notifications__item {
+  background: url('../../../public/assets/icons/dropdown-line.png') no-repeat
+    bottom;
+  background-size: 100% 2px;
+  padding-bottom: 10px;
+
+  &:last-child {
+    background: none;
+    padding: 0;
+  }
+
+  &-title {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+  }
+
+  &-link {
+    color: $lightGreen !important;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $gold !important;
+    }
+  }
+
+  &--checked {
+    opacity: 0.5;
+
+    .notifications__item-link {
+      opacity: 0.5;
+    }
+  }
+}
