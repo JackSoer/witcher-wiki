@@ -31,8 +31,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
   const contributorId = useRef(null);
 
   const fetchContributor = async () => {
-    contributorId.current =
-      article.contributors[article.contributors.length - 1];
+    contributorId.current = article.currentContributor;
 
     try {
       setIsLoading(true);
