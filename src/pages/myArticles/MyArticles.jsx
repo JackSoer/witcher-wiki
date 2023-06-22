@@ -16,8 +16,10 @@ const MyArticles = () => {
       try {
         setIsLoading(true);
 
+        const contributorData = await getDocById('Users', currentUser.id);
+
         const userArticlesData = await Promise.all(
-          currentUser.articles.map((articleId) =>
+          contributorData.articles.map((articleId) =>
             getDocById('Articles', articleId)
           )
         );

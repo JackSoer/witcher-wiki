@@ -87,6 +87,7 @@ const AddArticle = () => {
         action: 'add',
         ...article,
         timestamp: serverTimestamp(),
+        currentContributor: currentUser.id,
       });
 
       setSuggestedArticles([
@@ -94,6 +95,7 @@ const AddArticle = () => {
           action: 'add',
           ...article,
           timestamp: serverTimestamp(),
+          currentContributor: currentUser.id,
         },
         ...suggestedArticles,
       ]);

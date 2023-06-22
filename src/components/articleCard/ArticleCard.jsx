@@ -89,8 +89,15 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
       const newArticle = await addDoc(collection(db, 'Articles'), article);
 
+      const notification = {
+        title: `Thank you very much for your contribution to "${article.title}" article! This has already been accepted and added. You can check it in the "My Articles" tab or `,
+        articleTitle: article.title,
+        checked: false,
+      };
+
       await updateDoc(doc(db, 'Users', contributorId.current), {
         articles: [newArticle.id, ...contributorData.articles],
+        notifications: [notification, ...contributorData.notifications],
       });
 
       article.cats.forEach(async (cat) => {
@@ -103,19 +110,9 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
       handleDelete();
 
-      const notification = {
-        title: `Thank you very much for your contribution to "${article.title}" article! This has already been accepted and added. You can check it in the "My Articles" tab or `,
-        articleTitle: article.title,
-        checked: false,
-      };
-
-      await updateDoc(doc(db, 'Users', contributorId.current), {
-        notifications: [notification, ...contributorData.notifications],
-      });
-
       setError(null);
     } catch (err) {
-      setError(err.message);
+      setError(err);
     }
   };
 
