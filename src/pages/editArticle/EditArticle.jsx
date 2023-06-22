@@ -269,7 +269,18 @@ const EditArticle = () => {
       return;
     }
 
-    if (factionEnable && !article.faction) {
+    const isExistingArticle = articlesData.data.find(
+      (articleData) =>
+        articleData.title.toLowerCase() === article.title.toLowerCase()
+    );
+
+    const isTheSameTitle =
+      article.title.toLowerCase() === editedArticle.current.title.toLowerCase();
+
+    if (isExistingArticle && !isTheSameTitle) {
+      setError('An article with this title already exists');
+      return;
+    } else if (factionEnable && !article.faction) {
       setError('Choose a faction');
       return;
     } else if (article.cats.length < 1) {
