@@ -55,7 +55,7 @@ const ArticleContent = ({ article }) => {
           <h1 className="article-content__title">{article.title}</h1>
           {currentUser && !pathname.includes('/suggested-articles') && (
             <Link
-              to={`/edit-article/${article.title}`}
+              to={`/edit-article/${article.id}`}
               className="article-content__edit"
             >
               <svg

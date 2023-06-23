@@ -13,9 +13,9 @@ const NotificationsItem = ({ notification }) => {
     >
       <p className="notifications__item-title">
         {notification.title}
-        {notification?.articleTitle && (
+        {notification?.articleId && (
           <Link
-            to={`${notification.articleTitle}`}
+            to={`${notification.articleId}`}
             className="notifications__item-link"
           >
             here.

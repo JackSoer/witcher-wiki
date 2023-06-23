@@ -11,7 +11,12 @@ const CatSlider = ({ catItems }) => {
     <div className="slider">
       <Slider slidesToShow={4} dots={true}>
         {catItems.map((item) => (
-          <CatItem img={item.mainImage} title={item.title} key={item.id} />
+          <CatItem
+            img={item.mainImage}
+            title={item.title}
+            key={item.id}
+            id={item.id}
+          />
         ))}
       </Slider>
     </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './addArticle.scss';
 import useFetchDocsFromColl from '../../hooks/useFetchDocsFromColl';
@@ -48,7 +48,8 @@ const AddArticle = () => {
   const [error, setError] = useState('');
   const [isValidateContent, setIsValidateContent] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [articleTitle, setArticleTitle] = useState('');
+
+  const addedArticleId = useRef(null);
 
   useEffect(() => {
     const checkIsFactionEnable = () => {
@@ -113,6 +114,8 @@ const AddArticle = () => {
         timestamp: serverTimestamp(),
       });
 
+      addedArticleId.current = newArticle.id;
+
       await updateDoc(doc(db, 'Users', currentUser.id), {
         articles: [newArticle.id, ...currentUser.articles],
       });
@@ -162,8 +165,6 @@ const AddArticle = () => {
     } else if (!isValidateContent) {
       return;
     }
-
-    setArticleTitle(article.title);
 
     if (isAdmin) {
       handleAddForAdmin();
@@ -246,7 +247,7 @@ const AddArticle = () => {
               <p>
                 Thank you very much for your contribution! This has already been
                 accepted and added. You can check it in the "My Articles" tab or
-                <Link to={`/${articleTitle}`}>here</Link>.
+                <Link to={`/${addedArticleId.current}`}>here</Link>.
               </p>
             ) : (
               <p>

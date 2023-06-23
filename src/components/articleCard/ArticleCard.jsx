@@ -91,8 +91,8 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
       const notification = {
         title: `Thank you very much for your contribution to "${article.title}" article! This has already been accepted and added. You can check it in the "My Articles" tab or `,
-        articleTitle: article.title,
         checked: false,
+        articleId: newArticle.id,
       };
 
       await updateDoc(doc(db, 'Users', contributorId.current), {
@@ -191,8 +191,8 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
       const notification = {
         title: `Thank you very much for your contribution to "${article.title}" article! This has already been accepted and edited. You can check it in the "My Articles" tab or `,
-        articleTitle: article.title,
         checked: false,
+        articleId: article.editedArticleId,
       };
 
       await updateDoc(doc(db, 'Users', contributorId.current), {
@@ -217,7 +217,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
         >
           {suggestedArticle && action === 'edit' && (
             <>
-              <Link to={`/${editedArticle.title}`}>
+              <Link to={`/${editedArticle.id}`}>
                 <div className="article-card">
                   <img
                     src={editedArticle.mainImage}
@@ -251,7 +251,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
               to={
                 suggestedArticle
                   ? `/suggested-articles/${article.id}`
-                  : `/${title}`
+                  : `/${article.id}`
               }
             >
               <div className="article-card">

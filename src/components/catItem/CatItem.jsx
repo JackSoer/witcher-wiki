@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 import './catItem.scss';
 
-const CatItem = ({ img, title }) => {
+const CatItem = ({ img, title, id }) => {
   return (
-    <Link to={`/${title}`}>
+    <Link to={`/${id}`}>
       <div className="cat-item">
         <img src={img} alt="Something went wrong" className="cat-item__img" />
         <h3 className="cat-item__title">{title}</h3>

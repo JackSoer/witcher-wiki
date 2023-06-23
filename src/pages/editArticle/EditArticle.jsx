@@ -26,7 +26,6 @@ import Textarea from '../../components/textarea/Textarea';
 import getDocById from '../../utils/getDocById';
 import Modal from '../../components/modal/Modal';
 import Loading from '../../components/loading/Loading';
-import getArticleByTitle from '../../utils/getArticleByTitle';
 
 const EditArticle = () => {
   const { id } = useParams();
@@ -39,23 +38,29 @@ const EditArticle = () => {
   const { faction, setFaction } = useContext(FilterContext);
   const { currentUser, dispatch } = useContext(AuthContext);
 
-  const editedArticle = useRef(getArticleByTitle(articles, id));
+  const editedArticle = useRef({});
   const loaded = useRef(false);
 
-  const [article, setArticle] = useState(editedArticle.current);
+  const [article, setArticle] = useState({});
   const [factionEnable, setFactionEnable] = useState(true);
   const [error, setError] = useState('');
   const [defCats, setDefCats] = useState([]);
   const [isValidateContent, setIsValidateContent] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [articleTitle, setArticleTitle] = useState('');
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    editedArticle.current = getArticleByTitle(articles, id);
-    setArticle(getArticleByTitle(articles, id));
+    const fetchArticle = async () => {
+      const currentArticle = await getDocById('Articles', id);
+      editedArticle.current = currentArticle;
+      setArticle(currentArticle);
+    };
 
+    fetchArticle();
+  }, [articles]);
+
+  useEffect(() => {
     const fetchDefCats = async () => {
       const editedArticlesCats = await Promise.all(
         editedArticle.current.cats.map((cat) => getDocById('Categories', cat))
@@ -66,7 +71,7 @@ const EditArticle = () => {
     };
 
     editedArticle.current?.cats && fetchDefCats();
-  }, [articles]);
+  }, [editedArticle.current]);
 
   useEffect(() => {
     const checkIsFactionEnable = () => {
@@ -290,8 +295,6 @@ const EditArticle = () => {
       return;
     }
 
-    setArticleTitle(article.title);
-
     if (isAdmin) {
       handleEditForAdmin();
     } else {
@@ -378,7 +381,7 @@ const EditArticle = () => {
             <p>
               Thank you very much for your contribution! This has already been
               accepted and added. You can check it in the "My Articles" tab or
-              <Link to={`/${articleTitle}`}>here</Link>.
+              <Link to={`/${editedArticle.current.id}`}>here</Link>.
             </p>
           ) : (
             <p>

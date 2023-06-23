@@ -25,7 +25,7 @@ const Article = () => {
         if (pathname.includes('/suggested-articles')) {
           filteredArticle = await getDocById('Suggested Articles', id);
         } else {
-          filteredArticle = getArticleByTitle(articles, id);
+          filteredArticle = await getDocById('Articles', id);
         }
         setArticle(filteredArticle);
         setFetchError(null);

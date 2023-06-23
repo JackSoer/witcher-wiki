@@ -2,10 +2,10 @@ import React from 'react';
 import './foundArticle.scss';
 import { Link } from 'react-router-dom';
 
-const FoundArticle = ({ title, img }) => {
+const FoundArticle = ({ title, img, id }) => {
   return (
     <div className="found-article">
-      <Link to={`/${title}`}>
+      <Link to={`/${id}`}>
         <img
           src={img}
           alt="Something went wrong"
