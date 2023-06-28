@@ -10,10 +10,12 @@ export const ArticlesContextProvider = ({ children }) => {
     fetchError: suggestedArticlesFetchError,
     isLoading: suggestedArticlesIsLoading,
   } = useFetchDocsFromColl('Suggested Articles');
+  const { data: categories } = useFetchDocsFromColl('Categories');
 
   const [articles, setArticles] = useState([]);
   const [suggestedArticles, setSuggestedArticles] = useState([]);
   const [action, setAction] = useState('add');
+  const [cats, setCats] = useState('add');
 
   useEffect(() => {
     setArticles(data);
@@ -33,6 +35,7 @@ export const ArticlesContextProvider = ({ children }) => {
         fetchError,
         action,
         setAction,
+        categories,
       }}
     >
       {children}

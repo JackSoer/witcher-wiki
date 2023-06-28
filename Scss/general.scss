@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 @import '../Scss/var';
+@import './mixins';
 
 html,
 body,
@@ -24,4 +25,12 @@ body {
   max-width: 1230px;
   margin: 0 auto;
   padding: 0 25px;
+
+  @include tablet {
+    max-width: 768px;
+  }
+
+  @include mobile {
+    max-width: 360px;
+  }
 }

@@ -5,15 +5,16 @@
   align-items: center;
   flex: 1;
   position: relative;
+  max-width: 650px;
+  min-width: 300px;
 
   &__input {
     width: 100%;
-    min-width: 110px;
     border: 2px solid $gold;
     background-color: $gold;
     border-radius: 10px;
     font-size: 18px;
-    padding: 5px 8px;
+    padding: 5px 35px 5px 8px;
     transition: all 0.3s ease;
 
     &--found {

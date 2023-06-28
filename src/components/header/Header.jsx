@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './header.scss';
 import { signOut } from 'firebase/auth';
@@ -6,8 +6,9 @@ import Nav from '../nav/Nav';
 import AuthContext from '../../context/AuthContext';
 import { auth } from '../../config/firebase';
 import Notifications from '../notifications/Notifications';
+import AuthBtns from '../authBtns/AuthBtns';
 
-const Header = () => {
+const Header = ({ setIsOpen }) => {
   const { currentUser, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -30,14 +31,7 @@ const Header = () => {
       </Link>
       <Nav />
       {!currentUser ? (
-        <div className="header__acc-btns acc-btns">
-          <Link to="/login">
-            <button className="acc-btns__sign-in">Sign In</button>
-          </Link>
-          <Link to="/register">
-            <button className="acc-btns__sign-up">Sign Up</button>
-          </Link>
-        </div>
+        <AuthBtns />
       ) : (
         <>
           <Notifications />
@@ -82,6 +76,13 @@ const Header = () => {
           </div>
         </>
       )}
+
+      <button
+        className="header__menu-btn-box"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        <div className="header__menu-btn"></div>
+      </button>
     </header>
   );
 };
