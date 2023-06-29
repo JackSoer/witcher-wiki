@@ -5,7 +5,7 @@
   align-items: center;
   gap: 20px;
   flex: 1;
-  margin-right: 100px;
+  margin-right: 80px;
   height: 100%;
 
   &__categories {
@@ -56,12 +56,16 @@
       }
     }
 
-    @media (max-width: 970px) {
+    @media (max-width: 1041px) {
       display: none;
     }
   }
 
   @media (max-width: 680px) {
     margin-right: 50px;
+  }
+
+  @media (max-width: 950px) {
+    margin: 0;
   }
 }

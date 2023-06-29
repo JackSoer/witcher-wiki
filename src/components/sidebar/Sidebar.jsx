@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import AuthContext from '../../context/AuthContext';
 import AuthBtns from '../authBtns/AuthBtns';
 import Cats from '../cats/Cats';
 import './sidebar.scss';
 
 const Sidebar = ({ setIsOpen, isOpen }) => {
+  const { currentUser } = useContext(AuthContext);
+
   return (
     <nav className={isOpen ? 'sidebar sidebar--open' : 'sidebar'}>
       <button
@@ -16,9 +19,11 @@ const Sidebar = ({ setIsOpen, isOpen }) => {
         <li className="sidebar__list-item">
           <Cats />
         </li>
-        <li className="sidebar__list-item">
-          <AuthBtns />
-        </li>
+        {!currentUser && (
+          <li className="sidebar__list-item">
+            <AuthBtns />
+          </li>
+        )}
       </ul>
     </nav>
   );

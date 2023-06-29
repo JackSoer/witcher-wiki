@@ -12,7 +12,7 @@ const Main = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (windowSize.width > 970) {
+    if (windowSize.width > 1041) {
       setIsOpen(false);
     }
   }, [windowSize]);
