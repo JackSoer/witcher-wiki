@@ -11,7 +11,9 @@ const CatSlider = ({ catItems }) => {
   const { windowSize } = useContext(WindowSizeContext);
 
   const getSlidesToShow = () => {
-    if (windowSize.width <= 800) {
+    if (windowSize.width <= 500) {
+      return 1;
+    } else if (windowSize.width <= 800) {
       return 2;
     } else if (windowSize.width <= 1000) {
       return 3;

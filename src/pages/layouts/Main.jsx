@@ -4,7 +4,6 @@ import WindowSizeContext from '../../context/WindowSizeContext';
 
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
-import Sidebar from '../../components/sidebar/Sidebar';
 
 const Main = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,8 +22,7 @@ const Main = () => {
 
   return (
     <>
-      <Header setIsOpen={setIsOpen} />
-      <Sidebar setIsOpen={setIsOpen} isOpen={isOpen} />
+      <Header />
       <Outlet />
       <Footer />
     </>

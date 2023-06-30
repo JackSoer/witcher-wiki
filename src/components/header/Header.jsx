@@ -7,8 +7,9 @@ import AuthContext from '../../context/AuthContext';
 import { auth } from '../../config/firebase';
 import Notifications from '../notifications/Notifications';
 import AuthBtns from '../authBtns/AuthBtns';
+import Sidebar from '../sidebar/Sidebar';
 
-const Header = ({ setIsOpen }) => {
+const Header = () => {
   const { currentUser, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -77,12 +78,7 @@ const Header = ({ setIsOpen }) => {
         </>
       )}
 
-      <button
-        className="header__menu-btn-box"
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        <div className="header__menu-btn"></div>
-      </button>
+      <Sidebar />
     </header>
   );
 };
