@@ -7,6 +7,7 @@ import ArticleCard from '../../components/articleCard/ArticleCard';
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
 import ArticlesContext from '../../context/ArticlesContext';
+import WindowSizeContext from '../../context/WindowSizeContext';
 
 const Articles = ({
   filteredArticles,
@@ -16,10 +17,11 @@ const Articles = ({
 }) => {
   const { faction } = useContext(FilterContext);
   const { action } = useContext(ArticlesContext);
+  const { windowSize } = useContext(WindowSizeContext);
 
   const [itemOffset, setItemOffset] = useState(0);
 
-  const itemsPerPage = 15;
+  const itemsPerPage = windowSize.width <= 570 ? 16 : 15;
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredArticles.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(filteredArticles.length / itemsPerPage);

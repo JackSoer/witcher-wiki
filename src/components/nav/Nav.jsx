@@ -5,11 +5,14 @@ import Search from '../search/Search';
 import { SearchContextProvider } from '../../context/SearchContext';
 import Cats from '../cats/Cats';
 import WindowSizeContext from '../../context/WindowSizeContext';
+import { useLocation } from 'react-router-dom';
 
 const Nav = () => {
   const [inputIsOpen, setInputIsOpen] = useState(false);
 
   const { windowSize } = useContext(WindowSizeContext);
+
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (inputIsOpen && windowSize.width <= 720) {
@@ -18,6 +21,12 @@ const Nav = () => {
       document.body.classList.remove('overflow-hidden');
     }
   }, [inputIsOpen]);
+
+  useEffect(() => {
+    if (windowSize.width <= 720) {
+      setInputIsOpen(false);
+    }
+  }, [pathname]);
 
   return (
     <nav

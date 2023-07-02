@@ -1,4 +1,5 @@
 @import '../../../Scss/var';
+@import '../../../Scss/mixins';
 
 .cat-item {
   width: 100%;
@@ -16,6 +17,10 @@
     z-index: 500;
     background-color: rgba(0, 0, 0, 0.37);
     transition: all 0.3s ease;
+
+    @include tablet {
+      display: none;
+    }
   }
 
   &__img {
@@ -40,6 +45,13 @@
     transition: all 0.3s ease;
     text-align: center;
     word-wrap: break-word;
+
+    @include tablet {
+      font-size: 23px;
+      opacity: 1;
+      background-color: $black;
+      box-shadow: 0 -5px 10px 0 $black;
+    }
   }
 
   &:hover &__title {
@@ -50,5 +62,9 @@
 
   &:hover:after {
     background-color: transparent;
+  }
+
+  @include mobile {
+    height: 200px;
   }
 }

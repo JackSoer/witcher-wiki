@@ -1,4 +1,5 @@
 @import '../../../Scss/var';
+@import '../../../Scss/mixins';
 
 .notifications__item {
   background: url('../../../public/assets/icons/dropdown-line.png') no-repeat
@@ -15,6 +16,14 @@
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
+
+    @media (max-width: 950px) {
+      font-size: 13px;
+    }
+
+    @include mobile {
+      font-size: 11px;
+    }
   }
 
   &-link {
@@ -32,5 +41,9 @@
     .notifications__item-link {
       opacity: 0.5;
     }
+  }
+
+  @include mobile {
+    padding-bottom: 8px;
   }
 }

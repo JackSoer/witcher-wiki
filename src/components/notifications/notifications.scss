@@ -1,4 +1,5 @@
 @import '../../../Scss/var';
+@import '../../../Scss/mixins';
 
 .notifications {
   margin-right: 12px;
@@ -55,6 +56,10 @@
       white-space: nowrap;
       pointer-events: none;
       border: 1px solid white;
+
+      @include tablet {
+        display: none;
+      }
     }
 
     &:hover {

@@ -1,4 +1,5 @@
 @import '../../../Scss/var';
+@import '../../../Scss/mixins';
 
 .cat-section {
   padding: 40px 25px;
@@ -39,6 +40,10 @@
     &:hover {
       text-shadow: 0 0 10px $gold;
     }
+
+    @include mobile {
+      font-size: 35px;
+    }
   }
 
   &__read-more-btn {
@@ -62,5 +67,14 @@
     a:visited {
       color: $gold;
     }
+
+    @include mobile {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  }
+
+  @include mobile {
+    padding: 25px;
   }
 }

@@ -24,7 +24,10 @@ const CatSlider = ({ catItems }) => {
 
   return (
     <div className="slider">
-      <Slider slidesToShow={getSlidesToShow()} dots={true}>
+      <Slider
+        slidesToShow={getSlidesToShow()}
+        dots={windowSize.width <= 361 ? false : true}
+      >
         {catItems.map((item) => (
           <CatItem
             img={item.mainImage}

@@ -15,15 +15,6 @@
   max-height: 250px;
   overflow: auto;
 
-  &--empty {
-    padding-bottom: 15px;
-    padding-top: 15px;
-
-    @include mobile {
-      padding: 10px;
-    }
-  }
-
   &-warning {
     text-align: center;
     color: $lightGreen;
@@ -50,6 +41,11 @@
       color: $white;
       background-color: $lightGreen;
     }
+
+    @include mobile {
+      padding: 8px;
+      font-size: 12px;
+    }
   }
 
   @media (max-width: 950px) {
@@ -58,5 +54,16 @@
 
   @include mobile {
     width: 80vw;
+    gap: 5px;
+    padding-top: 38px;
+  }
+
+  &--empty {
+    padding-bottom: 15px;
+    padding-top: 15px;
+
+    @include mobile {
+      padding: 10px;
+    }
   }
 }

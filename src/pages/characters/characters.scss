@@ -4,12 +4,11 @@
   width: 100%;
   background-color: $darkGray;
   position: relative;
-  padding: 35px 20px;
+  padding: 35px 0;
   flex: 1;
 
   &__content {
     border: 3px solid $gold;
-    padding: 15px;
     position: relative;
 
     &:after {
@@ -25,6 +24,10 @@
       z-index: 500;
       top: 80px;
       height: 22px;
+
+      @media (max-width: 470px) {
+        top: 42px;
+      }
     }
   }
 
@@ -49,5 +52,14 @@
     color: $gold;
     font-weight: 700;
     margin-bottom: 30px;
+
+    @media (max-width: 450px) {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+  }
+
+  @media (max-width: 450px) {
+    padding-top: 20px;
   }
 }
