@@ -312,7 +312,7 @@ const EditArticle = () => {
     <div className="edit-article">
       <div className="container">
         <h1 className="edit-article__title">Edit article</h1>
-        {article && article.title && articlesData.data.length > 0 ? (
+        {article && articlesData.data.length > 0 ? (
           <form
             className="edit-article__form"
             onSubmit={(e) => handleEdit(currentUser.isAdmin, e)}

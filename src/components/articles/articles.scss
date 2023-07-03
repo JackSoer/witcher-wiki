@@ -5,7 +5,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 25px;
-  padding: 15px;
+  padding: 5px 15px;
 
   &--suggested {
     grid-template-columns: 1fr 1fr;
@@ -74,6 +74,19 @@
       background-color: $gold;
       color: $black;
     }
+
+    @include tablet {
+      font-size: 16px;
+      width: 30px;
+      height: 30px;
+    }
+
+    @include mobile {
+      font-size: 14px;
+      width: 26px;
+      height: 26px;
+      border: 1px solid $gold;
+    }
   }
 
   &__active {
@@ -85,5 +98,10 @@
 
   @include tablet {
     margin-top: 10px;
+    gap: 8px;
+  }
+
+  @include mobile {
+    gap: 5px;
   }
 }

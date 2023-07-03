@@ -67,7 +67,8 @@ const Articles = ({
           breakLabel="..."
           nextLabel=">"
           onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
+          pageRangeDisplayed={1}
+          marginPagesDisplayed={windowSize.width <= 425 ? 1 : 2}
           pageCount={pageCount}
           previousLabel="<"
           renderOnZeroPageCount={null}

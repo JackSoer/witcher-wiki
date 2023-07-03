@@ -6,4 +6,12 @@
   font-size: 14px;
   color: red;
   margin-top: 5px;
+
+  @media (max-width: 505px) {
+    font-size: 12px;
+  }
+
+  @media (max-width: 405px) {
+    font-size: 10px;
+  }
 }

@@ -18,8 +18,15 @@
 
     @media (max-width: 470px) {
       img {
+        width: 26px;
+        height: 26px;
+      }
+    }
+
+    @media (max-width: 330px) {
+      img {
         width: 22px;
-        height: 22px;
+        height: 25px;
       }
     }
   }

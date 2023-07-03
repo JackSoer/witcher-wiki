@@ -39,7 +39,7 @@ const Article = () => {
 
   return (
     <div className="article">
-      {article && !fetchError && <ArticleContent article={article} />}
+      {article.title && !fetchError && <ArticleContent article={article} />}
       {!fetchError && !article?.title && <Loading />}
       {fetchError && <Error errorText={fetchError} />}
     </div>

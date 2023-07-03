@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './header.scss';
 import { signOut } from 'firebase/auth';
@@ -10,6 +10,10 @@ import AuthBtns from '../authBtns/AuthBtns';
 import Sidebar from '../sidebar/Sidebar';
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const userRef = useRef(null);
+
   const { currentUser, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -20,6 +24,24 @@ const Header = () => {
 
     navigate('/');
   };
+
+  const handleUserMenuClick = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClose = (e) => {
+      if (!userRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClose);
+
+    return () => document.removeEventListener('click', handleClose);
+  }, []);
+
+  console.log(isOpen);
 
   return (
     <header className="header">
@@ -36,8 +58,16 @@ const Header = () => {
       ) : (
         <>
           <Notifications />
-          <div className="header__user user">
-            <div className="user__info">
+          <div
+            className="header__user user"
+            onClick={handleUserMenuClick}
+            ref={userRef}
+          >
+            <div
+              className={
+                isOpen ? 'user__info user__info--active' : 'user__info'
+              }
+            >
               <div className="user__avatar">
                 <img
                   src={
@@ -54,7 +84,11 @@ const Header = () => {
               </div>
               <p className="user__name">{currentUser.username}</p>
             </div>
-            <div className="user__menu">
+            <div
+              className={
+                isOpen ? 'user__menu user__menu--active' : 'user__menu'
+              }
+            >
               <ul className="user__menu-list">
                 {currentUser?.isAdmin && (
                   <li className="user__menu-list-item">

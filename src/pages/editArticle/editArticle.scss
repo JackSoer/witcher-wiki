@@ -13,6 +13,14 @@
     font-size: 55px;
     font-weight: 700;
     margin-bottom: 15px;
+
+    @media (max-width: 405px) {
+      font-size: 45px;
+    }
+
+    @media (max-width: 370px) {
+      font-size: 40px;
+    }
   }
 
   &:before {
@@ -67,10 +75,47 @@
     font-weight: 500;
     background-color: $lightGray;
     width: 100%;
+
+    @media (max-width: 505px) {
+      font-size: 16px;
+    }
+
+    @media (max-width: 405px) {
+      font-size: 13px;
+      gap: 10px;
+    }
   }
 
   .faction-filter {
     margin-bottom: 0;
+    padding: 0;
+
+    @media (max-width: 560px) {
+      gap: 0;
+    }
+
+    .faction {
+      @media (max-width: 505px) {
+        img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+
+      @media (max-width: 405px) {
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      @media (max-width: 330px) {
+        img {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
   }
 
   &__btn {
@@ -88,6 +133,14 @@
       color: $black;
       background-color: $gold;
     }
+
+    @media (max-width: 505px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 405px) {
+      font-size: 16px;
+    }
   }
 
   &__content {
@@ -101,5 +154,17 @@
     padding: 10px;
     font-size: 1em;
     line-height: 20px;
+
+    @media (max-width: 505px) {
+      line-height: 18px;
+      padding: 5px 8px;
+      font-size: 16px;
+    }
+
+    @media (max-width: 405px) {
+      line-height: 16px;
+      padding: 5px 8px;
+      font-size: 14px;
+    }
   }
 }

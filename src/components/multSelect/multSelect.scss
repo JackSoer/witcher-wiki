@@ -3,4 +3,12 @@
   align-items: center;
   justify-content: center;
   gap: 15px;
+
+  @media (max-width: 505px) {
+    gap: 10px;
+  }
+
+  @media (max-width: 405px) {
+    gap: 7px;
+  }
 }

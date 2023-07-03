@@ -1,11 +1,16 @@
 @import '../../../Scss/var';
+@import '../../../Scss/mixins';
 
 .my-articles {
   flex: 1;
   width: 100%;
-  padding: 40px 0;
+  padding: 40px 0 10px 0;
   position: relative;
   background-color: $darkGray;
+
+  .articles {
+    padding: 0;
+  }
 
   &:before {
     content: '';
@@ -37,5 +42,18 @@
     font-weight: 700;
     margin-bottom: 30px;
     text-shadow: 0 0 10px $gold;
+
+    @include tablet {
+      font-size: 45px;
+      margin-bottom: 15px;
+    }
+
+    @include mobile {
+      font-size: 40px;
+    }
+  }
+
+  @include tablet {
+    padding-top: 20px;
   }
 }
