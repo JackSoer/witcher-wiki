@@ -149,7 +149,6 @@
     gap: 23px;
 
     &:after {
-      transition: all 0.3s ease;
       content: '';
       display: block;
       border-left: solid $white 4px;
@@ -160,6 +159,7 @@
       left: -5px;
       top: -2px;
       transform: rotate(-45deg);
+      transition: all 0.3s ease;
     }
 
     @media (max-width: 950px) {
@@ -179,8 +179,15 @@
     }
 
     &--active:after {
-      border-left: solid $gold 4px;
-      border-bottom: solid $gold 4px;
+      top: 2px;
+      transform: rotate(134deg);
+
+      @media (max-width: 950px) {
+        top: auto;
+        transform: rotate(-45deg);
+        border-left: solid $gold 4px;
+        border-bottom: solid $gold 4px;
+      }
     }
   }
 

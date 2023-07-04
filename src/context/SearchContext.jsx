@@ -4,19 +4,16 @@ import { useLocation } from 'react-router-dom';
 const SearchContext = createContext();
 
 export const SearchContextProvider = ({ children }) => {
-  const { pathname } = useLocation();
-
   const [search, setSearch] = useState('');
-
-  useEffect(() => {
-    setSearch('');
-  }, [pathname]);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <SearchContext.Provider
       value={{
         search,
         setSearch,
+        isOpen,
+        setIsOpen,
       }}
     >
       {children}

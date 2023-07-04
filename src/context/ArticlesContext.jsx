@@ -15,7 +15,6 @@ export const ArticlesContextProvider = ({ children }) => {
   const [articles, setArticles] = useState([]);
   const [suggestedArticles, setSuggestedArticles] = useState([]);
   const [action, setAction] = useState('add');
-  const [cats, setCats] = useState('add');
 
   useEffect(() => {
     setArticles(data);
@@ -36,6 +35,7 @@ export const ArticlesContextProvider = ({ children }) => {
         action,
         setAction,
         categories,
+
       }}
     >
       {children}

@@ -33,12 +33,6 @@
     position: relative;
     height: 100%;
 
-    &:hover {
-      .cats-list {
-        display: grid;
-      }
-    }
-
     &-title {
       display: flex;
       align-items: center;
@@ -67,6 +61,11 @@
         left: -5px;
         top: -2px;
         transform: rotate(-45deg);
+      }
+
+      &--open:after {
+        top: 2px;
+        transform: rotate(134deg);
       }
     }
 

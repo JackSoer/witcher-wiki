@@ -1,4 +1,5 @@
 @import '../../../Scss/var';
+@import '../../../Scss/mixins';
 
 .article-content {
   width: 100%;
@@ -11,18 +12,9 @@
     justify-content: space-between;
     gap: 20px;
     margin: 15px 0;
-  }
 
-  &__edit {
-    svg {
-      height: 30px;
-      width: 30px;
-      fill: $lightGreen;
-      transition: all 0.3s ease;
-
-      &:hover {
-        fill: $gold;
-      }
+    @include tablet {
+      flex-direction: column;
     }
   }
 
@@ -108,33 +100,19 @@
     font-size: 55px;
     font-weight: 700;
     text-shadow: 0 0 10px $gold;
+
+    @include tablet {
+      font-size: 50px;
+      padding-left: 0;
+    }
   }
 
   &__info {
     display: flex;
-    align-items: center;
     background-color: $lightGray;
     width: 100%;
     height: 100%;
     margin-bottom: 10px;
-  }
-
-  &__img {
-    width: 65% !important;
-    height: 100% !important;
-    max-height: 500px !important;
-    margin: 0 !important;
-    object-fit: cover !important;
-    object-position: top !important;
-  }
-
-  &__toc-box {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
   }
 
   img {
@@ -144,6 +122,22 @@
     margin: 15px;
     display: inline;
     float: right;
+  }
+
+  &__img {
+    width: auto !important;
+    height: 100% !important;
+    max-height: 500px !important;
+    min-height: 350px !important;
+    max-width: 490px !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+    object-position: center !important;
+
+    @include tablet {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
   }
 
   a,
@@ -163,8 +157,38 @@
     padding-left: 30px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
     margin-top: 10px;
+  }
+
+  &__toc-box {
+    width: 300px;
+    height: 100%;
+    padding: 10px;
+    transition: all 0.3s ease;
+    margin: auto;
+    transform: translateY(-100px);
+
+    @include tablet {
+      position: fixed;
+      z-index: 1000;
+      top: 180px;
+      right: 10px;
+      opacity: 1;
+      transform: translateY(-50%);
+      width: fit-content;
+      height: fit-content;
+
+      &--active {
+        left: 0;
+        width: 100vw;
+        padding: 25px 41px 25px 25px;
+      }
+
+      &--non-active {
+        z-index: -1;
+      }
+    }
   }
 
   ul {
@@ -186,5 +210,50 @@
     z-index: 500;
     top: -12px;
     height: 22px;
+  }
+
+  &__edit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: $black;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 2px solid $gold;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+
+    svg {
+      height: 30px;
+      width: 30px;
+      transition: all 0.3s ease;
+      fill: $gold;
+
+      @include tablet {
+        height: 27px;
+        width: 27px;
+      }
+    }
+
+    &:before {
+      content: 'Edit';
+      display: inline-block;
+      color: $gold;
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      background-color: $gold;
+
+      &:before {
+        content: 'Edit';
+        display: inline-block;
+        color: $black;
+      }
+
+      svg {
+        fill: $black;
+      }
+    }
   }
 }

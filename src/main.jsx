@@ -5,6 +5,7 @@ import { FilterContextProvider } from '../src/context/FilterContext';
 import { ArticlesContextProvider } from './context/ArticlesContext';
 import { AuthContextProvider } from './context/AuthContext';
 import { WindowSizeProvider } from './context/WindowSizeContext';
+import { SearchContextProvider } from './context/SearchContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AuthContextProvider>
         <ArticlesContextProvider>
           <FilterContextProvider>
-            <App />
+            <SearchContextProvider>
+              <App />
+            </SearchContextProvider>
           </FilterContextProvider>
         </ArticlesContextProvider>
       </AuthContextProvider>

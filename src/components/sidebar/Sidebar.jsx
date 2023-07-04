@@ -1,16 +1,16 @@
-import React, { useContext, useRef, useEffect, useState } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
+import SearchContext from '../../context/SearchContext';
 import WindowSizeContext from '../../context/WindowSizeContext';
 import AuthBtns from '../authBtns/AuthBtns';
 import Cats from '../cats/Cats';
 import './sidebar.scss';
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const { windowSize } = useContext(WindowSizeContext);
   const { currentUser } = useContext(AuthContext);
+  const { isOpen, setIsOpen } = useContext(SearchContext);
 
   const { pathname } = useLocation();
 

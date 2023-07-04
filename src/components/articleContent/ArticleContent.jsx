@@ -4,22 +4,37 @@ import ReactMarkdown from 'react-markdown';
 import './articleContent.scss';
 import getDocById from '../../utils/getDocById';
 import AuthContext from '../../context/AuthContext';
+import WindowSizeContext from '../../context/WindowSizeContext';
 
 import Toc from '../toc/Toc';
 import Cat from '../cat/Cat';
 import Dropdown from '../dropdown/Dropdown';
 import Contributor from '../Contributor/Contributor';
+import SearchContext from '../../context/SearchContext';
 
 const ArticleContent = ({ article }) => {
   const { pathname } = useLocation();
   const { currentUser } = useContext(AuthContext);
+  const { windowSize } = useContext(WindowSizeContext);
+  const { isOpen: sidebarIsOpen } = useContext(SearchContext);
 
   const [cats, setCats] = useState([]);
   const [contributors, setContributors] = useState([]);
+  const [isOpen, setIsOpen] = useState(true);
 
   function addLineBreaks(text) {
     return text.replace(/ {2}/g, '\n');
   }
+
+  const getClasses = () => {
+    if (sidebarIsOpen) {
+      return 'article-content__toc-box article-content__toc-box--non-active';
+    } else if (isOpen) {
+      return 'article-content__toc-box article-content__toc-box--active';
+    } else {
+      return 'article-content__toc-box';
+    }
+  };
 
   useEffect(() => {
     if (article.cats && article.contributors) {
@@ -47,6 +62,14 @@ const ArticleContent = ({ article }) => {
       fetchContributors();
     }
   }, [article]);
+
+  useEffect(() => {
+    if (windowSize.width <= 769) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
+  }, [windowSize.width]);
 
   return (
     <div className="article-content">
@@ -105,9 +128,13 @@ const ArticleContent = ({ article }) => {
               className="article-content__img"
             />
           )}
-          <div className="article-content__toc-box">
+          <div className={getClasses()}>
             {article.content && (
-              <Toc content={addLineBreaks(article.content)} />
+              <Toc
+                content={addLineBreaks(article.content)}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+              />
             )}
           </div>
         </div>

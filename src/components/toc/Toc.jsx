@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './toc.scss';
 
-const Toc = ({ content }) => {
+const Toc = ({ content, isOpen, setIsOpen }) => {
   const [headings, setHeadings] = useState([]);
-  const [isOpen, setIsOpen] = useState(true);
 
   const parseHeadings = (content) => {
     const headingElements = Array.from(
@@ -44,18 +43,31 @@ const Toc = ({ content }) => {
   }, [content]);
 
   return (
-    <div className="toc">
-      <button className="toc__btn" onClick={handleClick}>
+    <div className={isOpen ? 'toc  toc--active' : 'toc'}>
+      <button
+        className={isOpen ? 'toc__btn toc__btn--active' : 'toc__btn'}
+        onClick={handleClick}
+      >
         <img
-          src={`../assets/icons/${isOpen ? 'minus' : 'plus'}.png`}
+          src={`../assets/icons/63-content-list.svg`}
           alt="Something went wrong"
           className="toc__btn-icon"
         />
-        <span className="toc__btn-text">Contents</span>
+        <span
+          className={
+            isOpen ? 'toc__btn-text toc__btn-text--active' : 'toc__btn-text'
+          }
+        >
+          Contents
+        </span>
       </button>
       <ol className={isOpen ? 'toc__list toc__list--active' : 'toc__list'}>
         {headings.map((heading, index) => (
-          <li key={heading.anchorId} className="toc__list-item">
+          <li
+            key={heading.anchorId}
+            className="toc__list-item"
+            onClick={() => setIsOpen(false)}
+          >
             <a href={`#${heading.anchorId}`}>{`${index + 1}. ${
               heading.title
             }`}</a>

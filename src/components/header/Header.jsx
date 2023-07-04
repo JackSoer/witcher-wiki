@@ -41,8 +41,6 @@ const Header = () => {
     return () => document.removeEventListener('click', handleClose);
   }, []);
 
-  console.log(isOpen);
-
   return (
     <header className="header">
       <Link to="/">

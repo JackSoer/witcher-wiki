@@ -7,8 +7,11 @@ import getArticlesByTitle from '../../utils/getArticlesByTitle';
 import FoundArticles from '../foundArticles/FoundArticles';
 import ArticlesContext from '../../context/ArticlesContext';
 import WindowSizeContext from '../../context/WindowSizeContext';
+import { useLocation } from 'react-router-dom';
 
 const Search = ({ inputIsOpen, setInputIsOpen }) => {
+  const { pathname } = useLocation();
+
   const { articles } = useContext(ArticlesContext);
   const { search, setSearch } = useContext(SearchContext);
   const { windowSize } = useContext(WindowSizeContext);
@@ -45,6 +48,10 @@ const Search = ({ inputIsOpen, setInputIsOpen }) => {
       setInputIsOpen(false);
     }
   }, [windowSize.width]);
+
+  useEffect(() => {
+    setSearch('');
+  }, [pathname]);
 
   const getInputClasses = () => {
     if (foundArticles.length && search && isOpen && inputIsOpen) {

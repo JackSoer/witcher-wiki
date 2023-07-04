@@ -1,38 +1,70 @@
 @import '../../../Scss/var';
+@import '../../../Scss/mixins';
 
 .toc {
   border: 2px solid $gold;
   padding: 15px;
   background-color: $lightGreen;
+  position: relative;
+
+  &--non-active {
+    z-index: -1;
+  }
+
+  ol {
+    margin: 0;
+  }
 
   &__list {
-    position: relative;
-    top: -10px;
+    position: absolute;
+    top: 101%;
+    left: -2px;
+    right: -2px;
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s ease;
     list-style-type: none;
-    padding: 0 !important;
+    padding: 15px !important;
+    max-height: 200px;
+    height: fit-content;
+    overflow-y: auto;
+    z-index: -1;
+    line-height: normal;
+    background-color: $lightGreen;
+    border: 2px solid $gold;
+    border-top: 0;
 
     &--active {
       pointer-events: all;
-      top: 0;
       opacity: 1;
       transition: all 0.3s ease;
+      margin-top: 10px;
+      z-index: 100;
     }
 
     &-item {
       margin-bottom: 7px;
       font-size: 16px;
+      font-weight: 700;
 
       a {
         transition: all 0.3s ease;
         color: $black !important;
         text-decoration: none;
+        word-wrap: break-word;
 
         &:hover {
           color: $white !important;
         }
+      }
+
+      @media (max-width: 1000px) {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      @include tablet {
+        font-size: 16px;
       }
     }
 
@@ -45,11 +77,14 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 10px;
     background-color: $gold;
-    padding: 5px 8px;
+    padding: 8px;
     border-radius: 5px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
+
+    &--active {
+      border-radius: 5px;
+    }
 
     &:hover {
       background-color: $white;
@@ -64,6 +99,35 @@
     &-text {
       font-size: 23px;
       font-weight: 500;
+      display: none;
+
+      &--active {
+        display: block;
+      }
+
+      @media (min-width: 770px) {
+        display: block;
+      }
+    }
+
+    @include tablet {
+      border-radius: 50%;
+
+      &--active {
+        border-radius: 5px;
+      }
+    }
+  }
+
+  @include tablet {
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+
+    &--active {
+      border: 2px solid $gold;
+      border-radius: 0;
+      padding: 15px;
     }
   }
 }

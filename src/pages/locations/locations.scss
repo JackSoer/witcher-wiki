@@ -26,7 +26,11 @@
       height: 22px;
 
       @media (max-width: 470px) {
-        top: 42px;
+        top: 43px;
+      }
+
+      @media (max-width: 315px) {
+        top: 37px;
       }
     }
   }

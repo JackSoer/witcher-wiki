@@ -21,7 +21,19 @@ const Articles = ({
 
   const [itemOffset, setItemOffset] = useState(0);
 
-  const itemsPerPage = windowSize.width <= 570 ? 16 : 15;
+  const handleItemsPerPage = () => {
+    if (windowSize.width > 1250) {
+      return 15;
+    } else if (windowSize.width > 1000) {
+      return 16;
+    } else if (windowSize.width > 570) {
+      return 15;
+    } else {
+      return 16;
+    }
+  };
+
+  const itemsPerPage = handleItemsPerPage();
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredArticles.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(filteredArticles.length / itemsPerPage);
