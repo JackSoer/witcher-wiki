@@ -201,8 +201,8 @@
     object-position: center !important;
 
     @include tablet {
-      width: 100% !important;
       max-width: 100% !important;
+      margin: 0 auto !important;
     }
   }
 
