@@ -16,7 +16,7 @@ const ArticleContent = ({ article }) => {
   const { pathname } = useLocation();
   const { currentUser } = useContext(AuthContext);
   const { windowSize } = useContext(WindowSizeContext);
-  const { isOpen: sidebarIsOpen } = useContext(SearchContext);
+  const { isOpen: sidebarIsOpen, inputIsOpen } = useContext(SearchContext);
 
   const [cats, setCats] = useState([]);
   const [contributors, setContributors] = useState([]);
@@ -27,7 +27,7 @@ const ArticleContent = ({ article }) => {
   }
 
   const getClasses = () => {
-    if (sidebarIsOpen) {
+    if (sidebarIsOpen || inputIsOpen) {
       return 'article-content__toc-box article-content__toc-box--non-active';
     } else if (isOpen) {
       return 'article-content__toc-box article-content__toc-box--active';

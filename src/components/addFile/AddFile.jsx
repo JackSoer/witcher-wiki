@@ -5,6 +5,7 @@ import Error from '../error/Error';
 
 const AddFile = (props) => {
   const { title, children, file, isLoading, uploadError } = props;
+
   return (
     <div className="add-file">
       {children}

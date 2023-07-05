@@ -6,6 +6,7 @@ const SearchContext = createContext();
 export const SearchContextProvider = ({ children }) => {
   const [search, setSearch] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [inputIsOpen, setInputIsOpen] = useState(false);
 
   return (
     <SearchContext.Provider
@@ -14,6 +15,8 @@ export const SearchContextProvider = ({ children }) => {
         setSearch,
         isOpen,
         setIsOpen,
+        inputIsOpen,
+        setInputIsOpen,
       }}
     >
       {children}

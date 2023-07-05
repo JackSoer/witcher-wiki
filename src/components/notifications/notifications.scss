@@ -34,10 +34,6 @@
     align-items: center;
     justify-content: center;
 
-    &:hover:after {
-      opacity: 1;
-    }
-
     &:after {
       content: 'Notifications';
       display: block;
@@ -72,6 +68,12 @@
       width: 100%;
       height: 100%;
       transition: all 0.3s ease;
+    }
+
+    @media (hover: hover) {
+      &:hover:after {
+        opacity: 1;
+      }
     }
   }
 

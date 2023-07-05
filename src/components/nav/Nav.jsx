@@ -4,15 +4,16 @@ import './nav.scss';
 import Search from '../search/Search';
 import Cats from '../cats/Cats';
 import WindowSizeContext from '../../context/WindowSizeContext';
+import SearchContext from '../../context/SearchContext';
 import { useLocation } from 'react-router-dom';
 
 const Nav = () => {
-  const [inputIsOpen, setInputIsOpen] = useState(false);
   const [catsIsOpen, setCatsIsOpen] = useState(false);
 
   const catsRef = useRef(null);
 
   const { windowSize } = useContext(WindowSizeContext);
+  const { inputIsOpen, setInputIsOpen } = useContext(SearchContext);
 
   const { pathname } = useLocation();
 

@@ -6,6 +6,7 @@
   padding: 15px;
   background-color: $lightGreen;
   position: relative;
+  box-shadow: 0 0 10px $gold;
 
   &--non-active {
     z-index: -1;
@@ -17,7 +18,7 @@
 
   &__list {
     position: absolute;
-    top: 101%;
+    top: 100%;
     left: -2px;
     right: -2px;
     opacity: 0;
@@ -33,6 +34,7 @@
     background-color: $lightGreen;
     border: 2px solid $gold;
     border-top: 0;
+    box-shadow: 0 0 10px $gold;
 
     &--active {
       pointer-events: all;
@@ -86,14 +88,13 @@
       border-radius: 5px;
     }
 
-    &:hover {
-      background-color: $white;
-    }
-
     &-icon {
       width: 35px !important;
       height: 35px !important;
       margin: 0 !important;
+      max-height: 100% !important;
+      max-width: 100% !important;
+      object-fit: fill !important;
     }
 
     &-text {
@@ -115,6 +116,12 @@
 
       &--active {
         border-radius: 5px;
+      }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: $white;
       }
     }
   }

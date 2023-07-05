@@ -1,4 +1,5 @@
 @import '../../../Scss/var';
+@import '../../../Scss/mixins';
 
 .dropdown {
   width: 100%;
@@ -19,6 +20,10 @@
     &:hover {
       background-color: $gold;
     }
+
+    @include mobile {
+      gap: 50px;
+    }
   }
 
   &__btn {
@@ -31,10 +36,23 @@
       width: 30px !important;
       transform: rotate(90deg);
       transition: all 0.3s ease;
+      margin: 15px !important;
 
       &--active {
         transform: rotate(-90deg);
       }
+
+      @include mobile {
+        width: 25px !important;
+      }
+    }
+
+    @include tablet {
+      font-size: 22px;
+    }
+
+    @include mobile {
+      font-size: 20px;
     }
   }
 
@@ -55,7 +73,6 @@
 
   &-content {
     background-color: $lightGreen;
-    border: 2px solid $gold;
     border-top: none;
     width: 100%;
     transform: translateY(-60px);
@@ -75,9 +92,17 @@
       height: 100%;
       padding: 20px;
       transform: translateY(0);
+      border: 2px solid $gold;
+      border-top: 0;
 
       * {
         display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .contributor {
+        opacity: 1;
       }
     }
   }
