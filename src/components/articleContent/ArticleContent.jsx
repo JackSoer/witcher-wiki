@@ -27,7 +27,7 @@ const ArticleContent = ({ article }) => {
   }
 
   const getClasses = () => {
-    if (sidebarIsOpen || inputIsOpen) {
+    if (sidebarIsOpen || (inputIsOpen && windowSize.width <= 720)) {
       return 'article-content__toc-box article-content__toc-box--non-active';
     } else if (isOpen) {
       return 'article-content__toc-box article-content__toc-box--active';

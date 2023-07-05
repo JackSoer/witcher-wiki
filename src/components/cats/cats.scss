@@ -12,9 +12,11 @@
   opacity: 0;
   display: grid;
   transition: all 0.3s ease;
+  pointer-events: none;
 
   &--open {
     opacity: 1;
+    pointer-events: all;
   }
 
   &__item {
