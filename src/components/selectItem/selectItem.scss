@@ -9,11 +9,6 @@
   transition: all 0.3s ease;
   cursor: pointer;
 
-  &:hover {
-    background-color: $gold;
-    color: $white;
-  }
-
   &--active {
     background-color: $gold;
     color: $black;
@@ -26,5 +21,12 @@
   @media (max-width: 405px) {
     font-size: 13px;
     padding: 3px;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: $gold;
+      color: $white;
+    }
   }
 }
