@@ -29,6 +29,7 @@ const Toc = ({ content, isOpen, setIsOpen }) => {
         title: title,
         anchorId: anchorId,
       });
+      console.log(level);
     }
 
     setHeadings(parsedHeadings);
@@ -67,6 +68,7 @@ const Toc = ({ content, isOpen, setIsOpen }) => {
             key={heading.anchorId}
             className="toc__list-item"
             onClick={() => setIsOpen(false)}
+            style={{ paddingLeft: heading.level > 2 ? heading.level * 3 : 0 }}
           >
             <a href={`#${heading.anchorId}`}>{`${index + 1}. ${
               heading.title
