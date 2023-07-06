@@ -29,7 +29,6 @@ const Toc = ({ content, isOpen, setIsOpen }) => {
         title: title,
         anchorId: anchorId,
       });
-      console.log(level);
     }
 
     setHeadings(parsedHeadings);
