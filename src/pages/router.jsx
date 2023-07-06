@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Main from './layouts/Main';
 
 import Home from './home/Home';
@@ -12,6 +12,28 @@ import AddArticle from './addArticle/AddArticle';
 import MyArticles from './myArticles/MyArticles';
 import EditArticle from './editArticle/EditArticle';
 import SuggestedArticles from './suggestedArticles/SuggestedArticles';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthContext';
+
+const AuthRequire = ({ children }) => {
+  const { currentUser } = useContext(AuthContext);
+
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  } else {
+    return children;
+  }
+};
+
+const AdminRequire = ({ children }) => {
+  const { currentUser } = useContext(AuthContext);
+
+  if (!currentUser?.isAdmin) {
+    return <Navigate to="/" />;
+  } else {
+    return children;
+  }
+};
 
 const router = createBrowserRouter([
   {
@@ -40,23 +62,47 @@ const router = createBrowserRouter([
       },
       {
         path: '/add-article',
-        element: <AddArticle />,
+        element: (
+          <AuthRequire>
+            <AddArticle />
+          </AuthRequire>
+        ),
       },
       {
         path: '/my-articles',
-        element: <MyArticles />,
+        element: (
+          <AuthRequire>
+            <MyArticles />
+          </AuthRequire>
+        ),
       },
       {
         path: '/edit-article/:id',
-        element: <EditArticle />,
+        element: (
+          <AuthRequire>
+            <EditArticle />
+          </AuthRequire>
+        ),
+      },
+      {
+        path: '/edit-article',
+        element: <Navigate to="/" />,
       },
       {
         path: '/suggested-articles',
-        element: <SuggestedArticles />,
+        element: (
+          <AdminRequire>
+            <SuggestedArticles />
+          </AdminRequire>
+        ),
       },
       {
         path: '/suggested-articles/:id',
-        element: <Article />,
+        element: (
+          <AdminRequire>
+            <Article />
+          </AdminRequire>
+        ),
       },
     ],
   },
