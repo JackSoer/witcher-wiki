@@ -4,7 +4,7 @@ import { lazy, useContext, Suspense } from 'react';
 import AuthContext from '../context/AuthContext';
 import Loading from '../components/loading/Loading';
 
-// import Home from './home/Home';
+import Home from './home/Home';
 // import Characters from './characters/Characters';
 // import Locations from './locations/Locations';
 // import Bestiary from './bestiary/Bestiary';
@@ -16,7 +16,6 @@ import Loading from '../components/loading/Loading';
 // import EditArticle from './editArticle/EditArticle';
 // import SuggestedArticles from './suggestedArticles/SuggestedArticles';
 
-const Home = lazy(() => import('./home/Home'));
 const Characters = lazy(() => import('./characters/Characters'));
 const Locations = lazy(() => import('./locations/Locations'));
 const Bestiary = lazy(() => import('./bestiary/Bestiary'));

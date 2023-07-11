@@ -337,7 +337,7 @@ const EditArticle = () => {
               pattern="^https?:\/\/\S+$"
               errorMsg="Invalid image URL. Please provide a valid URL."
             />
-            <label htmlFor="cats" className="add-article__label">
+            <label htmlFor="cats" className="edit-article__label">
               Categories (choose one or more):
             </label>
             {!isLoading && !fetchError && (
@@ -352,7 +352,7 @@ const EditArticle = () => {
             <Textarea
               name="content"
               id="content"
-              className="add-article__content"
+              className="edit-article__content"
               onChange={(e) => {
                 setIsValidateContent(isValidateTextarea(e.target.value));
                 handleInput(e, setArticle);
