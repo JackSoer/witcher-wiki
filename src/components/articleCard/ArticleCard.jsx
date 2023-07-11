@@ -27,6 +27,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [contributor, setContrubutor] = useState({});
   const [editedArticle, setEditedArticle] = useState({});
+  const [date, setDate] = useState(0);
 
   const contributorId = useRef(null);
 
@@ -50,6 +51,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
   useEffect(() => {
     fetchContributor();
+    setDate(new Date(article.timestamp.seconds * 1000).toLocaleString());
   }, [article]);
 
   const handleDelete = async () => {
@@ -315,9 +317,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
                 {contributor.username}
               </p>
               <h3 className="article-card__extra-info-title">Date</h3>
-              <p className="article-card__extra-info-date">
-                {new Date().toLocaleString(article.timestamp.seconds)}
-              </p>
+              <p className="article-card__extra-info-date">{date}</p>
             </div>
           )}
         </div>
