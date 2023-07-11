@@ -209,8 +209,10 @@
     text-decoration: underline;
     transition: all 0.3s ease;
 
-    &:hover {
-      color: $gold;
+    @media (hover: hover) {
+      &:hover {
+        color: $gold;
+      }
     }
   }
 
@@ -327,17 +329,19 @@
       transition: all 0.3s ease;
     }
 
-    &:hover {
-      background-color: $gold;
+    @media (hover: hover) {
+      &:hover {
+        background-color: $gold;
 
-      &:before {
-        content: 'Edit';
-        display: inline-block;
-        color: $black;
-      }
+        &:before {
+          content: 'Edit';
+          display: inline-block;
+          color: $black;
+        }
 
-      svg {
-        fill: $black;
+        svg {
+          fill: $black;
+        }
       }
     }
   }

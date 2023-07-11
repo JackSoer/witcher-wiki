@@ -51,7 +51,8 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
 
   useEffect(() => {
     fetchContributor();
-    setDate(new Date(article.timestamp.seconds * 1000).toLocaleString());
+    article.timestamp &&
+      setDate(new Date(article.timestamp.seconds * 1000).toLocaleString());
   }, [article]);
 
   const handleDelete = async () => {
@@ -225,6 +226,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
                     src={editedArticle.mainImage}
                     alt="Something went wrong"
                     className="article-card__img"
+                    loading="lazy"
                   />
                   <h3 className="article-card__title">{editedArticle.title}</h3>
                   {error && <Error errorText={error} />}
@@ -264,6 +266,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
                   src={image}
                   alt="Something went wrong"
                   className="article-card__img"
+                  loading="lazy"
                 />
                 <h3 className="article-card__title">{title}</h3>
               </div>
@@ -312,6 +315,7 @@ const ArticleCard = ({ title, image, suggestedArticle, article }) => {
               <img
                 className="article-card__extra-info-img"
                 src={contributor.img || '../assets/images/default-avatar.webp'}
+                loading="lazy"
               />
               <p className="article-card__extra-info-nickname">
                 {contributor.username}

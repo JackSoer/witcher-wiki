@@ -14,6 +14,7 @@ const AddFile = (props) => {
           src="./assets/icons/plus.png"
           alt="Something went wrong"
           className="add-file__add-icon"
+          loading="lazy"
         />
         {!uploadError ? (
           <span>{file && !isLoading ? file.name : title}</span>

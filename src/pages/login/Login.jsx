@@ -46,6 +46,7 @@ const Login = () => {
             src="./assets/icons/witcher-medalion.png"
             alt="Something went wrong"
             className="auth-form__logo"
+            loading="lazy"
           />
           SIGN IN
         </h1>

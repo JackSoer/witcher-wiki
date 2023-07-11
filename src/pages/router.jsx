@@ -1,19 +1,34 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Main from './layouts/Main';
-
-import Home from './home/Home';
-import Characters from './characters/Characters';
-import Locations from './locations/Locations';
-import Bestiary from './bestiary/Bestiary';
-import Article from './article/Article';
-import Login from './login/Login';
-import Register from './register/Register';
-import AddArticle from './addArticle/AddArticle';
-import MyArticles from './myArticles/MyArticles';
-import EditArticle from './editArticle/EditArticle';
-import SuggestedArticles from './suggestedArticles/SuggestedArticles';
-import { useContext } from 'react';
+import { lazy, useContext, Suspense } from 'react';
 import AuthContext from '../context/AuthContext';
+import Loading from '../components/loading/Loading';
+
+// import Home from './home/Home';
+// import Characters from './characters/Characters';
+// import Locations from './locations/Locations';
+// import Bestiary from './bestiary/Bestiary';
+// import Article from './article/Article';
+// import Login from './login/Login';
+// import Register from './register/Register';
+// import AddArticle from './addArticle/AddArticle';
+// import MyArticles from './myArticles/MyArticles';
+// import EditArticle from './editArticle/EditArticle';
+// import SuggestedArticles from './suggestedArticles/SuggestedArticles';
+
+const Home = lazy(() => import('./home/Home'));
+const Characters = lazy(() => import('./characters/Characters'));
+const Locations = lazy(() => import('./locations/Locations'));
+const Bestiary = lazy(() => import('./bestiary/Bestiary'));
+const Article = lazy(() => import('./article/Article'));
+const Login = lazy(() => import('./login/Login'));
+const Register = lazy(() => import('./register/Register'));
+const AddArticle = lazy(() => import('./addArticle/AddArticle'));
+const MyArticles = lazy(() => import('./myArticles/MyArticles'));
+const EditArticle = lazy(() => import('./editArticle/EditArticle'));
+const SuggestedArticles = lazy(() =>
+  import('./suggestedArticles/SuggestedArticles')
+);
 
 const AuthRequire = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
@@ -46,25 +61,43 @@ const router = createBrowserRouter([
       },
       {
         path: '/characters',
-        element: <Characters />,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Characters />
+          </Suspense>
+        ),
       },
       {
         path: '/locations',
-        element: <Locations />,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Locations />
+          </Suspense>
+        ),
       },
       {
         path: '/bestiary',
-        element: <Bestiary />,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Bestiary />
+          </Suspense>
+        ),
       },
       {
         path: '/:id',
-        element: <Article />,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Article />
+          </Suspense>
+        ),
       },
       {
         path: '/add-article',
         element: (
           <AuthRequire>
-            <AddArticle />
+            <Suspense fallback={<Loading />}>
+              <AddArticle />
+            </Suspense>
           </AuthRequire>
         ),
       },
@@ -72,7 +105,9 @@ const router = createBrowserRouter([
         path: '/my-articles',
         element: (
           <AuthRequire>
-            <MyArticles />
+            <Suspense fallback={<Loading />}>
+              <MyArticles />
+            </Suspense>
           </AuthRequire>
         ),
       },
@@ -80,7 +115,9 @@ const router = createBrowserRouter([
         path: '/edit-article/:id',
         element: (
           <AuthRequire>
-            <EditArticle />
+            <Suspense fallback={<Loading />}>
+              <EditArticle />
+            </Suspense>
           </AuthRequire>
         ),
       },
@@ -92,7 +129,9 @@ const router = createBrowserRouter([
         path: '/suggested-articles',
         element: (
           <AdminRequire>
-            <SuggestedArticles />
+            <Suspense fallback={<Loading />}>
+              <SuggestedArticles />
+            </Suspense>
           </AdminRequire>
         ),
       },
@@ -100,7 +139,9 @@ const router = createBrowserRouter([
         path: '/suggested-articles/:id',
         element: (
           <AdminRequire>
-            <Article />
+            <Suspense fallback={<Loading />}>
+              <Article />
+            </Suspense>
           </AdminRequire>
         ),
       },
@@ -108,11 +149,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <Suspense fallback={<Loading />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: '/register',
-    element: <Register />,
+    element: (
+      <Suspense fallback={<Loading />}>
+        <Register />
+      </Suspense>
+    ),
   },
 ]);
 

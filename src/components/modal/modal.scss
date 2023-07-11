@@ -40,9 +40,11 @@
       transition: all 0.3s ease;
       border-radius: 8px;
 
-      &:hover {
-        background-color: $gold;
-        color: $black;
+      @media (hover: hover) {
+        &:hover {
+          background-color: $gold;
+          color: $black;
+        }
       }
     }
 
@@ -51,8 +53,10 @@
       margin-left: 5px;
       transition: all 0.3s ease;
 
-      &:hover {
-        color: $gold;
+      @media (hover: hover) {
+        &:hover {
+          color: $gold;
+        }
       }
     }
 

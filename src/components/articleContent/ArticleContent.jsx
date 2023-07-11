@@ -126,6 +126,7 @@ const ArticleContent = ({ article }) => {
               src={article.mainImage}
               alt="Something went wrong"
               className="article-content__img"
+              loading="lazy"
             />
           )}
           <div className={getClasses()}>

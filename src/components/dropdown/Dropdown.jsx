@@ -16,6 +16,7 @@ const Dropdown = ({ title, children }) => {
           <img
             src="../assets/icons/arrow.svg"
             alt="Something went wrong"
+            loading="lazy"
             className={
               isOpen
                 ? 'dropdown__btn-img dropdown__btn-img--active'

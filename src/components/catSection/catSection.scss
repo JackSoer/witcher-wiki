@@ -37,12 +37,14 @@
     display: inline-block;
     transition: all 0.3s ease;
 
-    &:hover {
-      text-shadow: 0 0 10px $gold;
-    }
-
     @include mobile {
       font-size: 35px;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        text-shadow: 0 0 10px $gold;
+      }
     }
   }
 
@@ -55,14 +57,6 @@
     transition: all 0.3s ease;
     font-weight: 700;
 
-    &:hover {
-      a,
-      a:visited {
-        color: $white;
-      }
-      background-color: $gold;
-    }
-
     a,
     a:visited {
       color: $gold;
@@ -71,6 +65,16 @@
     @include mobile {
       margin-top: 20px;
       font-size: 20px;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        a,
+        a:visited {
+          color: $white;
+        }
+        background-color: $gold;
+      }
     }
   }
 

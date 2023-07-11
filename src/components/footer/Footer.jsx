@@ -11,6 +11,7 @@ const Footer = () => {
             src="../assets/icons/witcher-medalion.png"
             alt="Something went wrong"
             className="footer__logo"
+            loading="lazy"
           />
         </Link>
         <div className="footer__copyright-section-text">

@@ -40,15 +40,6 @@
       transition: all 0.3s ease;
       height: 100%;
 
-      &:hover {
-        color: $gold;
-
-        &:after {
-          border-left: solid $gold 4px;
-          border-bottom: solid $gold 4px;
-        }
-      }
-
       &:after {
         transition: all 0.3s ease;
         content: '';
@@ -66,6 +57,17 @@
       &--open:after {
         top: 2px;
         transform: rotate(134deg);
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          color: $gold;
+
+          &:after {
+            border-left: solid $gold 4px;
+            border-bottom: solid $gold 4px;
+          }
+        }
       }
     }
 

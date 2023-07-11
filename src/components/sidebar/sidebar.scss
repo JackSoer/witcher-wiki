@@ -72,11 +72,13 @@
     right: 10px;
     top: 10px;
 
-    &:hover {
-      .sidebar__close-btn {
-        &:after,
-        &:before {
-          background-color: rgb(207, 0, 0);
+    @media (hover: hover) {
+      &:hover {
+        .sidebar__close-btn {
+          &:after,
+          &:before {
+            background-color: rgb(207, 0, 0);
+          }
         }
       }
     }

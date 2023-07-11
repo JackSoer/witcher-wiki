@@ -34,8 +34,10 @@
       color: $gold;
       transition: all 0.3s ease;
 
-      &:hover {
-        color: $white;
+      @media (hover: hover) {
+        &:hover {
+          color: $white;
+        }
       }
     }
   }

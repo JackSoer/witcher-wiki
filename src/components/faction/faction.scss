@@ -59,9 +59,11 @@
     }
   }
 
-  &:hover {
-    .faction__tooltip {
-      opacity: 1;
+  @media (hover: hover) {
+    &:hover {
+      .faction__tooltip {
+        opacity: 1;
+      }
     }
   }
 }

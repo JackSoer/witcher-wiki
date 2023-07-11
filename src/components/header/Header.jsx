@@ -48,6 +48,7 @@ const Header = () => {
           src="../assets/icons/witcher-medalion.png"
           alt="Something went wrong"
           className="header__logo"
+          loading="lazy"
         />
       </Link>
       <Nav />
@@ -73,11 +74,13 @@ const Header = () => {
                   }
                   alt="Error..."
                   className="user__avatar-item"
+                  loading="lazy"
                 />
                 <img
                   src="../assets/icons/avatar-border.png"
                   alt="Error..."
                   className="user__avatar-border"
+                  loading="lazy"
                 />
               </div>
               <p className="user__name">{currentUser.username}</p>

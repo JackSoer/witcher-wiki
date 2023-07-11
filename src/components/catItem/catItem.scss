@@ -54,17 +54,19 @@
     }
   }
 
-  &:hover &__title {
-    opacity: 1;
-    background-color: $black;
-    box-shadow: 0 -20px 30px 0px $black;
-  }
-
-  &:hover:after {
-    background-color: transparent;
-  }
-
   @include mobile {
     height: 200px;
+  }
+
+  @media (hover: hover) {
+    &:hover &__title {
+      opacity: 1;
+      background-color: $black;
+      box-shadow: 0 -20px 30px 0px $black;
+    }
+
+    &:hover:after {
+      background-color: transparent;
+    }
   }
 }

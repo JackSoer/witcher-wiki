@@ -155,10 +155,6 @@
       align-items: center;
       justify-content: center;
 
-      &:hover &-tooltip {
-        opacity: 1;
-      }
-
       &-tooltip {
         position: absolute;
         bottom: -29px;
@@ -174,6 +170,12 @@
         z-index: 1000;
         pointer-events: none;
       }
+
+      @media (hover: hover) {
+        &:hover &-tooltip {
+          opacity: 1;
+        }
+      }
     }
 
     svg {
@@ -188,17 +190,19 @@
       }
     }
 
-    &:hover {
-      color: $black;
-      background-color: $gold;
-
-      svg {
-        fill: $black;
-      }
-    }
-
     @media (max-width: 430px) {
       padding: 2px;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        color: $black;
+        background-color: $gold;
+
+        svg {
+          fill: $black;
+        }
+      }
     }
   }
 
@@ -259,27 +263,6 @@
     }
   }
 
-  &:hover &__title {
-    opacity: 1;
-    background-color: $black;
-    box-shadow: 0 -20px 30px 5px $black;
-    width: 100%;
-  }
-
-  &:hover:after {
-    background-color: transparent;
-  }
-
-  &:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 15px 10px 0 $black;
-
-    @include tablet {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-  }
-
   @include tablet {
     height: 210px;
   }
@@ -291,5 +274,28 @@
 
   @include mobile {
     height: 120px;
+  }
+
+  @media (hover: hover) {
+    &:hover &__title {
+      opacity: 1;
+      background-color: $black;
+      box-shadow: 0 -20px 30px 5px $black;
+      width: 100%;
+    }
+
+    &:hover:after {
+      background-color: transparent;
+    }
+
+    &:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 15px 10px 0 $black;
+
+      @include tablet {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+    }
   }
 }

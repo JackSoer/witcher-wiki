@@ -52,6 +52,7 @@ const Toc = ({ content, isOpen, setIsOpen }) => {
           src={`../assets/icons/63-content-list.svg`}
           alt="Something went wrong"
           className="toc__btn-icon"
+          loading="lazy"
         />
         <span
           className={

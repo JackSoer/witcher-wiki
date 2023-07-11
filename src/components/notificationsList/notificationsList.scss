@@ -37,14 +37,16 @@
     font-size: 14px;
     transition: all 0.3s ease;
 
-    &:hover {
-      color: $white;
-      background-color: $lightGreen;
-    }
-
     @include mobile {
       padding: 8px;
       font-size: 12px;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        color: $white;
+        background-color: $lightGreen;
+      }
     }
   }
 

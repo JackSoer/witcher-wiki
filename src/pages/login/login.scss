@@ -35,9 +35,11 @@
     margin-top: 10px;
     transition: all 0.3s ease;
 
-    &:hover {
-      background: linear-gradient(#abce00, #95c700);
-      background-color: #b7db00;
+    @media (hover: hover) {
+      &:hover {
+        background: linear-gradient(#abce00, #95c700);
+        background-color: #b7db00;
+      }
     }
   }
 
@@ -66,9 +68,11 @@
         font-size: 12px;
         transition: all 0.3s ease;
 
-        &:hover {
-          text-decoration: none;
-          color: $black;
+        @media (hover: hover) {
+          &:hover {
+            text-decoration: none;
+            color: $black;
+          }
         }
       }
     }

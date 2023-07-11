@@ -103,14 +103,11 @@
       color: $white;
       transition: all 0.3s ease;
 
-      &:hover {
-        color: $black;
+      @media (hover: hover) {
+        &:hover {
+          color: $black;
+        }
       }
-    }
-
-    &:hover {
-      background-color: $gold;
-      color: $black;
     }
 
     @include tablet {
@@ -124,6 +121,13 @@
       width: 26px;
       height: 26px;
       border: 1px solid $gold;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: $gold;
+        color: $black;
+      }
     }
   }
 

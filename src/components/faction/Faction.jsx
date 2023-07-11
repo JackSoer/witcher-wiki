@@ -34,6 +34,7 @@ const Faction = ({ factionTitle }) => {
           }
           alt="Something went wrong"
           className="faction__icon"
+          loading="lazy"
         />
       </button>
       <div className="faction__tooltip">{factionTitle}</div>

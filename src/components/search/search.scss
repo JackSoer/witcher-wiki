@@ -59,8 +59,10 @@
       transition: all 0.3s ease;
 
       @media (max-width: 720px) {
-        &:hover {
-          fill: $gold;
+        @media (hover: hover) {
+          &:hover {
+            fill: $gold;
+          }
         }
 
         &--active {

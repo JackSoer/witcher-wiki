@@ -17,19 +17,27 @@ const SuggestedArticles = () => {
   const [articles, setArticles] = useState([]);
   const [addedArticlesCount, setAddedArticlesCount] = useState(0);
   const [editedArticlesCount, setEditedArticlesCount] = useState(0);
+  const [empty, setEmpty] = useState(false);
 
   useEffect(() => {
     setSuggestedArticles(suggestedArticlesData);
   }, [suggestedArticlesData]);
 
-  const handleAction = (e) => {
-    setAction(e.target.id);
+  const handleAction = (actionType) => {
+    setAction(actionType);
   };
 
   useEffect(() => {
     const filteredArticles = suggestedArticles.filter(
       (article) => article.action === action
     );
+
+    if (!filteredArticles.length < 1) {
+      setEmpty(true);
+    } else {
+      setEmpty(false);
+    }
+
     const editedArticlesCount = suggestedArticles.filter(
       (article) => article.action === 'edit'
     ).length;
@@ -53,13 +61,14 @@ const SuggestedArticles = () => {
                 ? `suggested-articles__action-btns-item  suggested-articles__action-btns-item--active`
                 : 'suggested-articles__action-btns-item'
             }
-            id="add"
-            onClick={handleAction}
+            onClick={() => handleAction('add')}
           >
             Added
-            <div className="suggested-articles__action-btns-count">
-              {addedArticlesCount}
-            </div>
+            {addedArticlesCount > 0 && (
+              <div className="suggested-articles__action-btns-count">
+                {addedArticlesCount}
+              </div>
+            )}
           </button>
           <button
             className={
@@ -67,26 +76,27 @@ const SuggestedArticles = () => {
                 ? `suggested-articles__action-btns-item suggested-articles__action-btns-item--active`
                 : 'suggested-articles__action-btns-item'
             }
-            id="edit"
-            onClick={handleAction}
+            onClick={() => handleAction('edit')}
           >
             Edited
-            <div className="suggested-articles__action-btns-count">
-              {editedArticlesCount}
-            </div>
+            {editedArticlesCount > 0 && (
+              <div className="suggested-articles__action-btns-count">
+                {editedArticlesCount}
+              </div>
+            )}
           </button>
         </div>
-        {articles.length > 0 ? (
+        {!empty ? (
+          <p className="suggested-articles__warning">
+            You don't have suggested articles in this category...
+          </p>
+        ) : (
           <Articles
             filteredArticles={articles}
             suggestedArticles={true}
             fetchError={fetchError}
             isLoading={isLoading}
           />
-        ) : (
-          <p className="suggested-articles__warning">
-            You don't have suggested articles in this category...
-          </p>
         )}
       </div>
     </div>

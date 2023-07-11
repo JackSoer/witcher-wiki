@@ -10,6 +10,7 @@ const FoundArticle = ({ title, img, id }) => {
           src={img}
           alt="Something went wrong"
           className="found-article__img"
+          loading="lazy"
         />
         <h4 className="found-article__title">{title}</h4>
       </Link>

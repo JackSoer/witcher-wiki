@@ -8,6 +8,7 @@ const Loading = () => {
         src="../assets/icons/loading.svg"
         alt="Something went wrong"
         className="loading__icon"
+        loading="lazy"
       />
     </div>
   );

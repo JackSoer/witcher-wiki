@@ -10,6 +10,7 @@ const Contributor = ({ img, username }) => {
         src={img || '../assets/images/default-avatar.webp'}
         alt="Something went wrong..."
         className="contributor__img"
+        loading="lazy"
       />
       <p className="contrubutor__username">{cutString(username, 8)}</p>
     </div>

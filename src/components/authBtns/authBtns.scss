@@ -16,9 +16,11 @@
     padding: 5px;
     border-radius: 5px;
 
-    &:hover {
-      color: $white;
-      background-color: black;
+    @media (hover: hover) {
+      &:hover {
+        color: $white;
+        background-color: black;
+      }
     }
   }
 
@@ -26,8 +28,10 @@
     border: 2px solid $gold;
     color: $gold;
 
-    &:hover {
-      background-color: $gold;
+    @media (hover: hover) {
+      &:hover {
+        background-color: $gold;
+      }
     }
   }
 
